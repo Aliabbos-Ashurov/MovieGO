@@ -2,7 +2,7 @@ package com.abbos.moviego.mapper;
 
 
 import com.abbos.moviego.dto.base.Response;
-import com.abbos.moviego.entity.BaseDomain;
+import com.abbos.moviego.entity.BaseEntity;
 
 import java.util.Collection;
 import java.util.List;
@@ -11,13 +11,13 @@ import java.util.List;
  * Mapper interface for converting between collections of domain entities and DTOs.
  * Provides methods to transform collections of DTOs to entities and vice versa.
  *
- * @param <E> the entity type extending {@link BaseDomain}
+ * @param <E> the entity type extending {@link BaseEntity}
  * @param <D> the DTO type extending {@link Response}
  * @author Aliabbos Ashurov
  * @version 1.0
  * @since 2025-05-02
  */
-public interface CollectionMapper<E extends BaseDomain, D extends Response> {
+public interface CollectionMapper<E extends BaseEntity, D extends Response> {
     /**
      * Converts a collection of DTOs to a list of entities.
      *

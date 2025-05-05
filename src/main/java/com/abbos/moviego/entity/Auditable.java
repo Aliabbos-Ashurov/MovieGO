@@ -3,7 +3,10 @@ package com.abbos.moviego.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -26,10 +29,9 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class Auditable extends BaseEntity {
 
-    @Builder.Default
     @Column(name = "created_by", nullable = false, updatable = false)
     @CreatedBy
-    private Long createdBy = -1L;
+    private Long createdBy;
 
     @Column(name = "updated_at")
     @LastModifiedDate

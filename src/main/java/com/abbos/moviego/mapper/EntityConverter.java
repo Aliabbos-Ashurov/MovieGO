@@ -1,18 +1,18 @@
 package com.abbos.moviego.mapper;
 
 import com.abbos.moviego.dto.base.Response;
-import com.abbos.moviego.entity.BaseDomain;
+import com.abbos.moviego.entity.BaseEntity;
 
 /**
  * Mapper interface for bidirectional conversion between domain entities and DTOs.
  *
- * @param <E> the entity type extending {@link BaseDomain}
+ * @param <E> the entity type extending {@link BaseEntity}
  * @param <D> the DTO type extending {@link Response}
  * @author Aliabbos Ashurov
  * @version 1.0
  * @since 2025-05-02
  */
-public interface EntityConverter<E extends BaseDomain, D extends Response> {
+public interface EntityConverter<E extends BaseEntity, D extends Response> {
     /**
      * Converts an entity to a DTO.
      *

@@ -1,8 +1,14 @@
 package com.abbos.moviego.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.SoftDeleteType;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -20,19 +26,22 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @SuperBuilder
 @EntityListeners(AuditingEntityListener.class)
-public class BaseEntity implements BaseDomain {
+@SoftDelete(columnName = "active", strategy = SoftDeleteType.ACTIVE) // >= V 6.4
+public class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT NOW()")
+    @ColumnDefault("NOW()")
+    @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @Builder.Default
-    @Column(name = "deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
-    // @Convert(converter = org.hibernate.type.NumericBooleanConverter.class)
-    private boolean deleted = false;
+
+//    @Builder.Default
+//    @Column(name = "deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+//    //@Convert(converter = org.hibernate.type.NumericBooleanConverter.class)
+//    private boolean deleted = false;
 }
 

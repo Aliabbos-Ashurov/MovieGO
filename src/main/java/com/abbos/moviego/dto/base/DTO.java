@@ -1,5 +1,7 @@
 package com.abbos.moviego.dto.base;
 
+import java.io.Serializable;
+
 /**
  * Marker interface for Data Transfer Objects (DTOs), defining a common contract for request and response DTOs.
  *
@@ -7,5 +9,5 @@ package com.abbos.moviego.dto.base;
  * @version 1.0
  * @since 2025-05-02
  */
-public interface DTO {
+public interface DTO extends Serializable {
 }
