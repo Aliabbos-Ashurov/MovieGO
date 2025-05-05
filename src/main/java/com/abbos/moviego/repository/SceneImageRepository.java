@@ -1,0 +1,18 @@
+package com.abbos.moviego.repository;
+
+import com.abbos.moviego.entity.SceneImage;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+
+/**
+ * @author Aliabbos Ashurov
+ * @version 1.0
+ * @since 2025-05-03
+ */
+public interface SceneImageRepository extends JpaRepository<SceneImage, Long> {
+
+    @Query("SELECT si FROM SceneImage si JOIN FETCH si.image i WHERE si.movie.id = :movieId")
+    List<SceneImage> findSceneImagesByMovieId(Long movieId);
+}
