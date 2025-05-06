@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  * @version 1.0
  * @since 2025-05-05
  */
-@Mapper(componentModel = MappingConstants.NULL)
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UtilMapper {
 
     @Named("bigDecimalToFormattedString")

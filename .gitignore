@@ -159,3 +159,6 @@ fabric.properties
 /.mvn
 mvnw.cmd
 mvnw
+
+# PRIVATE
+.env

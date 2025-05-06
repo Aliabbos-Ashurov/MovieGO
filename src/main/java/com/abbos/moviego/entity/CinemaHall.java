@@ -30,9 +30,17 @@ public class CinemaHall extends Auditable {
     @Column(nullable = false)
     private String name;
 
-    @Positive(message = "Capacity must be positive")
+    @Positive
     @Column(nullable = false)
     private Integer capacity;
+
+    @Positive
+    @Column(nullable = false)
+    private Integer rows;
+
+    @Positive
+    @Column(nullable = false)
+    private Integer columns;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

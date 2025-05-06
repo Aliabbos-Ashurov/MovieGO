@@ -18,9 +18,13 @@ public record CinemaHallCreateDto(
         @Size(max = 50, message = "Name must not exceed 50 characters")
         String name,
 
-        @NotNull(message = "Capacity is required")
-        @Positive(message = "Capacity must be positive")
-        Integer capacity,
+        @NotNull(message = "rows is required")
+        @Positive(message = "rows must be positive")
+        Integer rows,
+
+        @NotNull(message = "rows is required")
+        @Positive(message = "rows must be positive")
+        Integer columns,
 
         @NotNull(message = "Status is required")
         CinemaHallStatus status,

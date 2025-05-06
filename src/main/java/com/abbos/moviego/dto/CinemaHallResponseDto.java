@@ -11,6 +11,8 @@ public record CinemaHallResponseDto(
         Long id,
         String name,
         Integer capacity,
+        Integer rows,
+        Integer columns,
         String status,
         ImageResponseDto image
 ) implements Response {
