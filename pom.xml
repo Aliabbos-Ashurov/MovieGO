@@ -10,9 +10,8 @@
     </parent>
     <groupId>com.abbos</groupId>
     <artifactId>MovieGO</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>MovieGO</name>
-    <description>MovieGO</description>
 
     <properties>
         <java.version>21</java.version>
@@ -48,6 +47,13 @@
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
+        </dependency>
+
+        <!-- AWS -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+            <version>2.31.35</version>
         </dependency>
 
         <dependency>
