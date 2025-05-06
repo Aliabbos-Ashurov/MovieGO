@@ -1,9 +1,9 @@
-package com.abbos.moviego.mapper;
+package com.abbos.moviego.mapper.base;
 
 
 import com.abbos.moviego.dto.base.Request;
 import com.abbos.moviego.dto.base.Response;
-import com.abbos.moviego.entity.BaseEntity;
+import com.abbos.moviego.entity.base.BaseEntity;
 
 /**
  * Composite mapper interface combining entity conversion, creation, update, and collection mapping.

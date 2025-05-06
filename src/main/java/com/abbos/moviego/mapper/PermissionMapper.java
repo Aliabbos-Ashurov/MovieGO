@@ -4,6 +4,7 @@ import com.abbos.moviego.dto.PermissionCreateDto;
 import com.abbos.moviego.dto.PermissionResponseDto;
 import com.abbos.moviego.dto.PermissionUpdateDto;
 import com.abbos.moviego.entity.Permission;
+import com.abbos.moviego.mapper.base.EntityMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;

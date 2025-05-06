@@ -1,5 +1,6 @@
 package com.abbos.moviego.entity;
 
+import com.abbos.moviego.entity.base.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;

@@ -14,5 +14,5 @@ import java.util.List;
 public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     @Query("SELECT m FROM Movie m WHERE m.title ilike :title")
-    List<Movie> findMovieByTitleLike(String title);
+    List<Movie> findByTitleLike(String title);
 }

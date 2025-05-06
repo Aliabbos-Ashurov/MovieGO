@@ -2,6 +2,8 @@ package com.abbos.moviego.mapper;
 
 import com.abbos.moviego.dto.ImageResponseDto;
 import com.abbos.moviego.entity.Image;
+import com.abbos.moviego.mapper.base.CollectionMapper;
+import com.abbos.moviego.mapper.base.EntityConverter;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;

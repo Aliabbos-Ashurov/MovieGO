@@ -1,5 +1,6 @@
 package com.abbos.moviego.entity;
 
+import com.abbos.moviego.entity.base.Auditable;
 import com.abbos.moviego.enums.CinemaHallStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

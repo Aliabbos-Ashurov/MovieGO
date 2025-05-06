@@ -1,8 +1,8 @@
-package com.abbos.moviego.mapper;
+package com.abbos.moviego.mapper.base;
 
 
 import com.abbos.moviego.dto.base.Request;
-import com.abbos.moviego.entity.BaseEntity;
+import com.abbos.moviego.entity.base.BaseEntity;
 
 /**
  * Mapper interface for creating entities from create request DTOs.

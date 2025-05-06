@@ -4,6 +4,8 @@ import com.abbos.moviego.dto.EventCreateDto;
 import com.abbos.moviego.dto.EventResponseDto;
 import com.abbos.moviego.dto.EventUpdateDto;
 import com.abbos.moviego.entity.Event;
+import com.abbos.moviego.mapper.base.EntityMapper;
+import com.abbos.moviego.mapper.base.UtilMapper;
 import org.mapstruct.*;
 
 /**

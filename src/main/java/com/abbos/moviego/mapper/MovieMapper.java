@@ -4,6 +4,7 @@ import com.abbos.moviego.dto.MovieCreateDto;
 import com.abbos.moviego.dto.MovieResponseDto;
 import com.abbos.moviego.dto.MovieUpdateDto;
 import com.abbos.moviego.entity.Movie;
+import com.abbos.moviego.mapper.base.EntityMapper;
 import org.mapstruct.*;
 
 /**

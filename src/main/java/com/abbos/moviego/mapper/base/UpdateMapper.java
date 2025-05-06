@@ -1,7 +1,7 @@
-package com.abbos.moviego.mapper;
+package com.abbos.moviego.mapper.base;
 
 import com.abbos.moviego.dto.base.Request;
-import com.abbos.moviego.entity.BaseEntity;
+import com.abbos.moviego.entity.base.BaseEntity;
 import org.mapstruct.MappingTarget;
 
 /**

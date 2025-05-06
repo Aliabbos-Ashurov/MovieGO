@@ -14,5 +14,5 @@ import java.util.Optional;
 public interface CinemaHallRepository extends JpaRepository<CinemaHall, Long> {
 
     @Query("SELECT ch FROM CinemaHall ch WHERE ch.name = :name")
-    Optional<CinemaHall> findCinemaHallByName(String name);
+    Optional<CinemaHall> findByName(String name);
 }

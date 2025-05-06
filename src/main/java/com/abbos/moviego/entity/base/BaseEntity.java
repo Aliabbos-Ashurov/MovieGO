@@ -1,4 +1,4 @@
-package com.abbos.moviego.entity;
+package com.abbos.moviego.entity.base;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

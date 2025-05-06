@@ -1,4 +1,4 @@
-package com.abbos.moviego.mapper;
+package com.abbos.moviego.mapper.base;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;

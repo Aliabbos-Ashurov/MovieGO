@@ -1,5 +1,6 @@
 package com.abbos.moviego.entity;
 
+import com.abbos.moviego.entity.base.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

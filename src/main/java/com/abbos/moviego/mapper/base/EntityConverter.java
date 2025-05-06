@@ -1,7 +1,7 @@
-package com.abbos.moviego.mapper;
+package com.abbos.moviego.mapper.base;
 
 import com.abbos.moviego.dto.base.Response;
-import com.abbos.moviego.entity.BaseEntity;
+import com.abbos.moviego.entity.base.BaseEntity;
 
 /**
  * Mapper interface for bidirectional conversion between domain entities and DTOs.

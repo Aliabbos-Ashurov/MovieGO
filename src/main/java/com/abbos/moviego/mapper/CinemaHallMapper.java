@@ -4,6 +4,8 @@ import com.abbos.moviego.dto.CinemaHallCreateDto;
 import com.abbos.moviego.dto.CinemaHallResponseDto;
 import com.abbos.moviego.dto.CinemaHallUpdateDto;
 import com.abbos.moviego.entity.CinemaHall;
+import com.abbos.moviego.mapper.base.EntityMapper;
+import com.abbos.moviego.mapper.base.UtilMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

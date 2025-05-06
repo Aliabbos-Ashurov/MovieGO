@@ -2,6 +2,9 @@ package com.abbos.moviego.mapper;
 
 import com.abbos.moviego.dto.TicketResponseDto;
 import com.abbos.moviego.entity.Ticket;
+import com.abbos.moviego.mapper.base.CollectionMapper;
+import com.abbos.moviego.mapper.base.EntityConverter;
+import com.abbos.moviego.mapper.base.UtilMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
