@@ -1,8 +1,7 @@
-package com.abbos.moviego.service;
+package com.abbos.moviego.service.base;
 
-import com.abbos.moviego.entity.BaseEntity;
-import com.abbos.moviego.mapper.EntityConverter;
-import com.abbos.moviego.mapper.EntityMapper;
+import com.abbos.moviego.mapper.base.EntityConverter;
+import com.abbos.moviego.mapper.base.EntityMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Abstract base service class providing common functionality for services,
  * including repository access and entity mapping.
  *
+ * @param <S> the type of the service {@link CrudService}
  * @param <R> the type of the repository extending {@link JpaRepository}
  * @param <M> the type of the mapper extending {@link EntityMapper}
  * @author Aliabbos Ashurov
@@ -20,8 +20,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @Getter
 @RequiredArgsConstructor
 public abstract class AbstractService<
-        S extends CrudService<Long, ?, ?, ?, ?>,
-        R extends JpaRepository<? extends BaseEntity, Long>,
+        S extends CrudService<?, ?, ?, ?>,
+        R extends JpaRepository<?, ?>,
         M extends EntityConverter<?, ?>> {
     private final S service;
     private final R repository;
