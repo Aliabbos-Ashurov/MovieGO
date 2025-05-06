@@ -55,11 +55,11 @@ public class Movie extends Auditable {
     @Size(max = 500, message = "Description must not exceed 500 characters")
     private String description;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "poster_image_id")
     private Image posterImage;
 

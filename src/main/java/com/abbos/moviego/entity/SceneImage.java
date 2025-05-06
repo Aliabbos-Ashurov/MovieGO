@@ -22,11 +22,11 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class SceneImage extends BaseEntity {
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "image_id", nullable = false)
     private Image image;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 }

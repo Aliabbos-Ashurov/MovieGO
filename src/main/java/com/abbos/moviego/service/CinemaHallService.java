@@ -1,9 +1,19 @@
 package com.abbos.moviego.service;
 
+import com.abbos.moviego.dto.CinemaHallCreateDto;
+import com.abbos.moviego.dto.CinemaHallResponseDto;
+import com.abbos.moviego.dto.CinemaHallUpdateDto;
+import com.abbos.moviego.entity.CinemaHall;
+import com.abbos.moviego.service.base.CrudService;
+
+import java.util.Optional;
+
 /**
  * @author Aliabbos Ashurov
  * @version 1.0
  * @since 2025-05-05
  */
-public class CinemaHallService {
+public interface CinemaHallService extends CrudService<Long, CinemaHallResponseDto, CinemaHallCreateDto, CinemaHallUpdateDto> {
+
+    Optional<CinemaHall> findByName(String name);
 }

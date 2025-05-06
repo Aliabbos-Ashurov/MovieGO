@@ -30,11 +30,11 @@ import java.time.LocalDateTime;
 @SuperBuilder
 public class Event extends Auditable {
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "cinema_hall_id", nullable = false)
     private CinemaHall cinemaHall;
 
@@ -56,7 +56,7 @@ public class Event extends Auditable {
     @Column(nullable = false)
     private int capacity;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "banner_id", nullable = false)
     private Image banner;
 }

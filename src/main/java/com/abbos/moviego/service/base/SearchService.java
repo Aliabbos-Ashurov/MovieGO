@@ -3,6 +3,7 @@ package com.abbos.moviego.service.base;
 
 import com.abbos.moviego.dto.base.Response;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.data.domain.Pageable;
 
 import java.io.Serializable;
 import java.util.List;
@@ -32,4 +33,17 @@ public interface SearchService<ID extends Serializable, R extends Response> {
      * @return a list of response DTOs containing entity data
      */
     List<R> findAll();
+
+    /**
+     * Retrieves all entities with pagination support.
+     * <p>
+     * This default implementation throws {@link UnsupportedOperationException}
+     * and should be overridden in the implementing class if pagination is required.
+     *
+     * @param pageable pagination and sorting information
+     * @return a paginated list of response DTOs
+     */
+    default List<R> findAll(Pageable pageable) {
+        throw new UnsupportedOperationException("::Method must be overridden::");
+    }
 }

@@ -1,6 +1,19 @@
 spring:
   profiles:
     active: dev
+  config:
+    import: optional:file:.env[.properties]
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/changelog-master.yaml
+  cloud:
+    aws:
+      region:
+        static: ${AWS_REGION}
+      credentials:
+        access-key: ${AWS_ACCESS_KEY}
+        secret-key: ${AWS_SECRET_KEY}
+      s3:
+        bucket:
+          name: ${AWS_BUCKET_NAME}
+

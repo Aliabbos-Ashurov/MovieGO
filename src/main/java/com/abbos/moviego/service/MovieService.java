@@ -1,9 +1,19 @@
 package com.abbos.moviego.service;
 
+import com.abbos.moviego.dto.MovieCreateDto;
+import com.abbos.moviego.dto.MovieResponseDto;
+import com.abbos.moviego.dto.MovieUpdateDto;
+import com.abbos.moviego.entity.Movie;
+import com.abbos.moviego.service.base.CrudService;
+
+import java.util.List;
+
 /**
  * @author Aliabbos Ashurov
  * @version 1.0
  * @since 2025-05-05
  */
-public class MovieService {
+public interface MovieService extends CrudService<Long, MovieResponseDto, MovieCreateDto, MovieUpdateDto> {
+
+    List<Movie> findByTitleLike(String title);
 }

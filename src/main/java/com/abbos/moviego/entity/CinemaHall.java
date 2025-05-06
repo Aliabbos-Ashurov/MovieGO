@@ -47,7 +47,7 @@ public class CinemaHall extends Auditable {
     @Column(nullable = false)
     private CinemaHallStatus status;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "image_id", nullable = false)
     private Image image;
 }
