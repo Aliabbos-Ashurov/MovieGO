@@ -13,7 +13,7 @@ import java.util.List;
  * @version 1.0
  * @since 2025-05-05
  */
-public interface MovieService extends CrudService<Long, MovieResponseDto, MovieCreateDto, MovieUpdateDto> {
+public interface MovieService extends CrudService<Long, Movie, MovieResponseDto, MovieCreateDto, MovieUpdateDto> {
 
-    List<Movie> findByTitleLike(String title);
+    List<MovieResponseDto> findByTitleLike(String title);
 }

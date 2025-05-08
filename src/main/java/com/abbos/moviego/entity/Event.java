@@ -6,12 +6,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -46,11 +43,11 @@ public class Event extends Auditable {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    @NotBlank
-    @Size(max = 50)
+    @Builder.Default
+    @ColumnDefault("'SCHEDULED'")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private EventStatus status;
+    private EventStatus status = EventStatus.SCHEDULED;
 
     @Positive
     @Column(nullable = false)

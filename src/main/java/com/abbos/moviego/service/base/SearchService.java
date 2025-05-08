@@ -2,6 +2,7 @@ package com.abbos.moviego.service.base;
 
 
 import com.abbos.moviego.dto.base.Response;
+import com.abbos.moviego.entity.base.BaseEntity;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Pageable;
 
@@ -12,11 +13,20 @@ import java.util.List;
  * Interface for read-only operations on entities.
  *
  * @param <ID> the type of the entity ID
+ * @param <E>  the entity type
  * @param <R>  the response type
  * @author Aliabbos Ashurov
  * @since 2025-05-06
  */
-public interface SearchService<ID extends Serializable, R extends Response> {
+public interface SearchService<ID extends Serializable, E extends BaseEntity, R extends Response> {
+
+    /**
+     * Checks if an entity exists by its identifier.
+     *
+     * @param id the entity identifier
+     * @return true if the entity exists, false otherwise
+     */
+    boolean exists(@NotNull ID id);
 
     /**
      * Retrieves an entity by its identifier.
@@ -26,6 +36,16 @@ public interface SearchService<ID extends Serializable, R extends Response> {
      * @throws com.abbos.moviego.exception.ResourceNotFoundException if the entity is not found
      */
     R find(@NotNull ID id);
+
+    /**
+     * Retrieves an entity by its identifier for internal use (e.g., establishing relationships).
+     *
+     * @param id the entity identifier
+     * @return the raw entity
+     * @throws com.abbos.moviego.exception.ResourceNotFoundException if the entity is not found
+     */
+    E findEntity(@NotNull ID id);
+
 
     /**
      * Retrieves all entities with pagination support.

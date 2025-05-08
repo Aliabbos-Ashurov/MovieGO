@@ -1,8 +1,8 @@
 package com.abbos.moviego.dto;
 
 import com.abbos.moviego.dto.base.Request;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 /**
  * @author Aliabbos Ashurov
@@ -13,8 +13,11 @@ public record TicketCreateDto(
         @NotNull(message = "Event ID is required")
         Long eventId,
 
-        @NotBlank(message = "Seat number is required")
-        String seatNumber,
+        @Positive
+        @NotNull Integer rows,
+
+        @Positive
+        @NotNull Integer columns,
 
         @NotNull(message = "User ID is required")
         Long userId

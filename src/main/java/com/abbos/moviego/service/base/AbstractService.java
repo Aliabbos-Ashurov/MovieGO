@@ -19,12 +19,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 @Getter
 @RequiredArgsConstructor
-public abstract class AbstractService<
-        S extends CrudService<?, ?, ?, ?>,
-        R extends JpaRepository<?, ?>,
-        M extends EntityConverter<?, ?>> {
-    private final S service;
-    private final R repository;
-    private final M mapper;
+public abstract class AbstractService<R extends JpaRepository<?, ?>, M extends EntityConverter<?, ?>> {
+    protected final R repository;
+    protected final M mapper;
 }
 

@@ -2,9 +2,7 @@ package com.abbos.moviego.entity;
 
 import com.abbos.moviego.entity.base.BaseEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,10 +29,13 @@ public class Ticket extends BaseEntity {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    @NotBlank
-    @Size(max = 10)
-    @Column(name = "seat_number", nullable = false)
-    private String seatNumber;
+    @Positive
+    @Column(nullable = false)
+    private Integer rows;
+
+    @Positive
+    @Column(nullable = false)
+    private Integer columns;
 
     @Positive
     @Column(nullable = false, precision = 10, scale = 2)

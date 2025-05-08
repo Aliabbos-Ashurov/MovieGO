@@ -36,9 +36,9 @@ public class Image extends BaseEntity {
     private String fileName;
 
     @NotBlank
-    @Size(max = 4, message = "Mime type must be max: {max} chars")
-    @Column(name = "mime_type", nullable = false)
-    private String mimeType;
+    @Size(max = 4, message = "Extension type must be max: {max} chars")
+    @Column(nullable = false)
+    private String extension;
 
     @Positive
     @Max(10_000_000)

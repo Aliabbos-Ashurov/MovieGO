@@ -6,14 +6,11 @@ import com.abbos.moviego.dto.CinemaHallUpdateDto;
 import com.abbos.moviego.entity.CinemaHall;
 import com.abbos.moviego.service.base.CrudService;
 
-import java.util.Optional;
-
 /**
  * @author Aliabbos Ashurov
  * @version 1.0
  * @since 2025-05-05
  */
-public interface CinemaHallService extends CrudService<Long, CinemaHallResponseDto, CinemaHallCreateDto, CinemaHallUpdateDto> {
+public interface CinemaHallService extends CrudService<Long, CinemaHall, CinemaHallResponseDto, CinemaHallCreateDto, CinemaHallUpdateDto> {
 
-    Optional<CinemaHall> findByName(String name);
 }

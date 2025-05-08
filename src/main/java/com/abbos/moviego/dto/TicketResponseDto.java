@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 public record TicketResponseDto(
         Long id,
         EventResponseDto event,
-        String seatNumber,
+        Integer rows,
+        Integer columns,
         String price,
         UserResponseDto user,
         LocalDateTime createdAt

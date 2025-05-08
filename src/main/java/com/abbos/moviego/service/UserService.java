@@ -7,16 +7,15 @@ import com.abbos.moviego.entity.User;
 import com.abbos.moviego.service.base.CrudService;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Aliabbos Ashurov
  * @version 1.0
  * @since 2025-05-05
  */
-public interface UserService extends CrudService<Long, UserResponseDto, UserCreateDto, UserUpdateDto> {
+public interface UserService extends CrudService<Long, User, UserResponseDto, UserCreateDto, UserUpdateDto> {
 
-    Optional<User> findByEmail(String email);
+    User findByEmail(String email);
 
-    List<User> findUsersByNameLike(String name);
+    List<UserResponseDto> findUsersByNameLike(String name);
 }

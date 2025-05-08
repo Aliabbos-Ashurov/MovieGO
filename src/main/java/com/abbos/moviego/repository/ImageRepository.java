@@ -12,8 +12,4 @@ import java.util.List;
  * @since 2025-05-03
  */
 public interface ImageRepository extends JpaRepository<Image, Long> {
-
-    @Query("SELECT i FROM Image i WHERE i.mimeType = :mimeType")
-    List<Image> findImagesByMimeType(String mimeType);
-
 }

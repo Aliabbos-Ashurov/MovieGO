@@ -17,9 +17,9 @@ public interface CreateService<R extends Response, CD extends Request> {
     /**
      * Creates a new entity from the provided request data.
      *
-     * @param request the create request DTO
+     * @param dto the create request DTO
      * @return a response containing the created entity DTO
      * @throws jakarta.validation.ValidationException if the request is invalid
      */
-    R create(@NotNull CD request);
+    R create(@NotNull CD dto);
 }

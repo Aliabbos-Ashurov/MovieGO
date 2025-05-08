@@ -15,9 +15,9 @@ import java.util.List;
  * @since 2025-05-05
  */
 public interface TicketService extends CreateService<TicketResponseDto, TicketCreateDto>,
-        SearchService<Long, TicketResponseDto>, DeleteService<Long> {
+        SearchService<Long, Ticket, TicketResponseDto>, DeleteService<Long> {
 
-    List<Ticket> findTicketsByUserId(Long userId);
+    List<TicketResponseDto> findTicketsByUserId(Long userId);
 
-    Ticket findTicketsByEventId(Long eventId);
+    TicketResponseDto findTicketsByEventId(Long eventId);
 }

@@ -17,9 +17,9 @@ public interface UpdateService<R extends Response, UD extends Request> {
     /**
      * Updates an existing entity with the provided request data.
      *
-     * @param request the update request DTO
+     * @param dto the update request DTO
      * @return a response containing the updated entity DTO
      * @throws com.abbos.moviego.exception.ResourceNotFoundException if the entity is not found
      */
-    R update(@NotNull UD request);
+    R update(@NotNull UD dto);
 }

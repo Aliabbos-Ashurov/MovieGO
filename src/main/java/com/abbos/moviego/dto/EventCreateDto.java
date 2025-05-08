@@ -3,6 +3,7 @@ package com.abbos.moviego.dto;
 import com.abbos.moviego.dto.base.Request;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,6 +25,9 @@ public record EventCreateDto(
 
         @NotNull(message = "Price is required")
         @Positive(message = "Price must be positive")
-        BigDecimal price
+        BigDecimal price,
+
+        @NotNull
+        MultipartFile banner
 ) implements Request {
 }

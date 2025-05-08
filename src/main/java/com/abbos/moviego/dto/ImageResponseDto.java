@@ -11,7 +11,7 @@ public record ImageResponseDto(
         Long id,
         String generatedName,
         String fileName,
-        String mimeType,
+        String extension,
         long size,
         String link
 ) implements Response {

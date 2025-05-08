@@ -14,11 +14,11 @@ import java.util.List;
  * @version 1.0
  * @since 2025-05-05
  */
-public interface EventService extends CrudService<Long, EventResponseDto, EventCreateDto, EventUpdateDto> {
+public interface EventService extends CrudService<Long, Event, EventResponseDto, EventCreateDto, EventUpdateDto> {
 
-    List<Event> findEventsByCinemaHallId(Long cinemaHallId);
+    List<EventResponseDto> findEventsByCinemaHallId(Long cinemaHallId);
 
-    List<Event> findEventsByMovieId(Long movieId);
+    List<EventResponseDto> findEventsByMovieId(Long movieId);
 
-    List<Event> findEventsByStatus(EventStatus status);
+    List<EventResponseDto> findEventsByStatus(EventStatus status);
 }

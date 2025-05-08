@@ -2,8 +2,8 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5400/moviego
-    password: postgres
-    username: postgres
+    password: ${POSTGRES_USER}
+    username: ${POSTGRES_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update

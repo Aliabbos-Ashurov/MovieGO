@@ -3,6 +3,7 @@ package com.abbos.moviego.service;
 import com.abbos.moviego.dto.ImageResponseDto;
 import com.abbos.moviego.entity.Image;
 import com.abbos.moviego.service.base.SearchService;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -11,7 +12,12 @@ import java.util.List;
  * @version 1.0
  * @since 2025-05-05
  */
-public interface ImageService extends SearchService<Long, ImageResponseDto> {
+public interface ImageService extends SearchService<Long, Image, ImageResponseDto> {
 
-    List<Image> findImagesByMimeType(String mimeType);
+    Image create(String key, MultipartFile file);
+
+    byte[] download(String key);
+
+    void delete(Long id, String key);
+
 }
