@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${movie.title()} + ' Info Page'">Movie Info Page</title>
+    <link rel="stylesheet" th:href="@{/css/movie.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+<header>
+    <nav class="nav-bar">
+        <a href="/home">HOME</a>
+    </nav>
+</header>
+
+<main>
+    <div class="movie-banner">
+        <div class="gradient-overlay"></div>
+        <img th:src="${movie.posterImage().link()}" th:alt="${movie.title()}">
+        <div class="button-container">
+            <button class="play-button" th:attr="data-trailer=${movie.trailerLink}" onclick="playTrailer(this)">
+                <div class="play-icon"><i class="fas fa-play"></i></div>
+                Play
+            </button>
+        </div>
+    </div>
+
+    <div class="movie-details">
+        <h1 th:text="${movie.title()}">Movie Title</h1>
+        <div class="movie-info">
+            <span th:text="${movie.durationMinutes()} + ' min'">Duration</span>&nbsp;&nbsp;&nbsp;
+            <span th:text="${movie.rating()} + ' ⭐️'">Rating</span>&nbsp;&nbsp;&nbsp;
+            <span th:text="${movie.language()}">Language</span>&nbsp;&nbsp;&nbsp;
+            <span th:text="'Category: ' + ${movie.category().name()}">Category</span>
+        </div>
+
+        <div class="movie-description">
+            <h2>About the Movie</h2>
+            <p th:text="${movie.description()}">Movie description goes here...</p>
+        </div>
+
+        <div class="scene-images">
+            <div th:each="scene : ${movie.sceneImages()}">
+                <img th:src="${scene.image().link()}" alt="Scene Image">
+            </div>
+        </div>
+    </div>
+</main>
+
+<div id="trailer-modal" class="trailer-modal">
+    <div class="trailer-content">
+        <span class="close" onclick="closeTrailer()">&times;</span>
+        <iframe id="trailer-video" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+<script>
+    function playTrailer(button) {
+        const trailerLink = button.getAttribute("data-trailer");
+        document.getElementById('trailer-modal').style.display = 'block';
+        document.getElementById('trailer-video').src = 'https://www.youtube.com/embed/' + extractYouTubeId(trailerLink);
+    }
+
+    function extractYouTubeId(url) {
+        const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
+        return match ? match[1] : '';
+    }
+
+    function closeTrailer() {
+        const modal = document.getElementById('trailer-modal');
+        const iframe = document.getElementById('trailer-video');
+
+        modal.style.display = 'none';
+        iframe.src = '';
+    }
+</script>
+</body>
+</html>

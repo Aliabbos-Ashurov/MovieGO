@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOVIES - Past Lives</title>
+    <link rel="stylesheet" href="/css/home.css">
+</head>
+<body>
+<header>
+    <nav class="nav-bar">
+        <a href="#">CINEMA HALLS</a>
+        <a href="#">AVAILABLE EVENTS</a>
+
+        <div class="auth" sec:authorize="isAnonymous()">
+            <a href="/auth/login">LOGIN</a>
+            <a href="/auth/signup">SIGN UP</a>
+        </div>
+
+        <div class="auth" sec:authorize="isAuthenticated()">
+            <a href="/dashboard">PROFILE</a>
+            <a href="/auth/logout">LOGOUT</a>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <div class="movie-banner" th:if="${movieForBanner != null}">
+        <img th:src="${movieForBanner.posterImage.link}" alt="Movie Banner" width="1280" height="720">
+        <div class="banner-gradient"></div>
+        <div class="movie-info">
+            <h1 th:text="${movieForBanner.title}">Movie Title</h1>
+            <p class="description" th:text="${movieForBanner.description}">Movie description</p>
+            <div class="buttons">
+                <a th:href="@{'/movies/' + ${movieForBanner.id}}" class="more-info">More information</a>
+                <a th:href="@{'/booking/' + ${movieForBanner.id}}" class="booking">Booking</a>
+            </div>
+        </div>
+    </div>
+
+    <section class="movies-section" th:if="${movies != null and !movies.isEmpty()}">
+        <h2>More Movies</h2>
+        <div class="movies-list">
+            <div class="movie-item" th:each="movie : ${movies}" th:attr="data-id=${movie.id}" onclick="goToMovie(this)">
+                <img th:src="${movie.posterImage.link}" th:alt="${movie.title}">
+                <h3 th:text="${movie.title}">Movie Title</h3>
+            </div>
+        </div>
+    </section>
+</main>
+<script>
+    function goToMovie(el) {
+        const id = el.getAttribute("data-id");
+        window.location.href = `/movies/${id}`;
+    }
+</script>
+</body>
+</html>

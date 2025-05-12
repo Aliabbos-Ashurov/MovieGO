@@ -1,0 +1,73 @@
+<div th:fragment="content">
+    <div class="table-container">
+        <h2>Categories</h2>
+
+        <button class="btn-create" onclick="toggleCreateForm()">Create Category</button>
+
+        <form id="create-form" th:action="@{/categories}" method="post" style="display: none; margin-top: 20px;">
+            <div class="form-group">
+                <label for="create-name">Name</label>
+                <input type="text" id="create-name" name="name" required maxlength="50"/>
+            </div>
+            <div class="form-group">
+                <label for="create-description">Description</label>
+                <textarea id="create-description" name="description" maxlength="255"></textarea>
+            </div>
+            <button type="submit" class="btn-save">Save Category</button>
+        </form>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="table-head">Name</th>
+                <th class="table-head">Description</th>
+                <th class="table-head">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="table-cell" th:each="cat : ${category}" th:id="'row-' + ${cat.id}">
+                <td class="table-cell" th:text="${cat.name}"></td>
+                <td class="table-cell" th:text="${cat.description}"></td>
+                <td class="action-buttons">
+                    <div class="button-group">
+                        <button type="button" class="btn-update" th:onclick="'toggleUpdateForm(' + ${cat.id} + ')'">
+                            Update
+                        </button>
+                        <form th:action="@{/categories/{id}(id=${cat.id})}" method="post" class="form-inline">
+                            <input type="hidden" name="_method" value="delete"/>
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
+                    </div>
+                    <form th:id="'update-form-' + ${cat.id}"
+                          th:action="@{/categories}"
+                          method="post"
+                          class="inline-update-form"
+                          style="display: none;">
+                        <input type="hidden" name="_method" value="put"/>
+                        <input type="hidden" name="id" th:value="${cat.id}"/>
+                        <div class="form-group">
+                            <input type="text" name="name" th:value="${cat.name}" required maxlength="50"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="description" th:value="${cat.description}" maxlength="255"/>
+                        </div>
+                        <button type="submit" class="btn-save">Save</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function toggleCreateForm() {
+            const form = document.getElementById("create-form");
+            form.style.display = form.style.display === "none" ? "block" : "none";
+        }
+
+        function toggleUpdateForm(id) {
+            const form = document.getElementById("update-form-" + id);
+            form.style.display = form.style.display === "none" ? "flex" : "none";
+        }
+    </script>
+</div>

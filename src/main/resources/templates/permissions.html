@@ -1,0 +1,64 @@
+<div th:fragment="content">
+    <div class="table-container">
+        <h2>Permissions</h2>
+
+        <button class="btn-create" onclick="toggleCreateForm()">Create Permission</button>
+
+        <form id="create-form" th:action="@{/permissions}" method="post" style="display: none; margin-top: 20px;">
+            <div class="form-group">
+                <label for="create-name">Name</label>
+                <input type="text" id="create-name" name="name" required maxlength="50"/>
+            </div>
+            <button type="submit" class="btn-save">Save Permission</button>
+        </form>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="table-head">Name</th>
+                <th class="table-head">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="table-cell" th:each="perm : ${permissions}" th:id="'row-' + ${perm.id}">
+                <td class="table-cell" th:text="${perm.name}"></td>
+                <td class="action-buttons">
+                    <div class="button-group">
+                        <button type="button" class="btn-update" th:onclick="'toggleUpdateForm(' + ${perm.id} + ')'">
+                            Update
+                        </button>
+                        <form th:action="@{/permissions/{id}(id=${perm.id})}" method="post" class="form-inline">
+                            <input type="hidden" name="_method" value="delete"/>
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
+                    </div>
+                    <form th:id="'update-form-' + ${perm.id}"
+                          th:action="@{/permissions}"
+                          method="post"
+                          class="inline-update-form"
+                          style="display: none;">
+                        <input type="hidden" name="_method" value="put"/>
+                        <input type="hidden" name="id" th:value="${perm.id}"/>
+                        <div class="form-group">
+                            <input type="text" name="name" th:value="${perm.name}" required maxlength="50"/>
+                        </div>
+                        <button type="submit" class="btn-save">Save</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function toggleCreateForm() {
+            const form = document.getElementById("create-form");
+            form.style.display = form.style.display === "none" ? "block" : "none";
+        }
+
+        function toggleUpdateForm(id) {
+            const form = document.getElementById("update-form-" + id);
+            form.style.display = form.style.display === "none" ? "flex" : "none";
+        }
+    </script>
+</div>

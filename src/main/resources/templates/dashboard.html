@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+<div class="container">
+    <aside class="sidebar">
+        <nav>
+            <ul class="nav-list">
+                <li class="nav-item"><a th:href="@{/home}"><i class="fi fi-rr-angle-double-left"></i>Home</a>
+                <li class="nav-item"><a th:href="@{/users/me}"><i class="fi fi-rr-user"></i> Profile</a></li>
+                <li class="nav-item"><a th:href="@{/categories}"><i class="fi fi-rr-menu-burger"></i> Categories</a>
+                </li>
+                <li class="nav-item"><a th:href="@{/movies}"><i class="fi fi-rr-play-alt"></i> Movies</a></li>
+                <li class="nav-item"><a th:href="@{/events}"><i class="fi fi-rr-megaphone"></i> Events</a></li>
+                <li class="nav-item"><a th:href="@{/cinema-halls}"><i class="fi fi-rr-building"></i> Cinema Halls</a>
+                </li>
+                <li class="nav-item"><a th:href="@{/users}"><i class="fi fi-rr-users-alt"></i>Users</a></li>
+                <li class="nav-item"><a th:href="@{/roles}"><i class="fi fi-rr-user-add"></i> Roles</a></li>
+                <li class="nav-item"><a th:href="@{/permissions}"><i class="fi fi-rr-exclamation"></i> Permissions</a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main">
+        <header class="header">
+            <div class="search">
+                <input type="text" class="search-box" placeholder="Search" aria-label="Search dashboard">
+            </div>
+        </header>
+        <section class="content" th:replace="~{${contentFragment}}">
+            <p>Welcome to the dashboard.</p>
+        </section>
+    </main>
+</div>
+</body>
+</html>

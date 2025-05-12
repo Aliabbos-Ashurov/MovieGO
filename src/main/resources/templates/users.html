@@ -1,0 +1,66 @@
+<div th:fragment="content">
+    <div class="table-container">
+        <h2>Users</h2>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="table-head">Full Name</th>
+                <th class="table-head">Email</th>
+                <th class="table-head">Roles</th>
+                <th class="table-head">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="table-cell" th:each="user : ${users}" th:if="${user != null}" th:id="'row-' + ${user.id}">
+                <td class="table-cell" th:text="${user.fullname} ?: '-'"></td>
+                <td class="table-cell" th:text="${user.email} ?: '-'"></td>
+                <td class="table-cell">
+                    <span th:unless="${user.roles.isEmpty()}"
+                          th:each="role, stat : ${user.roles}"
+                          th:text="${role.name}"
+                          th:after="${stat.last ? '' : ', '}"
+                          class="table-cell"></span>
+                    <span th:if="${user.roles.isEmpty()}">-</span>
+                </td>
+                <td class="action-buttons">
+                    <div class="button-group">
+                        <button type="button" class="btn-update" th:onclick="'toggleAddRoleForm(' + ${user.id} + ')'">
+                            Add Role
+                        </button>
+                        <form th:action="@{/users/{id}(id=${user.id})}" method="post" class="form-inline">
+                            <input type="hidden" name="_method" value="delete"/>
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
+                    </div>
+                    <form th:id="'add-role-form-' + ${user.id}"
+                          th:action="@{/users/add-role}"
+                          method="post"
+                          class="inline-update-form"
+                          style="display: none;">
+                        <input type="hidden" name="_method" value="put"/>
+                        <input type="hidden" name="id" th:value="${user.id}"/>
+                        <div class="form-group">
+                            <label>Roles</label>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 150px; overflow-y: auto;">
+                                <label th:each="role : ${roles}" style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" name="roles" th:value="${role.id}"/>
+                                    <span th:text="${role.name}" style="font-family: 'Roboto', sans-serif; font-size: 14px;"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-save">Save Roles</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function toggleAddRoleForm(id) {
+            const form = document.getElementById("add-role-form-" + id);
+            form.style.display = form.style.display === "none" ? "flex" : "none";
+        }
+    </script>
+</div>

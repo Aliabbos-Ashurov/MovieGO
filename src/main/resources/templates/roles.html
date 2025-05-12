@@ -1,0 +1,84 @@
+<div th:fragment="content">
+    <div class="table-container">
+        <h2>Roles</h2>
+
+        <button class="btn-create" onclick="toggleCreateForm()">Create Role</button>
+
+        <form id="create-form" th:action="@{/roles}" method="post" style="display: none; margin-top: 20px;">
+            <div class="form-group">
+                <label for="create-name">Name</label>
+                <input type="text" id="create-name" name="name" required maxlength="30"/>
+            </div>
+            <div class="form-group">
+                <label>Permissions</label>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 150px; overflow-y: auto;">
+                    <label th:each="perm : ${permissions}" style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" name="permissions" th:value="${perm.id}"/>
+                        <span th:text="${perm.name}" style="font-size: 18px;"></span>
+                    </label>
+                </div>
+            </div>
+            <button type="submit" class="btn-save">Save Role</button>
+        </form>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="table-head">Name</th>
+                <th class="table-head">Permissions</th>
+                <th class="table-head">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="table-cell" th:each="role : ${roles}" th:id="'row-' + ${role.id}">
+                <td class="table-cell" th:text="${role.name}"></td>
+                <td class="table-cell">
+                    <span th:unless="${role.permissions.isEmpty()}"
+                          th:each="perm, stat : ${role.permissions}"
+                          th:text="${perm.name}"
+                          th:after="${stat.last ? '' : ', '}"
+                          class="table
+
+-cell"></span>
+                    <span th:if="${role.permissions.isEmpty()}">-</span>
+                </td>
+                <td class="action-buttons">
+                    <div class="button-group">
+                        <button type="button" class="btn-update" th:onclick="'toggleUpdateForm(' + ${role.id} + ')'">
+                            Update
+                        </button>
+                        <form th:action="@{/roles/{id}(id=${role.id})}" method="post" class="form-inline">
+                            <input type="hidden" name="_method" value="delete"/>
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
+                    </div>
+                    <form th:id="'update-form-' + ${role.id}"
+                          th:action="@{/roles}"
+                          method="post"
+                          class="inline-update-form"
+                          style="display: none;">
+                        <input type="hidden" name="_method" value="put"/>
+                        <input type="hidden" name="id" th:value="${role.id}"/>
+                        <div class="form-group">
+                            <input type="text" name="name" th:value="${role.name}" required maxlength="30"/>
+                        </div>
+                        <button type="submit" class="btn-save">Save</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function toggleCreateForm() {
+            const form = document.getElementById("create-form");
+            form.style.display = form.style.display === "none" ? "block" : "none";
+        }
+
+        function toggleUpdateForm(id) {
+            const form = document.getElementById("update-form-" + id);
+            form.style.display = form.style.display === "none" ? "flex" : "none";
+        }
+    </script>
+</div>
