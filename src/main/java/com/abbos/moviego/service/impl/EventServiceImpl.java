@@ -123,11 +123,11 @@ public class EventServiceImpl extends AbstractService<EventRepository, EventMapp
         );
     }
 
-    private ResourceNotFoundException returnNotFound(Long id) {
-        return new ResourceNotFoundException("Event not found with id: {}", id);
+    private void throwNotFound(Long id) {
+        throw returnNotFound(id);
     }
 
-    private void throwNotFound(Long id) {
-        throw new ResourceNotFoundException("Event not found with id: {}", id);
+    private ResourceNotFoundException returnNotFound(Long id) {
+        return new ResourceNotFoundException("Event not found with id: " + id);
     }
 }

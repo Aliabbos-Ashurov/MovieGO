@@ -57,7 +57,7 @@ public class CinemaHallServiceImpl extends AbstractService<CinemaHallRepository,
     @Override
     public void delete(Long id) {
         if (!exists(id)) {
-            throw new ResourceNotFoundException("Cinema Hall not found with id: {}", id);
+            throwNotFound(id);
         }
         repository.deleteById(id);
     }
@@ -75,7 +75,7 @@ public class CinemaHallServiceImpl extends AbstractService<CinemaHallRepository,
     @Override
     public CinemaHall findEntity(Long id) {
         return repository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Cinema Hall not found with id: {}", id)
+                () -> returnNotFound(id)
         );
     }
 
@@ -84,6 +84,14 @@ public class CinemaHallServiceImpl extends AbstractService<CinemaHallRepository,
         return mapper.toDtoList(
                 repository.findAll()
         );
+    }
+
+    private void throwNotFound(Long id) {
+        throw returnNotFound(id);
+    }
+
+    private ResourceNotFoundException returnNotFound(Long id) {
+        return new ResourceNotFoundException("Cinema Hall not found with id: " + id);
     }
 
 }

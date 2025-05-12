@@ -15,9 +15,11 @@ import org.mapstruct.*;
  * @version 1.0
  * @since 2025-05-05
  */
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
+@Mapper(
+        componentModel = MappingConstants.ComponentModel.SPRING,
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        uses = {EventMapper.class, UserMapper.class, UtilMapper.class})
+        uses = {EventMapper.class, UserMapper.class, UtilMapper.class}
+)
 public interface TicketMapper
         extends EntityConverter<Ticket, TicketResponseDto>, CollectionMapper<Ticket, TicketResponseDto> {
 

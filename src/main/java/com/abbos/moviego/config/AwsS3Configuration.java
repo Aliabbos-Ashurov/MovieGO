@@ -10,6 +10,9 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 
 /**
+ * Configures AWS S3 client with static credentials and region from application properties.
+ * Provides beans for {@link AwsCredentials} and {@link S3Client}.
+ *
  * @author Aliabbos Ashurov
  * @version 1.0
  * @since 2025-05-06

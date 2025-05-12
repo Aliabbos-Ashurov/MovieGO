@@ -9,8 +9,6 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SoftDelete;
 import org.hibernate.annotations.SoftDeleteType;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -25,7 +23,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @MappedSuperclass
 @SuperBuilder
-@EntityListeners(AuditingEntityListener.class)
 @SoftDelete(columnName = "active", strategy = SoftDeleteType.ACTIVE) // >= V 6.4
 public class BaseEntity {
 
@@ -35,13 +32,14 @@ public class BaseEntity {
 
     @ColumnDefault("NOW()")
     @Column(name = "created_at", nullable = false, updatable = false)
-    @CreatedDate
     private LocalDateTime createdAt;
 
-
-//    @Builder.Default
-//    @Column(name = "deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
-//    //@Convert(converter = org.hibernate.type.NumericBooleanConverter.class)
-//    private boolean deleted = false;
+    // removed @CreatedAt
+    // added PrePersist because of found problem with
+    // sign up processes when calling session user!
+    @PrePersist
+    public void prePersist() {
+        createdAt = LocalDateTime.now();
+    }
 }
 

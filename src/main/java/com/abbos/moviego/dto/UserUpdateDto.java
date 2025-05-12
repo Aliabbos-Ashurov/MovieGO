@@ -1,7 +1,6 @@
 package com.abbos.moviego.dto;
 
 import com.abbos.moviego.dto.base.Request;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -14,10 +13,6 @@ import jakarta.validation.constraints.Size;
 public record UserUpdateDto(
         @NotNull
         Long id,
-
-        @NotBlank(message = "Email is required")
-        @Email(message = "Invalid email format")
-        String email,
 
         @NotBlank(message = "old Password is required")
         @Size(min = 8, message = "Password must be at least 8 characters")

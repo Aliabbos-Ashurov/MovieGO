@@ -12,8 +12,11 @@ import org.mapstruct.*;
  * @version 1.0
  * @since 2025-05-05
  */
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        uses = {CategoryMapper.class, ImageMapper.class, SceneImageMapper.class})
+@Mapper(
+        componentModel = MappingConstants.ComponentModel.SPRING,
+        unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        uses = {CategoryMapper.class, ImageMapper.class, SceneImageMapper.class}
+)
 public interface MovieMapper
         extends EntityMapper<Movie, MovieResponseDto, MovieCreateDto, MovieUpdateDto> {
 

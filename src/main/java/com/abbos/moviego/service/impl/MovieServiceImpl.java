@@ -59,7 +59,6 @@ public class MovieServiceImpl extends AbstractService<MovieRepository, MovieMapp
         Movie movie = Movie.builder()
                 .title(dto.title())
                 .durationMinutes(dto.durationMinutes())
-                .genre(dto.genre())
                 .language(dto.language())
                 .rating(dto.rating())
                 .trailerLink(dto.trailerLink())
@@ -89,7 +88,7 @@ public class MovieServiceImpl extends AbstractService<MovieRepository, MovieMapp
     @Override
     public void delete(Long id) {
         if (!exists(id)) {
-            throw new ResourceNotFoundException("Movie not found with id: {}", id);
+            throwNotFound(id);
         }
         repository.deleteById(id);
     }
@@ -107,7 +106,7 @@ public class MovieServiceImpl extends AbstractService<MovieRepository, MovieMapp
     @Override
     public Movie findEntity(Long id) {
         return repository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Movie not found with id: {}", id)
+                () -> returnNotFound(id)
         );
     }
 
@@ -124,5 +123,13 @@ public class MovieServiceImpl extends AbstractService<MovieRepository, MovieMapp
         return mapper.toDtoList(
                 repository.findByTitleLike(title)
         );
+    }
+
+    private void throwNotFound(Long id) {
+        throw returnNotFound(id);
+    }
+
+    private ResourceNotFoundException returnNotFound(Long id) {
+        return new ResourceNotFoundException("Movie not found with id: " + id);
     }
 }

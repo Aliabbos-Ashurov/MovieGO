@@ -64,7 +64,7 @@ public class SceneImageServiceImpl
     @Override
     public void delete(Long id) {
         if (!exists(id)) {
-            throw new ResourceNotFoundException("::EXISTS:: Scene Image not found with id: {}", id);
+            throwNotFound(id);
         }
         repository.deleteById(id);
     }
@@ -83,7 +83,7 @@ public class SceneImageServiceImpl
     @Override
     public SceneImage findEntity(Long id) {
         return repository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Scene Image not found with id: {}", id)
+                () -> returnNotFound(id)
         );
     }
 
@@ -98,5 +98,13 @@ public class SceneImageServiceImpl
     @Override
     public List<SceneImageResponseDto> findSceneImagesByMovieId(Long movieId) {
         return mapper.toDtoList(repository.findSceneImagesByMovieId(movieId));
+    }
+
+    private void throwNotFound(Long id) {
+        throw returnNotFound(id);
+    }
+
+    private ResourceNotFoundException returnNotFound(Long id) {
+        return new ResourceNotFoundException("Scene Image not found with id: " + id);
     }
 }

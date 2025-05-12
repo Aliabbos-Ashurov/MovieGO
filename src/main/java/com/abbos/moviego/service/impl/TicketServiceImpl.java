@@ -55,7 +55,7 @@ public class TicketServiceImpl extends AbstractService<TicketRepository, TicketM
     @Override
     public void delete(Long id) {
         if (!exists(id)) {
-            throw new ResourceNotFoundException("Ticket with id {} not found", id);
+            throwNotFound(id);
         }
         repository.deleteById(id);
     }
@@ -75,7 +75,7 @@ public class TicketServiceImpl extends AbstractService<TicketRepository, TicketM
     @Override
     public Ticket findEntity(Long id) {
         return repository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Ticket not found with id {}", id)
+                () -> returnNotFound(id)
         );
     }
 
@@ -97,5 +97,13 @@ public class TicketServiceImpl extends AbstractService<TicketRepository, TicketM
         return mapper.toDto(
                 repository.findTicketsByEventId(eventId)
         );
+    }
+
+    private void throwNotFound(Long id) {
+        throw returnNotFound(id);
+    }
+
+    private ResourceNotFoundException returnNotFound(Long id) {
+        return new ResourceNotFoundException("Ticket not found with id: " + id);
     }
 }

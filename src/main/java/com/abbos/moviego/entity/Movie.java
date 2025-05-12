@@ -36,10 +36,6 @@ public class Movie extends Auditable {
     @Column(name = "duration_minutes", nullable = false)
     private Integer durationMinutes;
 
-    @NotBlank(message = "Genre is required")
-    @Column(nullable = false)
-    private String genre;
-
     @NotBlank(message = "Language is required")
     @Column(nullable = false)
     private String language;

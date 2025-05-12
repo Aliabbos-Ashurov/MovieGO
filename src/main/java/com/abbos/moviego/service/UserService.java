@@ -1,10 +1,12 @@
 package com.abbos.moviego.service;
 
-import com.abbos.moviego.dto.UserCreateDto;
+import com.abbos.moviego.dto.UserAddRoleDto;
 import com.abbos.moviego.dto.UserResponseDto;
 import com.abbos.moviego.dto.UserUpdateDto;
+import com.abbos.moviego.dto.auth.SignUpDto;
 import com.abbos.moviego.entity.User;
 import com.abbos.moviego.service.base.CrudService;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -13,9 +15,15 @@ import java.util.List;
  * @version 1.0
  * @since 2025-05-05
  */
-public interface UserService extends CrudService<Long, User, UserResponseDto, UserCreateDto, UserUpdateDto> {
+public interface UserService extends CrudService<Long, User, UserResponseDto, SignUpDto, UserUpdateDto> {
 
     User findByEmail(String email);
 
     List<UserResponseDto> findUsersByNameLike(String name);
+
+    UserResponseDto uploadPhoto(MultipartFile image);
+
+    UserResponseDto getMe();
+
+    UserResponseDto addRole(UserAddRoleDto dto);
 }

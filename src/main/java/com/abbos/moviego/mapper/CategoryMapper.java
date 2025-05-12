@@ -14,7 +14,10 @@ import org.mapstruct.ReportingPolicy;
  * @version 1.0
  * @since 2025-05-05
  */
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(
+        componentModel = MappingConstants.ComponentModel.SPRING,
+        unmappedTargetPolicy = ReportingPolicy.IGNORE
+)
 public interface CategoryMapper
         extends EntityMapper<Category, CategoryResponseDto, CategoryCreateDto, CategoryUpdateDto> {
 }

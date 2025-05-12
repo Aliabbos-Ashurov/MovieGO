@@ -73,11 +73,11 @@ public class CategoryServiceImpl extends AbstractService<CategoryRepository, Cat
         );
     }
 
-    private ResourceNotFoundException returnNotFound(Long id) {
-        return new ResourceNotFoundException("Category not found with id: {}", id);
-    }
-
     private void throwNotFound(Long id) {
         throw returnNotFound(id);
+    }
+
+    private ResourceNotFoundException returnNotFound(Long id) {
+        return new ResourceNotFoundException("Category not found with id: " + id);
     }
 }

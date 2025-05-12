@@ -16,8 +16,11 @@ import org.mapstruct.ReportingPolicy;
  * @version 1.0
  * @since 2025-05-05
  */
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        uses = {ImageMapper.class, UtilMapper.class})
+@Mapper(
+        componentModel = MappingConstants.ComponentModel.SPRING,
+        unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        uses = {ImageMapper.class, UtilMapper.class}
+)
 public interface CinemaHallMapper
         extends EntityMapper<CinemaHall, CinemaHallResponseDto, CinemaHallCreateDto, CinemaHallUpdateDto> {
 

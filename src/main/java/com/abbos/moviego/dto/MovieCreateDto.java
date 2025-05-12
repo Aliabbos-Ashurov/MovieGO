@@ -21,9 +21,6 @@ public record MovieCreateDto(
         @Max(600)
         Integer durationMinutes,
 
-        @NotBlank(message = "Genre is required")
-        String genre,
-
         @NotBlank(message = "Language is required")
         String language,
 

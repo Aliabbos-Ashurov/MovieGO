@@ -1,17 +1,30 @@
 package com.abbos.moviego.service.impl;
 
-import com.abbos.moviego.dto.UserCreateDto;
+import com.abbos.moviego.config.SessionUser;
+import com.abbos.moviego.dto.UserAddRoleDto;
 import com.abbos.moviego.dto.UserResponseDto;
 import com.abbos.moviego.dto.UserUpdateDto;
+import com.abbos.moviego.dto.auth.SignUpDto;
+import com.abbos.moviego.entity.Image;
+import com.abbos.moviego.entity.Role;
 import com.abbos.moviego.entity.User;
+import com.abbos.moviego.exception.ModificationNotAllowedException;
 import com.abbos.moviego.exception.UserNotFoundException;
 import com.abbos.moviego.mapper.UserMapper;
 import com.abbos.moviego.repository.UserRepository;
+import com.abbos.moviego.service.ImageService;
+import com.abbos.moviego.service.RoleService;
 import com.abbos.moviego.service.UserService;
 import com.abbos.moviego.service.base.AbstractService;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Aliabbos Ashurov
@@ -21,32 +34,78 @@ import java.util.List;
 @Service
 public class UserServiceImpl extends AbstractService<UserRepository, UserMapper> implements UserService {
 
-    public UserServiceImpl(UserRepository repository, UserMapper userMapper) {
+    private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
+    private final ImageService imageService;
+    private final SessionUser sessionUser;
+
+    public UserServiceImpl(UserRepository repository,
+                           UserMapper userMapper,
+                           RoleService roleService,
+                           @Lazy PasswordEncoder passwordEncoder,
+                           ImageService imageService,
+                           SessionUser sessionUser) {
         super(repository, userMapper);
+        this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
+        this.imageService = imageService;
+        this.sessionUser = sessionUser;
     }
 
+    @Transactional
     @Override
-    public UserResponseDto create(UserCreateDto dto) {
-        final User user = mapper.fromCreate(dto);
-        final User saved = repository.save(user);
+    public UserResponseDto create(SignUpDto dto) {
+        Role role = roleService.findByName("USER");
+
+        User user = mapper.fromCreate(dto, passwordEncoder);
+        user.setRoles(Set.of(role));
+        User saved = repository.save(user);
+
+        return mapper.toDto(saved);
+    }
+
+    @Transactional
+    @Override
+    public UserResponseDto uploadPhoto(MultipartFile image) {
+        Image userImage = imageService.create(FilenameUtils.getBaseName(image.getOriginalFilename()), image);
+
+        User user = findEntity(sessionUser.getId());
+        user.setProfilePic(userImage);
+        return mapper.toDto(repository.save(user));
+    }
+
+    @Transactional
+    @Override
+    public UserResponseDto addRole(UserAddRoleDto dto) {
+        User user = findEntity(dto.id());
+        Set<Role> userRoles = roleService.findAllByIdIn(dto.roles());
+
+        user.setRoles(userRoles);
+        User saved = repository.save(user);
         return mapper.toDto(saved);
     }
 
     @Override
+    public UserResponseDto getMe() {
+        return find(sessionUser.getId());
+    }
+
+    @Transactional
+    @Override
     public UserResponseDto update(UserUpdateDto dto) {
-        final Long id = dto.id();
-        if (!exists(id)) {
-            throw new UserNotFoundException("User not found with id: {}", id);
+        User user = findEntity(dto.id());
+        if (passwordEncoder.matches(dto.oldPassword(), user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(dto.newPassword()));
+            User saved = repository.save(user);
+            return mapper.toDto(saved);
         }
-        User user = mapper.fromUpdate(dto);
-        User save = repository.save(user);
-        return mapper.toDto(save);
+        throw new ModificationNotAllowedException("Password does not match!");
     }
 
     @Override
     public void delete(final Long id) {
         if (!exists(id)) {
-            throw new UserNotFoundException("User not found with id: {} ", id);
+            throwNotFound(id);
         }
         repository.deleteById(id);
     }
@@ -64,7 +123,7 @@ public class UserServiceImpl extends AbstractService<UserRepository, UserMapper>
     @Override
     public User findEntity(final Long id) {
         return repository.findById(id).orElseThrow(
-                () -> new UserNotFoundException("User not found with id: {}", id)
+                () -> returnNotFound(id)
         );
     }
 
@@ -81,7 +140,15 @@ public class UserServiceImpl extends AbstractService<UserRepository, UserMapper>
     @Override
     public User findByEmail(String email) {
         return repository.findByEmail(email).orElseThrow(
-                () -> new UserNotFoundException("User not found with email: {}", email)
+                () -> new UserNotFoundException("User not found with email: " + email)
         );
+    }
+
+    private void throwNotFound(Long id) {
+        throw returnNotFound(id);
+    }
+
+    private UserNotFoundException returnNotFound(Long id) {
+        return new UserNotFoundException("User not found with id: " + id);
     }
 }

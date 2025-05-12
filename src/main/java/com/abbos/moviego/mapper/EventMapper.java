@@ -13,8 +13,11 @@ import org.mapstruct.*;
  * @version 1.0
  * @since 2025-05-05
  */
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        uses = {MovieMapper.class, CinemaHallMapper.class, ImageMapper.class, UtilMapper.class})
+@Mapper(
+        componentModel = MappingConstants.ComponentModel.SPRING,
+        unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        uses = {MovieMapper.class, CinemaHallMapper.class, ImageMapper.class, UtilMapper.class}
+)
 public interface EventMapper
         extends EntityMapper<Event, EventResponseDto, EventCreateDto, EventUpdateDto> {
 

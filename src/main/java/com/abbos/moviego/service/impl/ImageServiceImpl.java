@@ -61,7 +61,7 @@ public class ImageServiceImpl extends AbstractService<ImageRepository, ImageMapp
     @Override
     public void delete(Long id, String key) {
         if (!exists(id)) {
-            throw new ResourceNotFoundException("Image not found with id: {}", id);
+            throwNotFound(id);
         }
         s3StorageService.deleteObject(key);
         repository.deleteById(id);
@@ -80,7 +80,7 @@ public class ImageServiceImpl extends AbstractService<ImageRepository, ImageMapp
     @Override
     public Image findEntity(Long id) {
         return repository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Image not found with id: {}", id)
+                () -> returnNotFound(id)
         );
     }
 
@@ -89,6 +89,14 @@ public class ImageServiceImpl extends AbstractService<ImageRepository, ImageMapp
         return mapper.toDtoList(
                 repository.findAll()
         );
+    }
+
+    private void throwNotFound(Long id) {
+        throw returnNotFound(id);
+    }
+
+    private ResourceNotFoundException returnNotFound(Long id) {
+        return new ResourceNotFoundException("Image not found with id: " + id);
     }
 
 }

@@ -14,9 +14,11 @@ import org.mapstruct.ReportingPolicy;
  * @version 1.0
  * @since 2025-05-05
  */
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
+@Mapper(
+        componentModel = MappingConstants.ComponentModel.SPRING,
         typeConversionPolicy = ReportingPolicy.WARN,  // when mapstruct integer to long, char to string ...
-        unmappedTargetPolicy = ReportingPolicy.IGNORE) // sometimes id, createdAt,createdBy!
+        unmappedTargetPolicy = ReportingPolicy.IGNORE
+) // sometimes id, createdAt,createdBy!
 public interface PermissionMapper
         extends EntityMapper<Permission, PermissionResponseDto, PermissionCreateDto, PermissionUpdateDto> {
 }

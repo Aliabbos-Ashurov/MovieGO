@@ -14,6 +14,8 @@ import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.util.UUID;
+
 /**
  * Service for handling file operations with Amazon S3 storage.
  * <p>
@@ -97,7 +99,7 @@ public class S3StorageService {
 
 
     /**
-     * Generates a unique key using a short timestamp prefix and the file extension.
+     * Generates a unique key using a short uuid prefix and the file extension.
      * <p>
      * Format: {@code [suffix]_[key].[extension]}
      *
@@ -106,7 +108,8 @@ public class S3StorageService {
      * @return the generated unique key
      */
     private String generateKey(String key, String fileName) {
-        String prefix = String.valueOf(System.nanoTime()).substring(10); // 5-digit suffix
-        return "%s_%s.%s".formatted(prefix, key, FilenameUtils.getExtension(fileName));
+        String random = UUID.randomUUID().toString();
+        String randomPart = random.substring(random.length() - 5); // 5-digit
+        return "%s_%s.%s".formatted(randomPart, key, FilenameUtils.getExtension(fileName));
     }
 }

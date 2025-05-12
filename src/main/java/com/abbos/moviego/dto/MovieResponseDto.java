@@ -14,7 +14,6 @@ public record MovieResponseDto(
         Long id,
         String title,
         Integer durationMinutes,
-        String genre,
         String language,
         String rating,
         String trailerLink,

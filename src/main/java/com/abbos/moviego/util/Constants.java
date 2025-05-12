@@ -6,11 +6,15 @@ package com.abbos.moviego.util;
  * @since 2025-05-02
  */
 public interface Constants extends Util {
-    String BASE_PATH_V1 = ""; // must be:    /api/v1/   in REST
-    String AUTH_TYPE = "Bearer ";
+    String DASHBOARD_VIEW = "dashboard";
+    String FRAGMENT_KEY = "contentFragment";
     String[] OPEN_PAGES = {
-            "/auth/**",
-            "/static/**",
+            "/auth/signup",
+            "/auth/login",
+            "/error/**",
+            "/home",
+            "/movies/{id}",
+            "/css/**",
             "/h2-console/**",
             "/console/**"
     };

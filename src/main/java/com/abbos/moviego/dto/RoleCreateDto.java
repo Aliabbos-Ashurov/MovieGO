@@ -15,6 +15,6 @@ public record RoleCreateDto(
         @NotBlank(message = "Role name is required")
         @Size(max = 30, message = "Role name must not exceed 30 characters")
         String name,
-        Set<Long> permissionIds
+        Set<Long> permissions
 ) implements Request {
 }

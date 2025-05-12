@@ -4,7 +4,6 @@ import com.abbos.moviego.entity.base.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
@@ -41,7 +40,6 @@ public class Image extends BaseEntity {
     private String extension;
 
     @Positive
-    @Max(10_000_000)
     @Column(name = "size", nullable = false)
     private long size;
 
