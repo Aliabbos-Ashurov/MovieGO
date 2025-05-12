@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
  */
 public class UserNotFoundException extends BaseException {
 
-    public UserNotFoundException(String message, Object... args) {
-        super(HttpStatus.NOT_FOUND, "USER_NOT_FOUND", message, args);
+    public UserNotFoundException(String message) {
+        super(HttpStatus.NOT_FOUND, "USER_NOT_FOUND", message);
     }
 }

@@ -5,7 +5,6 @@ import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 import java.io.Serial;
-import java.text.MessageFormat;
 
 /**
  * @author Aliabbos Ashurov
@@ -22,8 +21,8 @@ public abstract class BaseException extends RuntimeException {
     private final HttpStatus httpStatus;
     private final String code;
 
-    public BaseException(HttpStatus httpStatus, String code, String message, Object... args) {
-        super(MessageFormat.format(message, args));
+    public BaseException(HttpStatus httpStatus, String code, String message) {
+        super(message);
         this.httpStatus = httpStatus;
         this.code = code;
     }
