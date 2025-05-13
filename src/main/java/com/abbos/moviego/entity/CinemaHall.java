@@ -28,7 +28,7 @@ public class CinemaHall extends Auditable {
 
     @NotBlank(message = "Cinema Hall name is required")
     @Size(max = 50, message = "Name must not exceed {max} characters")
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Positive

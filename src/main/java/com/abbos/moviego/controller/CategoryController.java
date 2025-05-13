@@ -5,6 +5,7 @@ import com.abbos.moviego.dto.CategoryCreateDto;
 import com.abbos.moviego.dto.CategoryUpdateDto;
 import com.abbos.moviego.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,17 +21,20 @@ import static com.abbos.moviego.util.Constants.FRAGMENT_KEY;
 @Controller
 @RequestMapping("/categories")
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority('MANAGE_CATEGORIES')")
 public class CategoryController implements ViewModelConfigurer {
 
     private final CategoryService categoryService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('READ_CATEGORY')")
     public String getAll(Model model) {
         configureModel(model);
         return DASHBOARD_VIEW;
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('CREATE_CATEGORY')")
     public String create(@ModelAttribute CategoryCreateDto dto, Model model) {
         categoryService.create(dto);
         configureModel(model);
@@ -38,6 +42,7 @@ public class CategoryController implements ViewModelConfigurer {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('UPDATE_CATEGORY')")
     public String update(@ModelAttribute CategoryUpdateDto dto, Model model) {
         categoryService.update(dto);
         configureModel(model);
@@ -45,6 +50,7 @@ public class CategoryController implements ViewModelConfigurer {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('DELETE_CATEGORY')")
     public String delete(@PathVariable Long id, Model model) {
         categoryService.delete(id);
         configureModel(model);

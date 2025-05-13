@@ -8,7 +8,7 @@
             <div class="profile_image" th:if="${user.profilePic == null or user.profilePic.link == null}">
             </div>
 
-            <form th:action="@{/user/upload}" method="post" enctype="multipart/form-data" class="profile_upload-form">
+            <form th:action="@{/users/upload}" method="post" enctype="multipart/form-data" class="profile_upload-form">
                 <input type="file" name="file" accept="image/*" required class="profile_upload-input">
                 <button type="submit" class="profile_upload-button">Upload Photo</button>
             </form>
@@ -23,22 +23,32 @@
                 <strong class="profile_info-label">Email:</strong>
                 <span th:text="${user.email}" class="profile_info-value">abbos@gmail.com</span>
             </div>
+
             <div class="profile_info-item">
                 <strong class="profile_info-label">Roles:</strong>
-                <span th:each="role, stat : ${user.roles}"
-                      th:text="${role.name}"
-                      th:after="${stat.last ? '' : ', '}"
-                      class="profile_info-value"></span>
+                <div class="wrap roles-wrap">
+                   <span th:unless="${user.roles.isEmpty()}">
+                       <span th:each="role, stat : ${user.roles}">
+                           <span class="badge" th:text="${role.name}"></span>
+                           <span th:if="${!stat.last}">,</span>
+                       </span>
+                   </span>
+                    <span th:if="${user.roles.isEmpty()}">-</span>
+                </div>
             </div>
+
             <div class="profile_info-item">
                 <strong class="profile_info-label">Permissions:</strong>
+                <div class="wrap profile-permissions-wrap">
                 <span th:each="role : ${user.roles}">
-                    <span th:each="permission, stat : ${role.permissions}"
-                          th:text="${permission.name}"
-                          th:after="${stat.last ? '' : ', '}"
-                          class="profile_info-value"></span>
+                    <span th:each="permission, stat : ${role.permissions}">
+                        <span class="badge" th:text="${permission.name}"></span>
+                        <span th:if="${!stat.last}">,</span>
+                    </span>
                 </span>
+                </div>
             </div>
+
             <div class="profile_info-item">
                 <strong class="profile_info-label">Created At:</strong>
                 <span th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm')}" class="profile_info-value"></span>

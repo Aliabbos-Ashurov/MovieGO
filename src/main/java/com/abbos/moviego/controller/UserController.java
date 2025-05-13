@@ -1,23 +1,24 @@
 package com.abbos.moviego.controller;
 
-import com.abbos.moviego.config.UserPrincipal;
 import com.abbos.moviego.controller.configurer.ViewModelConfigurer;
 import com.abbos.moviego.dto.UserAddRoleDto;
-import com.abbos.moviego.dto.UserResponseDto;
 import com.abbos.moviego.dto.UserUpdateDto;
 import com.abbos.moviego.service.RoleService;
 import com.abbos.moviego.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.AccessDeniedException;
+import java.util.Objects;
 
 import static com.abbos.moviego.util.Constants.DASHBOARD_VIEW;
 import static com.abbos.moviego.util.Constants.FRAGMENT_KEY;
@@ -38,27 +39,30 @@ public class UserController implements ViewModelConfigurer {
 
     @GetMapping("/me")
     public String getMe(Model model) {
-        UserResponseDto dto = userService.getMe();
-        model.addAttribute("user", dto);
+        model.addAttribute("user", userService.getMe());
         model.addAttribute(FRAGMENT_KEY, PROFILE_FRAGMENT);
         return DASHBOARD_VIEW;
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('READ_USER')")
     public String getAll(Model model) {
         configureModel(model);
         return DASHBOARD_VIEW;
     }
 
     @PutMapping
-    public String update(@ModelAttribute UserUpdateDto dto, Model model) {
-        UserResponseDto updatedDto = userService.update(dto);
-        model.addAttribute("user", updatedDto);
-        model.addAttribute(FRAGMENT_KEY, PROFILE_FRAGMENT);
-        return DASHBOARD_VIEW;
+    @PreAuthorize("hasAuthority('EDIT_PROFILE')")
+    public String updatePassword(@ModelAttribute UserUpdateDto dto,
+                                 HttpServletRequest httpServletRequest,
+                                 HttpServletResponse httpServletResponse) {
+        userService.update(dto);
+        logout(httpServletRequest, httpServletResponse);
+        return "auth";
     }
 
     @PutMapping("/add-role")
+    @PreAuthorize("hasAuthority('UPDATE_USER')")
     public String addRole(@ModelAttribute UserAddRoleDto dto, Model model) {
         userService.addRole(dto);
         configureModel(model);
@@ -66,6 +70,7 @@ public class UserController implements ViewModelConfigurer {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('DELETE_USER')")
     public String delete(@PathVariable Long id, Model model) {
         userService.delete(id);
         configureModel(model);
@@ -73,24 +78,21 @@ public class UserController implements ViewModelConfigurer {
     }
 
     @PostMapping("/upload")
+    @PreAuthorize("hasAuthority('EDIT_PROFILE')")
     public String uploadPhoto(@RequestParam MultipartFile file, Model model) {
-        UserResponseDto dto = userService.uploadPhoto(file);
-        model.addAttribute("user", dto);
+        model.addAttribute("user", userService.uploadPhoto(file));
         model.addAttribute(FRAGMENT_KEY, PROFILE_FRAGMENT);
         return DASHBOARD_VIEW;
     }
 
     @SneakyThrows
     @DeleteMapping("/delete-me/{id}")
+    @PreAuthorize("hasAuthority('EDIT_PROFILE')")
     public String deleteMe(@PathVariable Long id,
-                           @AuthenticationPrincipal UserPrincipal userPrincipal,
-                           HttpServletRequest request) {
-        if (!userPrincipal.getEmail().equals(userService.find(id).email())) {
-            throw new AccessDeniedException("You can only delete your own account");
-        }
+                           HttpServletRequest request,
+                           HttpServletResponse response) {
         userService.delete(id);
-        SecurityContextHolder.clearContext();
-        request.getSession().invalidate();
+        logout(request, response);
         return "redirect:/auth/login";
     }
 
@@ -99,5 +101,12 @@ public class UserController implements ViewModelConfigurer {
         model.addAttribute("roles", roleService.findAll());
         model.addAttribute("users", userService.findAll());
         model.addAttribute(FRAGMENT_KEY, "users.html");
+    }
+
+    private void logout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (Objects.nonNull(authentication)) {
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
     }
 }

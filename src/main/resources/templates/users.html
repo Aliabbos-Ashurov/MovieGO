@@ -16,17 +16,19 @@
                 <td class="table-cell" th:text="${user.fullname} ?: '-'"></td>
                 <td class="table-cell" th:text="${user.email} ?: '-'"></td>
                 <td class="table-cell">
-                    <span th:unless="${user.roles.isEmpty()}"
-                          th:each="role, stat : ${user.roles}"
-                          th:text="${role.name}"
-                          th:after="${stat.last ? '' : ', '}"
-                          class="table-cell"></span>
-                    <span th:if="${user.roles.isEmpty()}">-</span>
+                    <div class="wrap roles-wrap">
+                       <span th:unless="${user.roles.isEmpty()}"
+                             th:each="role : ${user.roles}"
+                             th:text="${role.name}"
+                             class="badge">
+                       </span>
+                        <span th:if="${user.roles.isEmpty()}">-</span>
+                    </div>
                 </td>
                 <td class="action-buttons">
                     <div class="button-group">
                         <button type="button" class="btn-update" th:onclick="'toggleAddRoleForm(' + ${user.id} + ')'">
-                            Add Role
+                            Update Role
                         </button>
                         <form th:action="@{/users/{id}(id=${user.id})}" method="post" class="form-inline">
                             <input type="hidden" name="_method" value="delete"/>

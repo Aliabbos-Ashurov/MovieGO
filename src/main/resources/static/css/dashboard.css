@@ -38,7 +38,7 @@
 }
 
 .nav-item i {
-    color: #fff;
+    color: #fff;;
     margin-right: 10px;
 }
 
@@ -48,7 +48,7 @@
 
 .main {
     flex: 1;
-    background-color: #ecf0f1;
+    background-color: #efefef;
     padding: 20px;
 }
 
@@ -98,7 +98,7 @@
 
 .table-head {
     background-color: #ecf0f1;
-    color: #2c3e50;
+    color: #0a0a0a;
 }
 
 .table tbody tr {
@@ -317,6 +317,28 @@ html, body {
     color: #2c3e50;
 }
 
+.form-group div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    max-height: 150px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.form-group div label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 200px;
+    white-space: nowrap;
+}
+
+.form-group div span {
+    word-wrap: break-word;
+    width: 100%;
+}
+
 .form-group input,
 .form-group textarea,
 .form-group select {
@@ -393,4 +415,93 @@ h2 {
 .form-inline {
     display: inline-block;
     margin: 0;
+}
+
+.wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.badge {
+    background-color: #e0e7ff;
+    color: #3730a3;
+    padding: 0.40rem 0.5rem;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: 'Roboto', sans-serif;
+    white-space: nowrap;
+}
+
+.roles-wrap {
+    max-width: 300px;
+}
+
+.permissions-wrap {
+    max-width: 700px;
+}
+
+.profile-permissions-wrap {
+    max-width: 80%;
+}
+
+.table td img[alt="Cinema Hall Image"] {
+    height: 200px !important;
+    width: 380px !important;
+    border-radius: 8px;
+}
+
+.custom-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0.75rem;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    width: 100%;
+    max-width: 300px;
+    color: #2c3e50;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="%232c3e50" d="M7 10l5 5 5-5H7z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 12px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.custom-select:hover {
+    border-color: #2a2a2a;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.custom-select:focus {
+    outline: none;
+    border-color: #2a2a2a;
+    box-shadow: 0 0 8px rgba(42, 42, 42, 0.2);
+}
+
+.custom-select:invalid {
+    color: #6c757d;
+}
+
+.custom-select option {
+    background-color: #fff;
+    color: #2c3e50;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+}
+
+.form-group .custom-select {
+    margin-top: 0.25rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .custom-select {
+        max-width: 100%;
+    }
 }

@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 

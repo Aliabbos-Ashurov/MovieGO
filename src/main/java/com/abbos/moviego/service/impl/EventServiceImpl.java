@@ -31,17 +31,14 @@ public class EventServiceImpl extends AbstractService<EventRepository, EventMapp
 
     private final CinemaHallService cinemaHallService;
     private final MovieService movieService;
-    private final ImageService imageService;
 
     public EventServiceImpl(EventRepository repository,
                             EventMapper eventMapper,
                             CinemaHallService cinemaHallService,
-                            MovieService movieService,
-                            ImageService imageService) {
+                            MovieService movieService) {
         super(repository, eventMapper);
         this.cinemaHallService = cinemaHallService;
         this.movieService = movieService;
-        this.imageService = imageService;
     }
 
     @Transactional
@@ -52,10 +49,7 @@ public class EventServiceImpl extends AbstractService<EventRepository, EventMapp
         Movie movie = movieService.findEntity(dto.movieId());
         CinemaHall cinemaHall = cinemaHallService.findEntity(dto.cinemaHallId());
 
-        Image image = imageService.create("event", dto.banner());
-
         event.setCapacity(cinemaHall.getCapacity());
-        event.setBanner(image);
         event.setMovie(movie);
         event.setCinemaHall(cinemaHall);
 
@@ -87,6 +81,7 @@ public class EventServiceImpl extends AbstractService<EventRepository, EventMapp
         );
     }
 
+    @Transactional
     @Override
     public List<EventResponseDto> findAll() {
         return mapper.toDtoList(

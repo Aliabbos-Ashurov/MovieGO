@@ -84,6 +84,7 @@ public class ImageServiceImpl extends AbstractService<ImageRepository, ImageMapp
         );
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<ImageResponseDto> findAll() {
         return mapper.toDtoList(
