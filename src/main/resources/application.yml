@@ -1,6 +1,8 @@
 spring:
   profiles:
-    active: dev
+    active: prod
+  jpa:
+    open-in-view: false
   config:
     import: optional:file:.env[.properties]
   liquibase:
@@ -22,4 +24,7 @@ spring:
         base-link: ${AWS_BASE_LINK}
         bucket:
           name: ${AWS_BUCKET_NAME}
+security:
+  remember-me:
+    key: ${REMEMBER_ME_KEY}
 
