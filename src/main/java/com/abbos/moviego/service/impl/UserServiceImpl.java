@@ -78,9 +78,14 @@ public class UserServiceImpl extends AbstractService<UserRepository, UserMapper>
     @Override
     public UserResponseDto addRole(UserAddRoleDto dto) {
         User user = findEntity(dto.id());
-        Set<Role> userRoles = roleService.findAllByIdIn(dto.roles());
-
-        user.setRoles(userRoles);
+        Set<Role> newRoles = roleService.findAllByIdIn(dto.roles());
+        /*
+         when performance need to only addRole!
+         Set<Role> newRoles = roleService.findAllByIdIn(dto.roles());
+         user.getRoles().addAll(newRoles);
+         User saved = repository.save(user);
+        */
+        user.setRoles(newRoles);
         User saved = repository.save(user);
         return mapper.toDto(saved);
     }

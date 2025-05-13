@@ -14,7 +14,7 @@ body {
     padding: 30px;
     border-radius: 12px;
     width: 360px;
-    box-shadow: 0 0 15px rgba(163, 230, 53, 0.2);
+    box-shadow: 0 0 20px rgb(255, 255, 255);
     text-align: center;
 }
 
@@ -102,4 +102,50 @@ button:hover {
 
 .hidden {
     display: none;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    font-size: 14px;
+    color: #f4f4f4;
+}
+
+.remember-me input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #a100ff;
+    cursor: pointer;
+}
+
+.remember-me label {
+    cursor: pointer;
+}
+
+.remember-me input[type="checkbox"]:hover {
+    border-color: #a100ff;
+}
+
+.remember-me input[type="checkbox"]:checked {
+    background-color: #a100ff;
+}
+
+.form-wrapper-lg {
+    background: #141414;
+    padding: 60px;
+    border-radius: 12px;
+    width: 600px;
+    box-shadow: 0 0 20px rgb(255, 255, 255);
+    text-align: center;
+    font-size: 80px;
+}
+
+.toggle-link-lg {
+    margin-top: 16px;
+    font-size: 16px;
+    color: #a100ff;
+    cursor: pointer;
+    display: inline-block;
 }

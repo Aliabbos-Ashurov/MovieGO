@@ -6,6 +6,7 @@ import com.abbos.moviego.dto.MovieUpdateDto;
 import com.abbos.moviego.service.CategoryService;
 import com.abbos.moviego.service.MovieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,7 @@ public class MovieController implements ViewModelConfigurer {
     private final CategoryService categoryService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('READ_MOVIE')")
     public String getAll(Model model) {
         configureModel(model);
         return DASHBOARD_VIEW;
@@ -39,6 +41,7 @@ public class MovieController implements ViewModelConfigurer {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('CREATE_MOVIE')")
     public String create(@ModelAttribute MovieCreateDto dto, Model model) {
         movieService.create(dto);
         configureModel(model);
@@ -46,6 +49,7 @@ public class MovieController implements ViewModelConfigurer {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('UPDATE_MOVIE')")
     public String updateMovie(@ModelAttribute MovieUpdateDto dto, Model model) {
         movieService.update(dto);
         configureModel(model);
@@ -53,6 +57,7 @@ public class MovieController implements ViewModelConfigurer {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('DELETE_MOVIE')")
     public String deleteMovie(@PathVariable Long id, Model model) {
         movieService.delete(id);
         configureModel(model);

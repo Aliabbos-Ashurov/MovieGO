@@ -25,9 +25,7 @@ public record EventCreateDto(
 
         @NotNull(message = "Price is required")
         @Positive(message = "Price must be positive")
-        BigDecimal price,
+        BigDecimal price
 
-        @NotNull
-        MultipartFile banner
 ) implements Request {
 }

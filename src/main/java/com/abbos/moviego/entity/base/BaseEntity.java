@@ -10,6 +10,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SoftDelete;
 import org.hibernate.annotations.SoftDeleteType;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -24,7 +25,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @SuperBuilder
 @SoftDelete(columnName = "active", strategy = SoftDeleteType.ACTIVE) // >= V 6.4
-public class BaseEntity {
+public class BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

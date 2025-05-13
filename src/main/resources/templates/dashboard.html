@@ -37,7 +37,10 @@
                 <input type="text" class="search-box" placeholder="Search" aria-label="Search dashboard">
             </div>
         </header>
-        <section class="content" th:replace="~{${contentFragment}}">
+
+        <section class="content" th:if="${contentFragment != null}" th:replace="~{${contentFragment}}"></section>
+
+        <section class="content" th:unless="${contentFragment != null}">
             <p>Welcome to the dashboard.</p>
         </section>
     </main>

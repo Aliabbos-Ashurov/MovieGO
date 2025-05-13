@@ -32,7 +32,6 @@ public interface EventMapper
     @Mappings({
             @Mapping(target = "cinemaHall", source = "cinemaHallId", ignore = true),
             @Mapping(target = "movie", source = "movieId", ignore = true),
-            @Mapping(target = "banner", source = "banner", ignore = true)
     })
     Event fromCreate(EventCreateDto dto);
 }

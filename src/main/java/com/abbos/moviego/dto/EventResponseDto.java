@@ -18,7 +18,6 @@ public record EventResponseDto(
         String price,
         EventStatus status,
         Integer capacity,
-        ImageResponseDto banner,
         LocalDateTime createdAt
 ) implements Response {
 }

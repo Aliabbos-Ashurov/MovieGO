@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,6 +24,9 @@ import java.util.Set;
 @Getter
 public class UserPrincipal implements UserDetails {
 
+    @Serial
+    private static final long serialVersionUID = -54983245224242231L;
+
     private final Long id;
     private final User user;
     private final String email;
@@ -35,6 +39,8 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+
+
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         for (Role role : user.getRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName().toUpperCase()));
@@ -42,6 +48,10 @@ public class UserPrincipal implements UserDetails {
                     grantedAuthorities.add(new SimpleGrantedAuthority(permission.getName().toUpperCase()))
             );
         }
+
+        System.out.println("Authorities for user " + user.getEmail() + ":");
+        grantedAuthorities.forEach(a -> System.out.println(a.getAuthority()));
+
         return grantedAuthorities;
     }
 

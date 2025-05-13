@@ -52,8 +52,4 @@ public class Event extends Auditable {
     @Positive
     @Column(nullable = false)
     private int capacity;
-
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "banner_id", nullable = false)
-    private Image banner;
 }

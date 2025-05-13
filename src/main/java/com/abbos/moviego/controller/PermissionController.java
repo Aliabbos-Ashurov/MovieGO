@@ -5,6 +5,7 @@ import com.abbos.moviego.dto.PermissionCreateDto;
 import com.abbos.moviego.dto.PermissionUpdateDto;
 import com.abbos.moviego.service.PermissionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,12 +28,14 @@ public class PermissionController implements ViewModelConfigurer {
     private final PermissionService permissionService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('READ_PERMISSION')")
     public String getAll(Model model) {
         configureModel(model);
         return DASHBOARD_VIEW;
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('CREATE_PERMISSION')")
     public String create(@ModelAttribute PermissionCreateDto dto, Model model) {
         permissionService.create(dto);
         configureModel(model);
@@ -40,6 +43,7 @@ public class PermissionController implements ViewModelConfigurer {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('UPDATE_PERMISSION')")
     public String update(@ModelAttribute PermissionUpdateDto dto, Model model) {
         permissionService.update(dto);
         configureModel(model);
@@ -47,6 +51,7 @@ public class PermissionController implements ViewModelConfigurer {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('DELETE_PERMISSION')")
     public String update(@PathVariable Long id, Model model) {
         permissionService.delete(id);
         configureModel(model);

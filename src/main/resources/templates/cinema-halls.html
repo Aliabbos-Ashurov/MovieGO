@@ -1,0 +1,103 @@
+<div th:fragment="content">
+    <div class="table-container">
+        <h2>Cinema Halls</h2>
+
+        <button class="btn-create" onclick="toggleCreateForm()">Create Cinema Hall</button>
+
+        <form id="create-form" th:action="@{/cinema-halls}" method="post" enctype="multipart/form-data" style="display: none; margin-top: 20px;">
+            <div class="form-group">
+                <label for="create-name">Name</label>
+                <input type="text" id="create-name" name="name" required maxlength="50"/>
+            </div>
+            <div class="form-group">
+                <label for="create-rows">Rows</label>
+                <input type="number" id="create-rows" name="rows" min="1" required/>
+            </div>
+            <div class="form-group">
+                <label for="create-columns">Columns</label>
+                <input type="number" id="create-columns" name="columns" min="1" required/>
+            </div>
+            <div class="form-group">
+                <label for="create-status">Status</label>
+                <select id="create-status" name="status" class="custom-select" required>
+                    <option value="" disabled selected>Select status</option>
+                    <option th:each="status : ${cinemaHallStatuses}"
+                            th:value="${status}"
+                            th:text="${status}"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="create-image">Image</label>
+                <input type="file" id="create-image" name="image" accept="image/*" required/>
+            </div>
+            <button type="submit" class="btn-save">Save Cinema Hall</button>
+        </form>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="table-head">Image</th>
+                <th class="table-head">Name</th>
+                <th class="table-head">Capacity</th>
+                <th class="table-head">Rows</th>
+                <th class="table-head">Columns</th>
+                <th class="table-head">Status</th>
+                <th class="table-head">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="table-cell" th:each="cinemaHall : ${cinemaHalls}" th:id="'row-' + ${cinemaHall.id}">
+                <td class="table-cell">
+                    <img th:src="${cinemaHall.image.link}" alt="Poster" style="border-radius: 4px;"/>
+                </td>
+                <td class="table-cell" th:text="${cinemaHall.name}"></td>
+                <td class="table-cell" th:text="${cinemaHall.capacity}"></td>
+                <td class="table-cell" th:text="${cinemaHall.rows}"></td>
+                <td class="table-cell" th:text="${cinemaHall.columns}"></td>
+                <td class="table-cell" th:text="${cinemaHall.status}"></td>
+                <td class="action-buttons">
+                    <div class="button-group">
+                        <button type="button" class="btn-update" th:onclick="'toggleUpdateForm(' + ${cinemaHall.id} + ')'">
+                            Update
+                        </button>
+                        <form th:action="@{/cinema-halls/{id}(id=${cinemaHall.id})}" method="post" class="form-inline">
+                            <input type="hidden" name="_method" value="delete"/>
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
+                    </div>
+                    <form th:id="'update-form-' + ${cinemaHall.id}"
+                          th:action="@{/cinema-halls}"
+                          method="post"
+                          class="inline-update-form"
+                          style="display: none;">
+                        <input type="hidden" name="_method" value="put"/>
+                        <input type="hidden" name="id" th:value="${cinemaHall.id}"/>
+                        <div class="form-group">
+                            <label for="'update-status-' + ${cinemaHall.id}">Status</label>
+                            <select id="'update-status-' + ${cinemaHall.id}" name="status" required>
+                                <option th:each="status : ${cinemaHallStatuses}"
+                                        th:value="${status}"
+                                        th:text="${status}"
+                                        th:selected="${cinemaHall.status} == ${status}"></option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-save">Save</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function toggleCreateForm() {
+            const form = document.getElementById("create-form");
+            form.style.display = form.style.display === "none" ? "block" : "none";
+        }
+
+        function toggleUpdateForm(id) {
+            const form = document.getElementById("update-form-" + id);
+            form.style.display = form.style.display === "none" ? "flex" : "none";
+        }
+    </script>
+</div>

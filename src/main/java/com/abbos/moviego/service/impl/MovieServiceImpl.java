@@ -98,11 +98,13 @@ public class MovieServiceImpl extends AbstractService<MovieRepository, MovieMapp
         return repository.existsById(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public MovieResponseDto find(Long id) {
         return mapper.toDto(findEntity(id));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Movie findEntity(Long id) {
         return repository.findById(id).orElseThrow(
@@ -110,6 +112,7 @@ public class MovieServiceImpl extends AbstractService<MovieRepository, MovieMapp
         );
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<MovieResponseDto> findAll() {
         return mapper.toDtoList(
