@@ -1,0 +1,17 @@
+<header th:fragment="header-navbar" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <nav class="nav-bar">
+        <div class="nav-links">
+            <a href="/home">HOME</a>
+            <a href="#">CINEMA HALLS</a>
+            <a href="/events/active">AVAILABLE EVENTS</a>
+        </div>
+        <div class="auth" sec:authorize="isAnonymous()">
+            <a href="/auth/login">LOGIN</a>
+            <a href="/auth/signup">SIGN UP</a>
+        </div>
+        <div class="auth" sec:authorize="isAuthenticated()">
+            <a href="/users/me">PROFILE</a>
+            <a href="/auth/logout">LOGOUT</a>
+        </div>
+    </nav>
+</header>

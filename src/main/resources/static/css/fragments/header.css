@@ -1,0 +1,74 @@
+header {
+    padding: 0.2rem 3rem;
+    background: rgba(0, 0, 0, 0.85);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    box-sizing: border-box;
+    z-index: 1000;
+}
+
+.nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-bar a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-bar a:hover {
+    color: #a100ff;
+}
+
+.nav-bar a.active {
+    color: #a100ff;
+    font-weight: 700;
+}
+
+.auth {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.auth a {
+    padding: 0.5rem 1.25rem;
+    border-radius: 1.25rem;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth a[href="/auth/login"] {
+    background: transparent;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+}
+
+.auth a[href="/auth/login"]:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+}
+
+.auth a[href="/auth/signup"],
+.auth a[href="/auth/logout"] {
+    background: linear-gradient(to right, #a100ff, #ff00cc);
+    color: #ffffff;
+}
+
+.auth a[href="/auth/signup"]:hover,
+.auth a[href="/auth/logout"]:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(161, 0, 255, 0.5);
+}
