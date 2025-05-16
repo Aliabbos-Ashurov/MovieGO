@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Events - MOVIES</title>
+    <link rel="stylesheet" href="/css/active-events.css">
+    <link rel="stylesheet" href="/css/fragments/header.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header-navbar}"></div>
+
+<main>
+    <section class="events-section">
+        <div class="events-list" th:if="${events != null and !events.isEmpty()}">
+            <div class="event-item" th:each="event : ${events}" th:attr="data-id=${event.id}">
+                <img th:src="${event.movie.posterImage.link}" th:alt="${event.movie.title}" class="event-poster">
+                <div class="event-info">
+                    <h2 th:text="${event.movie.title}">Movie Title</h2>
+                    <p class="showtime" th:text="${event.showTime.toString()}">Showtime</p>
+                    <p class="cinema" th:text="${event.cinemaHall.name}">Cinema Hall</p>
+                    <p class="price" th:text="${event.price}">Price</p>
+                    <div class="buttons">
+                        <a th:href="@{'/movies/' + ${event.movie.id}}" class="more-info">More Info</a>
+                        <a th:href="@{'/tickets/' + ${event.id} + '/seats'}" class="booking">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="no-events" th:if="${events == null or events.isEmpty()}">
+            <p>No events are currently scheduled.</p>
+        </div>
+    </section>
+</main>
+
+<script>
+    function goToEvent(el) {
+        const id = el.getAttribute('data-id');
+        window.location.href = `/events/${id}`;
+    }
+</script>
+</body>
+</html>
