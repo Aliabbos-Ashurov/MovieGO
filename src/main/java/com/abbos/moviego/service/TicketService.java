@@ -1,7 +1,9 @@
 package com.abbos.moviego.service;
 
+import com.abbos.moviego.dto.SeatInfoDto;
 import com.abbos.moviego.dto.TicketCreateDto;
 import com.abbos.moviego.dto.TicketResponseDto;
+import com.abbos.moviego.dto.render.TicketRenderDto;
 import com.abbos.moviego.entity.Ticket;
 import com.abbos.moviego.service.base.CreateService;
 import com.abbos.moviego.service.base.DeleteService;
@@ -19,5 +21,13 @@ public interface TicketService extends CreateService<TicketResponseDto, TicketCr
 
     List<TicketResponseDto> findTicketsByUserId(Long userId);
 
-    TicketResponseDto findTicketsByEventId(Long eventId);
+    boolean existsByEventIdAndSeat(Long eventId, Integer row, Integer column);
+
+    List<Ticket> findByEventId(Long eventId);
+
+    SeatInfoDto getSeatInfo(Long eventId);
+
+    List<TicketResponseDto> getMyTickets();
+
+    TicketRenderDto findTicketForRender(Long ticketId);
 }

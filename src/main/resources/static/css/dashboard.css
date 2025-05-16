@@ -499,9 +499,23 @@ h2 {
     margin-top: 0.25rem;
 }
 
-/* Responsive adjustments */
 @media (max-width: 640px) {
     .custom-select {
         max-width: 100%;
     }
+}
+
+.btn-download {
+    background-color: #2e86de;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.btn-download:hover {
+    background-color: #1e5fab;
 }

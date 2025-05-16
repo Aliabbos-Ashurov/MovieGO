@@ -1,6 +1,6 @@
 package com.abbos.moviego.service.impl;
 
-import com.abbos.moviego.config.SessionUser;
+import com.abbos.moviego.config.security.SessionUser;
 import com.abbos.moviego.dto.UserAddRoleDto;
 import com.abbos.moviego.dto.UserResponseDto;
 import com.abbos.moviego.dto.UserUpdateDto;
@@ -54,14 +54,12 @@ public class UserServiceImpl extends AbstractService<UserRepository, UserMapper>
 
     @Transactional
     @Override
-    public UserResponseDto create(SignUpDto dto) {
+    public void create(SignUpDto dto) {
         Role role = roleService.findByName("USER");
 
         User user = mapper.fromCreate(dto, passwordEncoder);
         user.setRoles(Set.of(role));
-        User saved = repository.save(user);
-
-        return mapper.toDto(saved);
+        repository.save(user);
     }
 
     @Transactional
@@ -76,7 +74,7 @@ public class UserServiceImpl extends AbstractService<UserRepository, UserMapper>
 
     @Transactional
     @Override
-    public UserResponseDto addRole(UserAddRoleDto dto) {
+    public void addRole(UserAddRoleDto dto) {
         User user = findEntity(dto.id());
         Set<Role> newRoles = roleService.findAllByIdIn(dto.roles());
         /*
@@ -86,8 +84,7 @@ public class UserServiceImpl extends AbstractService<UserRepository, UserMapper>
          User saved = repository.save(user);
         */
         user.setRoles(newRoles);
-        User saved = repository.save(user);
-        return mapper.toDto(saved);
+        repository.save(user);
     }
 
     @Override
@@ -97,12 +94,11 @@ public class UserServiceImpl extends AbstractService<UserRepository, UserMapper>
 
     @Transactional
     @Override
-    public UserResponseDto update(UserUpdateDto dto) {
+    public void update(UserUpdateDto dto) {
         User user = findEntity(dto.id());
         if (passwordEncoder.matches(dto.oldPassword(), user.getPassword())) {
             user.setPassword(passwordEncoder.encode(dto.newPassword()));
-            User saved = repository.save(user);
-            return mapper.toDto(saved);
+            repository.save(user);
         }
         throw new ModificationNotAllowedException("Password does not match!");
     }

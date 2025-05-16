@@ -27,17 +27,15 @@ public class PermissionServiceImpl extends AbstractService<PermissionRepository,
     }
 
     @Override
-    public PermissionResponseDto create(PermissionCreateDto dto) {
+    public void create(PermissionCreateDto dto) {
         Permission permission = mapper.fromCreate(dto);
-        Permission saved = repository.save(permission);
-        return mapper.toDto(saved);
+        repository.save(permission);
     }
 
     @Override
-    public PermissionResponseDto update(PermissionUpdateDto dto) {
+    public void update(PermissionUpdateDto dto) {
         Permission permission = mapper.fromUpdate(dto);
-        Permission saved = repository.save(permission);
-        return mapper.toDto(saved);
+        repository.save(permission);
     }
 
     @Override

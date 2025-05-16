@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOVIES - Seat Selection</title>
+    <link rel="stylesheet" href="/css/seats.css">
+    <link rel="stylesheet" href="/css/fragments/header.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header-navbar}"></div>
+
+<main>
+    <div class="container">
+        <div class="screen-wrapper">
+            <div class="screen">SCREEN</div>
+        </div>
+        <section class="seats-section" th:if="${seatInfo != null}">
+            <div class="cinema-seats">
+                <div th:each="row : ${#numbers.sequence(1, seatInfo.totalRows)}" class="row">
+                    <div th:each="col : ${#numbers.sequence(1, seatInfo.totalColumns)}" class="seat"
+                         th:classappend="${takenSeatCoordinates.contains(row + ':' + col) ? 'taken' : ''}"
+                         th:attr="data-row=${row}, data-col=${col}"
+                         onclick="toggleSeat(this)">
+                        <span th:text="${row + ':' + col}"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="selection-info">
+                <p>Selected Seats: <span id="selected-seats">None</span></p>
+                <p>Remaining Capacity: <span th:text="${seatInfo.remainingCapacity}"></span></p>
+                <form th:action="@{/tickets}" method="post">
+                    <input type="hidden" name="eventId" th:value="${seatInfo.eventId}"/>
+                    <div id="positions-container"></div>
+                    <button type="submit" class="booking" id="submit-button" disabled>Book Now</button>
+                </form>
+            </div>
+        </section>
+    </div>
+</main>
+
+<script>
+    let selectedSeats = new Set();
+
+    function toggleSeat(element) {
+        const row = parseInt(element.getAttribute('data-row'));
+        const col = parseInt(element.getAttribute('data-col'));
+        const seatKey = `${row}:${col}`;
+
+        if (element.classList.contains('taken')) return;
+
+        if (selectedSeats.has(seatKey)) {
+            selectedSeats.delete(seatKey);
+            element.classList.remove('selected');
+        } else {
+            selectedSeats.add(seatKey);
+            element.classList.add('selected');
+        }
+
+        updateSelection();
+    }
+
+    function updateSelection() {
+        const seatsDisplay = document.getElementById('selected-seats');
+        const positionsContainer = document.getElementById('positions-container');
+        const submitButton = document.getElementById('submit-button');
+
+        seatsDisplay.textContent = Array.from(selectedSeats).join(', ') || 'None';
+        positionsContainer.innerHTML = '';
+
+        Array.from(selectedSeats).forEach((seat, index) => {
+            const [row, col] = seat.split(':');
+            positionsContainer.innerHTML += `
+                <input type="hidden" name="positions[${index}].row" value="${row}"/>
+                <input type="hidden" name="positions[${index}].column" value="${col}"/>
+            `;
+        });
+
+        submitButton.disabled = selectedSeats.size === 0;
+    }
+</script>
+</body>
+</html>

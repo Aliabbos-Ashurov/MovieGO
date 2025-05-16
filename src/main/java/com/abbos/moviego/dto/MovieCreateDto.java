@@ -18,7 +18,6 @@ public record MovieCreateDto(
 
         @NotNull(message = "Duration is required")
         @Min(1)
-        @Max(600)
         Integer durationMinutes,
 
         @NotBlank(message = "Language is required")

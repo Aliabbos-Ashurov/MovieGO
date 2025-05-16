@@ -2,8 +2,12 @@ package com.abbos.moviego.repository;
 
 import com.abbos.moviego.entity.Event;
 import com.abbos.moviego.enums.EventStatus;
-import org.springframework.data.jpa.repository.JpaRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.ListCrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -12,14 +16,29 @@ import java.util.List;
  * @version 1.0
  * @since 2025-05-03
  */
-public interface EventRepository extends JpaRepository<Event, Long> {
+public interface EventRepository extends ListCrudRepository<Event, Long> {
 
-    @Query("SELECT e FROM Event e JOIN FETCH e.movie m WHERE e.cinemaHall.id = :cinemaHallId")
-    List<Event> findEventsByCinemaHallId(Long cinemaHallId);
+    @EntityGraph(attributePaths = {"movie", "movie.sceneImages"})
+    List<Event> findAllByStatus(EventStatus status);
 
-    @Query("SELECT e FROM Event e WHERE e.movie.id = :movieId")
-    List<Event> findEventsByMovieId(Long movieId);
+    @Modifying
+    @Transactional
+    @Query("UPDATE Event e SET e.capacity = e.capacity - 1 WHERE e.id = :eventId AND e.capacity > 0")
+    int decreaseCapacity(@Param("eventId") Long eventId);
 
-    @Query("SELECT e FROM Event e WHERE e.status = :status")
-    List<Event> findEventsByStatus(EventStatus status);
+    @Modifying
+    @Query("UPDATE Event e SET e.status = 'COMPLETED' WHERE e.showTime < CURRENT_TIMESTAMP")
+    int markCompletedEvents();
+
+    @Query("""
+                SELECT DISTINCT e FROM Event e
+                JOIN FETCH e.movie m
+                JOIN FETCH m.category c
+                JOIN FETCH m.posterImage pi
+                JOIN FETCH e.cinemaHall ch
+                LEFT JOIN FETCH m.sceneImages si
+                LEFT JOIN FETCH si.image img
+            """)
+    List<Event> findAllEager();
+
 }

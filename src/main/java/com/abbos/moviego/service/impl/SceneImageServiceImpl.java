@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @author Aliabbos Ashurov
@@ -29,12 +29,15 @@ public class SceneImageServiceImpl
         extends AbstractService<SceneImageRepository, SceneImageMapper> implements SceneImageService {
 
     private final ImageService imageService;
+    private final ExecutorService executorService;
 
     public SceneImageServiceImpl(SceneImageRepository repository,
                                  ImageService imageService,
-                                 SceneImageMapper sceneImageMapper) {
+                                 SceneImageMapper sceneImageMapper,
+                                 ExecutorService executorService) {
         super(repository, sceneImageMapper);
         this.imageService = imageService;
+        this.executorService = executorService;
     }
 
     @Transactional
@@ -43,22 +46,19 @@ public class SceneImageServiceImpl
         if (multipartFiles == null || multipartFiles.isEmpty()) {
             return Collections.emptyList();
         }
-
-        return multipartFiles.stream()
-                .map(file -> {
-                    Image image = imageService.create(
-                            FilenameUtils.getBaseName(file.getOriginalFilename()),
-                            file
-                    );
+        return multipartFiles.stream().map(
+                file -> {
+                    Image image = imageService.uploadAndBuildOnly(
+                            FilenameUtils.getBaseName(file.getOriginalFilename()), file);
                     SceneImage sceneImage = SceneImage.builder()
                             .image(image)
                             .movie(movie)
                             .build();
-
                     return repository.save(sceneImage);
-                })
-                .collect(Collectors.toList());
+                }
+        ).toList();
     }
+
 
     @Transactional
     @Override
@@ -74,6 +74,7 @@ public class SceneImageServiceImpl
         return repository.existsById(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public SceneImageResponseDto find(Long id) {
         return mapper.toDto(findEntity(id));

@@ -47,7 +47,7 @@ public class MovieServiceImpl extends AbstractService<MovieRepository, MovieMapp
 
     @Transactional
     @Override
-    public MovieResponseDto create(MovieCreateDto dto) {
+    public void create(MovieCreateDto dto) {
         Category category = categoryService.findEntity(dto.categoryId());
 
         Image posterImage = imageService.create(
@@ -55,7 +55,6 @@ public class MovieServiceImpl extends AbstractService<MovieRepository, MovieMapp
                 dto.posterImage()
         );
 
-        // Create movie without scene images first
         Movie movie = Movie.builder()
                 .title(dto.title())
                 .durationMinutes(dto.durationMinutes())
@@ -65,24 +64,21 @@ public class MovieServiceImpl extends AbstractService<MovieRepository, MovieMapp
                 .description(dto.description())
                 .category(category)
                 .posterImage(posterImage)
-                .sceneImages(Collections.emptyList()) // Initialize empty list
+                .sceneImages(Collections.emptyList())
                 .build();
 
-        // Save movie to generate ID
         Movie savedMovie = repository.save(movie);
 
         if (dto.sceneImages() != null && !dto.sceneImages().isEmpty()) {
             List<SceneImage> sceneImages = sceneImageService.create(savedMovie, dto.sceneImages());
             savedMovie.setSceneImages(sceneImages);
         }
-        return mapper.toDto(savedMovie);
     }
 
     @Override
-    public MovieResponseDto update(MovieUpdateDto dto) {
+    public void update(MovieUpdateDto dto) {
         Movie movie = mapper.fromUpdate(dto);
-        Movie saved = repository.save(movie);
-        return mapper.toDto(saved);
+        repository.save(movie);
     }
 
     @Override
@@ -114,17 +110,17 @@ public class MovieServiceImpl extends AbstractService<MovieRepository, MovieMapp
 
     @Transactional(readOnly = true)
     @Override
-    public List<MovieResponseDto> findAll() {
+    public List<MovieResponseDto> findAllEager() {
         return mapper.toDtoList(
-                repository.findAll()
+                repository.findAllEager()
         );
     }
 
-
+    @Transactional(readOnly = true)
     @Override
-    public List<MovieResponseDto> findByTitleLike(String title) {
+    public List<MovieResponseDto> findAll() {
         return mapper.toDtoList(
-                repository.findByTitleLike(title)
+                repository.findAll()
         );
     }
 

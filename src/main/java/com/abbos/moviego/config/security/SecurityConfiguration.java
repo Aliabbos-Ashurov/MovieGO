@@ -1,5 +1,6 @@
-package com.abbos.moviego.config;
+package com.abbos.moviego.config.security;
 
+import com.abbos.moviego.config.handler.CustomAuthenticationFailureHandler;
 import com.abbos.moviego.util.Constants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

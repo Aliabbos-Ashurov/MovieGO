@@ -2,7 +2,10 @@ package com.abbos.moviego.entity;
 
 import com.abbos.moviego.entity.base.Auditable;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +35,6 @@ public class Movie extends Auditable {
 
     @NotNull(message = "Duration is required")
     @Min(1)
-    @Max(600)
     @Column(name = "duration_minutes", nullable = false)
     private Integer durationMinutes;
 
@@ -59,6 +61,10 @@ public class Movie extends Auditable {
     @JoinColumn(name = "poster_image_id")
     private Image posterImage;
 
-    @OneToMany(mappedBy = "movie", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @OneToMany(
+            mappedBy = "movie",
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
     private List<SceneImage> sceneImages;
 }

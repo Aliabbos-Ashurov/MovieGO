@@ -21,5 +21,5 @@ public interface CreateService<R extends Response, CD extends Request> {
      * @return a response containing the created entity DTO
      * @throws jakarta.validation.ValidationException if the request is invalid
      */
-    R create(@NotNull CD dto);
+    void create(@NotNull CD dto); // must be R (dto) in REST
 }

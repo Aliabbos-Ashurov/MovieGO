@@ -31,6 +31,12 @@ public class EventController implements ViewModelConfigurer {
     private final CinemaHallService cinemaHallService;
     private final MovieService movieService;
 
+    @GetMapping("/active")
+    public String getActiveEvents(Model model) {
+        model.addAttribute("events", eventService.findAllByStatus(EventStatus.SCHEDULED));
+        return "active-events";
+    }
+
     @GetMapping
     @PreAuthorize("hasAuthority('READ_EVENT')")
     public String getAll(Model model) {
@@ -64,9 +70,11 @@ public class EventController implements ViewModelConfigurer {
 
     @Override
     public void configureModel(Model model) {
-        model.addAttribute("events", eventService.findAll());
+        System.out.println("events.......");
+        model.addAttribute("events", eventService.findAllEager());
+        System.out.println("events.......");
         model.addAttribute("cinemaHalls", cinemaHallService.findAll());
-        model.addAttribute("movies", movieService.findAll());
+        model.addAttribute("movies", movieService.findAllEager());
         model.addAttribute("eventStatuses", EventStatus.values());
         model.addAttribute(FRAGMENT_KEY, "events.html");
     }

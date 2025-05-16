@@ -1,4 +1,4 @@
-package com.abbos.moviego.config;
+package com.abbos.moviego.config.security;
 
 import com.abbos.moviego.entity.Role;
 import com.abbos.moviego.entity.User;
@@ -39,8 +39,6 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
-
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         for (Role role : user.getRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName().toUpperCase()));
@@ -48,9 +46,6 @@ public class UserPrincipal implements UserDetails {
                     grantedAuthorities.add(new SimpleGrantedAuthority(permission.getName().toUpperCase()))
             );
         }
-
-        System.out.println("Authorities for user " + user.getEmail() + ":");
-        grantedAuthorities.forEach(a -> System.out.println(a.getAuthority()));
 
         return grantedAuthorities;
     }

@@ -25,5 +25,6 @@ public interface UserService extends CrudService<Long, User, UserResponseDto, Si
 
     UserResponseDto getMe();
 
-    UserResponseDto addRole(UserAddRoleDto dto);
+    void addRole(UserAddRoleDto dto);
+
 }

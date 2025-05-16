@@ -12,6 +12,7 @@ public interface Constants extends Util {
             "/auth/signup",
             "/auth/login",
             "/error/**",
+            "/events/active",
             "/home",
             "/movies/{id}",
             "/css/**",

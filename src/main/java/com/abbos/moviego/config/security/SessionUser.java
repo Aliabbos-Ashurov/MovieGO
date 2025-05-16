@@ -1,4 +1,4 @@
-package com.abbos.moviego.config;
+package com.abbos.moviego.config.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;

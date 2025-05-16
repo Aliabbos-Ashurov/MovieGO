@@ -5,7 +5,6 @@ import com.abbos.moviego.dto.EventResponseDto;
 import com.abbos.moviego.dto.EventUpdateDto;
 import com.abbos.moviego.entity.CinemaHall;
 import com.abbos.moviego.entity.Event;
-import com.abbos.moviego.entity.Image;
 import com.abbos.moviego.entity.Movie;
 import com.abbos.moviego.enums.EventStatus;
 import com.abbos.moviego.exception.ResourceNotFoundException;
@@ -13,7 +12,6 @@ import com.abbos.moviego.mapper.EventMapper;
 import com.abbos.moviego.repository.EventRepository;
 import com.abbos.moviego.service.CinemaHallService;
 import com.abbos.moviego.service.EventService;
-import com.abbos.moviego.service.ImageService;
 import com.abbos.moviego.service.MovieService;
 import com.abbos.moviego.service.base.AbstractService;
 import org.springframework.stereotype.Service;
@@ -43,7 +41,7 @@ public class EventServiceImpl extends AbstractService<EventRepository, EventMapp
 
     @Transactional
     @Override
-    public EventResponseDto create(EventCreateDto dto) {
+    public void create(EventCreateDto dto) {
         Event event = mapper.fromCreate(dto);
 
         Movie movie = movieService.findEntity(dto.movieId());
@@ -53,7 +51,15 @@ public class EventServiceImpl extends AbstractService<EventRepository, EventMapp
         event.setMovie(movie);
         event.setCinemaHall(cinemaHall);
 
-        return mapper.toDto(repository.save(event));
+        repository.save(event);
+    }
+
+    @Transactional
+    @Override
+    public void update(EventUpdateDto dto) {
+        Event event = findEntity(dto.id());
+        event.setStatus(dto.status());
+        repository.save(event);
     }
 
     @Override
@@ -62,6 +68,17 @@ public class EventServiceImpl extends AbstractService<EventRepository, EventMapp
             throwNotFound(id);
         }
         repository.deleteById(id);
+    }
+
+
+    @Override
+    public int markCompletedEvents() {
+        return repository.markCompletedEvents();
+    }
+
+    @Override
+    public int decreaseCapacity(Long eventId) {
+        return repository.decreaseCapacity(eventId);
     }
 
     @Override
@@ -81,7 +98,15 @@ public class EventServiceImpl extends AbstractService<EventRepository, EventMapp
         );
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
+    @Override
+    public List<EventResponseDto> findAllEager() {
+        return mapper.toDtoList(
+                repository.findAllEager()
+        );
+    }
+
+    @Transactional(readOnly = true)
     @Override
     public List<EventResponseDto> findAll() {
         return mapper.toDtoList(
@@ -89,32 +114,11 @@ public class EventServiceImpl extends AbstractService<EventRepository, EventMapp
         );
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
-    public EventResponseDto update(EventUpdateDto dto) {
-        Event event = findEntity(dto.id());
-        event.setStatus(dto.status());
-        return mapper.toDto(repository.save(event));
-    }
-
-    @Override
-    public List<EventResponseDto> findEventsByCinemaHallId(Long cinemaHallId) {
+    public List<EventResponseDto> findAllByStatus(EventStatus status) {
         return mapper.toDtoList(
-                repository.findEventsByCinemaHallId(cinemaHallId)
-        );
-    }
-
-    @Override
-    public List<EventResponseDto> findEventsByMovieId(Long movieId) {
-        return mapper.toDtoList(
-                repository.findEventsByMovieId(movieId)
-        );
-    }
-
-    @Override
-    public List<EventResponseDto> findEventsByStatus(EventStatus status) {
-        return mapper.toDtoList(
-                repository.findEventsByStatus(status)
+                repository.findAllByStatus(status)
         );
     }
 

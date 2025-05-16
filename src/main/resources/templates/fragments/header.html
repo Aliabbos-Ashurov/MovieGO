@@ -1,0 +1,29 @@
+<header th:fragment="header-navbar" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <nav class="nav-bar">
+        <a class="logo" href="/home">MOVIEGO</a>
+        <div class="nav-links">
+            <a href="/home">HOME</a>
+            <a href="/cinema-halls">CINEMA HALLS</a>
+            <a href="/events/active">AVAILABLE EVENTS</a>
+        </div>
+        <div class="auth" sec:authorize="isAnonymous()">
+            <a href="/auth/login">LOGIN</a>
+            <a href="/auth/signup">SIGN UP</a>
+        </div>
+        <div class="auth" sec:authorize="isAuthenticated()">
+            <a href="/users/me">PROFILE</a>
+            <a href="/auth/logout">LOGOUT</a>
+        </div>
+    </nav>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.nav-links a');
+            const currentPath = window.location.pathname;
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</header>

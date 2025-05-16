@@ -1,4 +1,4 @@
-package com.abbos.moviego.config;
+package com.abbos.moviego.config.handler;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

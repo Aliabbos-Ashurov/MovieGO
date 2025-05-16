@@ -66,7 +66,7 @@ public class MovieController implements ViewModelConfigurer {
 
     @Override
     public void configureModel(Model model) {
-        model.addAttribute("movies", movieService.findAll());
+        model.addAttribute("movies", movieService.findAllEager());
         model.addAttribute("categories", categoryService.findAll());
         model.addAttribute(FRAGMENT_KEY, "movies.html");
     }
