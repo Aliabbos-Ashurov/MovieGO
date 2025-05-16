@@ -15,5 +15,5 @@ import java.util.List;
  */
 public interface MovieService extends CrudService<Long, Movie, MovieResponseDto, MovieCreateDto, MovieUpdateDto> {
 
-    List<MovieResponseDto> findByTitleLike(String title);
+    List<MovieResponseDto> findAllEager();
 }

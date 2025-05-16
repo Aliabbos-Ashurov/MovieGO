@@ -5,6 +5,7 @@ import com.abbos.moviego.mapper.base.EntityMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.Repository;
 
 /**
  * Abstract base service class providing common functionality for services,
@@ -19,7 +20,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 @Getter
 @RequiredArgsConstructor
-public abstract class AbstractService<R extends JpaRepository<?, ?>, M extends EntityConverter<?, ?>> {
+public abstract class AbstractService<R extends Repository<?, ?>, M extends EntityConverter<?, ?>> {
     protected final R repository;
     protected final M mapper;
 }

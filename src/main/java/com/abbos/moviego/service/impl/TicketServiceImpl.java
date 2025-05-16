@@ -1,7 +1,11 @@
 package com.abbos.moviego.service.impl;
 
+import com.abbos.moviego.config.security.SessionUser;
+import com.abbos.moviego.dto.SeatInfoDto;
 import com.abbos.moviego.dto.TicketCreateDto;
 import com.abbos.moviego.dto.TicketResponseDto;
+import com.abbos.moviego.dto.render.TicketRenderDto;
+import com.abbos.moviego.entity.CinemaHall;
 import com.abbos.moviego.entity.Event;
 import com.abbos.moviego.entity.Ticket;
 import com.abbos.moviego.entity.User;
@@ -29,26 +33,96 @@ public class TicketServiceImpl extends AbstractService<TicketRepository, TicketM
 
     private final EventService eventService;
     private final UserService userService;
+    private final SessionUser sessionUser;
 
     public TicketServiceImpl(TicketRepository repository,
                              TicketMapper ticketMapper,
                              EventService eventService,
-                             UserService userService) {
+                             UserService userService,
+                             SessionUser sessionUser) {
         super(repository, ticketMapper);
         this.eventService = eventService;
         this.userService = userService;
+        this.sessionUser = sessionUser;
     }
+
 
     @Transactional
     @Override
-    public TicketResponseDto create(TicketCreateDto dto) {
+    public void create(TicketCreateDto dto) {
         Event event = eventService.findEntity(dto.eventId());
-        User user = userService.findEntity(dto.userId());
+        User user = userService.findEntity(sessionUser.getId());
+        CinemaHall cinemaHall = event.getCinemaHall();
 
-        Ticket ticket = mapper.createFrom(dto, user, event);
-        Ticket savedTicket = repository.save(ticket);
+        if (dto.positions().size() > event.getCapacity()) {
+            throw new IllegalStateException("Requested seats exceed event capacity");
+        }
 
-        return mapper.toDto(savedTicket);
+        dto.positions().forEach(pos -> processTicket(pos, cinemaHall, event, user));
+    }
+
+    private void processTicket(TicketCreateDto.SeatPositions seatPositions,
+                               CinemaHall cinemaHall,
+                               Event event,
+                               User user) {
+        Integer row = seatPositions.row();
+        Integer column = seatPositions.column();
+
+        if (row > cinemaHall.getRows() || column > cinemaHall.getColumns()
+                || row < 1 || column < 1) {
+            throw new IllegalArgumentException("Seat (" + row + ", " + column + ") is out of bounds for cinema hall");
+        }
+
+        if (existsByEventIdAndSeat(event.getId(), row, column)) {
+            throw new IllegalStateException("Seat (" + row + ", " + column + ") is already taken");
+        }
+
+        int affectedRows = eventService.decreaseCapacity(event.getId());
+        if (affectedRows == 0) {
+            throw new IllegalStateException("No tickets available for event ID: " + event.getId());
+        }
+
+        Ticket ticket = Ticket.builder()
+                .event(event)
+                .rows(row)
+                .columns(column)
+                .price(event.getPrice())
+                .user(user)
+                .build();
+
+        repository.save(ticket);
+    }
+
+    @Override
+    public TicketRenderDto findTicketForRender(Long ticketId) {
+        return repository.findTicketForRender(ticketId);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public SeatInfoDto getSeatInfo(Long eventId) {
+        Event event = eventService.findEntity(eventId);
+
+        CinemaHall cinemaHall = event.getCinemaHall();
+
+        List<Ticket> tickets = findByEventId(eventId);
+        List<SeatInfoDto.SeatDto> takenSeats = tickets.stream()
+                .map(ticket -> new SeatInfoDto.SeatDto(ticket.getRows(), ticket.getColumns()))
+                .toList();
+
+        return new SeatInfoDto(
+                eventId,
+                cinemaHall.getRows(),
+                cinemaHall.getColumns(),
+                takenSeats,
+                event.getCapacity()
+        );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<TicketResponseDto> getMyTickets() {
+        return findTicketsByUserId(sessionUser.getId());
     }
 
     @Transactional
@@ -79,6 +153,16 @@ public class TicketServiceImpl extends AbstractService<TicketRepository, TicketM
         );
     }
 
+    @Override
+    public boolean existsByEventIdAndSeat(Long eventId, Integer row, Integer column) {
+        return repository.existsByEventIdAndSeat(eventId, row, column);
+    }
+
+    @Override
+    public List<Ticket> findByEventId(Long eventId) {
+        return repository.findByEventId(eventId);
+    }
+
     @Transactional(readOnly = true)
     @Override
     public List<TicketResponseDto> findAll() {
@@ -89,13 +173,6 @@ public class TicketServiceImpl extends AbstractService<TicketRepository, TicketM
     public List<TicketResponseDto> findTicketsByUserId(Long userId) {
         return mapper.toDtoList(
                 repository.findTicketsByUserId(userId)
-        );
-    }
-
-    @Override
-    public TicketResponseDto findTicketsByEventId(Long eventId) {
-        return mapper.toDto(
-                repository.findTicketsByEventId(eventId)
         );
     }
 

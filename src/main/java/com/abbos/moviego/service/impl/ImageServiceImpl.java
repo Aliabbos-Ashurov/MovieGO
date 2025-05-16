@@ -36,17 +36,24 @@ public class ImageServiceImpl extends AbstractService<ImageRepository, ImageMapp
     @Override
     public Image create(String key, MultipartFile file) {
         try {
+            return repository.save(uploadAndBuildOnly(key, file));
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create image", e);
+        }
+    }
+
+    @Override
+    public Image uploadAndBuildOnly(String key, MultipartFile file) {
+        try {
             String generatedName = s3StorageService.uploadObject(key, file);
 
-            Image image = Image.builder()
+            return Image.builder()
                     .generatedName(generatedName)
                     .fileName(file.getOriginalFilename())
                     .extension(FilenameUtils.getExtension(file.getOriginalFilename()))
                     .size(file.getSize())
                     .link(s3StorageService.BASE_LINK + "/" + generatedName)
                     .build();
-
-            return repository.save(image);
         } catch (Exception e) {
             throw new RuntimeException("Failed to create image", e);
         }

@@ -12,6 +12,7 @@ import com.abbos.moviego.service.PermissionService;
 import com.abbos.moviego.service.RoleService;
 import com.abbos.moviego.service.base.AbstractService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -40,8 +41,9 @@ public class RoleServiceImpl extends AbstractService<RoleRepository, RoleMapper>
         );
     }
 
+    @Transactional
     @Override
-    public RoleResponseDto create(RoleCreateDto dto) {
+    public void create(RoleCreateDto dto) {
         Set<Permission> permissions = permissionService.findAllByIds(dto.permissions());
         if (dto.permissions().size() != permissions.size()) {
             throw new ResourceNotFoundException("Some requested permissions do not exist.");
@@ -50,17 +52,15 @@ public class RoleServiceImpl extends AbstractService<RoleRepository, RoleMapper>
                 .name(dto.name())
                 .permissions(permissions)
                 .build();
-        Role saved = repository.save(role);
-        return mapper.toDto(saved);
+        repository.save(role);
     }
 
     @Override
-    public RoleResponseDto update(RoleUpdateDto dto) {
+    public void update(RoleUpdateDto dto) {
         Role role = findEntity(dto.id());
         role.setName(dto.name());
 
-        Role save = repository.save(role);
-        return mapper.toDto(save);
+        repository.save(role);
     }
 
     @Override

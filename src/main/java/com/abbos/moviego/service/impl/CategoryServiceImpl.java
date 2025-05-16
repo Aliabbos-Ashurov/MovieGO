@@ -26,19 +26,17 @@ public class CategoryServiceImpl extends AbstractService<CategoryRepository, Cat
     }
 
     @Override
-    public CategoryResponseDto create(CategoryCreateDto dto) {
+    public void create(CategoryCreateDto dto) {
         Category category = mapper.fromCreate(dto);
-        Category saved = repository.save(category);
-        return mapper.toDto(saved);
+        repository.save(category);
     }
 
     @Override
-    public CategoryResponseDto update(CategoryUpdateDto dto) {
+    public void update(CategoryUpdateDto dto) {
         Category category = findEntity(dto.id());
         category.setName(dto.name());
         category.setDescription(dto.description());
-        Category saved = repository.save(category);
-        return mapper.toDto(saved);
+        repository.save(category);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.abbos.moviego.repository;
 
 import com.abbos.moviego.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.ListCrudRepository;
 
 import java.util.Optional;
 import java.util.Set;
@@ -11,7 +12,7 @@ import java.util.Set;
  * @version 1.0
  * @since 2025-05-09
  */
-public interface RoleRepository extends JpaRepository<Role, Long> {
+public interface RoleRepository extends ListCrudRepository<Role, Long> {
 
     Optional<Role> findByName(String name);
 

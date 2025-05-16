@@ -17,7 +17,6 @@ public record MovieUpdateDto(
 
         @NotNull(message = "Duration is required")
         @Min(1)
-        @Max(600)
         Integer durationMinutes,
 
         @NotNull

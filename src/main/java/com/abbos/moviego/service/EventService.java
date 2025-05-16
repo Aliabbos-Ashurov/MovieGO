@@ -16,9 +16,12 @@ import java.util.List;
  */
 public interface EventService extends CrudService<Long, Event, EventResponseDto, EventCreateDto, EventUpdateDto> {
 
-    List<EventResponseDto> findEventsByCinemaHallId(Long cinemaHallId);
+    List<EventResponseDto> findAllByStatus(EventStatus status);
 
-    List<EventResponseDto> findEventsByMovieId(Long movieId);
+    int decreaseCapacity(Long eventId);
 
-    List<EventResponseDto> findEventsByStatus(EventStatus status);
+    int markCompletedEvents();
+
+
+    List<EventResponseDto> findAllEager();
 }

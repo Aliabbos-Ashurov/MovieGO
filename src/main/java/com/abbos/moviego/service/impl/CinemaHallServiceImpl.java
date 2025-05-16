@@ -35,7 +35,7 @@ public class CinemaHallServiceImpl extends AbstractService<CinemaHallRepository,
 
     @Transactional
     @Override
-    public CinemaHallResponseDto create(CinemaHallCreateDto dto) {
+    public void create(CinemaHallCreateDto dto) {
         CinemaHall cinemaHall = mapper.fromCreate(dto);
 
         Image image = imageService.create(cinemaHall.getName(), dto.image());
@@ -43,15 +43,14 @@ public class CinemaHallServiceImpl extends AbstractService<CinemaHallRepository,
         cinemaHall.setImage(image);
         cinemaHall.setCapacity(dto.rows() * dto.columns());
 
-        CinemaHall saved = repository.save(cinemaHall);
-        return mapper.toDto(saved);
+        repository.save(cinemaHall);
     }
 
     @Override
-    public CinemaHallResponseDto update(CinemaHallUpdateDto dto) {
+    public void update(CinemaHallUpdateDto dto) {
         CinemaHall cinemaHall = findEntity(dto.id());
         cinemaHall.setStatus(dto.status());
-        return mapper.toDto(repository.save(cinemaHall));
+        repository.save(cinemaHall);
     }
 
     @Override

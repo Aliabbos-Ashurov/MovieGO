@@ -1,4 +1,4 @@
-package com.abbos.moviego.config;
+package com.abbos.moviego.config.cloud;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

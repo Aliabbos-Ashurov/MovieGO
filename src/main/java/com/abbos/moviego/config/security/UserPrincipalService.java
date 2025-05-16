@@ -1,4 +1,4 @@
-package com.abbos.moviego.config;
+package com.abbos.moviego.config.security;
 
 import com.abbos.moviego.entity.User;
 import com.abbos.moviego.service.UserService;
