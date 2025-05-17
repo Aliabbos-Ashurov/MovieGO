@@ -134,11 +134,6 @@ public class UserServiceImpl extends AbstractService<UserRepository, UserMapper>
     }
 
     @Override
-    public List<UserResponseDto> findUsersByNameLike(String name) {
-        return mapper.toDtoList(repository.findUsersByNameLike(name));
-    }
-
-    @Override
     public User findByEmail(String email) {
         return repository.findByEmail(email).orElseThrow(
                 () -> new UserNotFoundException("User not found with email: " + email)

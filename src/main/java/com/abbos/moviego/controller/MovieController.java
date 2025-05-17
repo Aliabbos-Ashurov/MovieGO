@@ -36,7 +36,7 @@ public class MovieController implements ViewModelConfigurer {
 
     @GetMapping("/{id}")
     public String getOne(@PathVariable Long id, Model model) {
-        model.addAttribute("movie", movieService.find(id));
+        model.addAttribute("movie", movieService.findMovieDetail(id));
         return "movie";
     }
 

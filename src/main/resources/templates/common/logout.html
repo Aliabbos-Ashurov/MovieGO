@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout</title>
+    <link rel="stylesheet" th:href="@{/css/common/auth.css}">
+</head>
+<body>
+<div class="form-wrapper">
+    <h1>Are you sure you want to logout?</h1>
+    <form th:action="@{/auth/logout}" method="POST" style="display: flex; gap: 12px;">
+        <button type="submit" style="flex: 1;">Yes</button>
+        <a th:href="@{/home}"
+           style="flex: 1; display: inline-block; text-align: center; padding: 0.5em 1em; background-color: #ccc;
+           color: black; border: none; border-radius: 4px; text-decoration: none; line-height: 1.5;">No</a>
+    </form>
+</div>
+</body>
+</html>

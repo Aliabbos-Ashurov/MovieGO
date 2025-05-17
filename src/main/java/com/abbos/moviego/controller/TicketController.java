@@ -75,6 +75,6 @@ public class TicketController {
 
     private String successPage(Model model) {
         model.addAttribute("message", "Success");
-        return "success";
+        return "common/success";
     }
 }

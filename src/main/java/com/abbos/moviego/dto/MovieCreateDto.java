@@ -1,7 +1,10 @@
 package com.abbos.moviego.dto;
 
 import com.abbos.moviego.dto.base.Request;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -38,6 +41,7 @@ public record MovieCreateDto(
         @NotNull(message = "Poster image required")
         MultipartFile posterImage,
 
+        @NotNull(message = "scene images required")
         List<MultipartFile> sceneImages
 ) implements Request {
 }

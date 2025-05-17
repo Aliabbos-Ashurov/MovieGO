@@ -61,26 +61,16 @@ public class TicketServiceImpl extends AbstractService<TicketRepository, TicketM
         dto.positions().forEach(pos -> processTicket(pos, cinemaHall, event, user));
     }
 
-    private void processTicket(TicketCreateDto.SeatPositions seatPositions,
+    public void processTicket(TicketCreateDto.SeatPositions seatPositions,
                                CinemaHall cinemaHall,
                                Event event,
                                User user) {
         Integer row = seatPositions.row();
         Integer column = seatPositions.column();
 
-        if (row > cinemaHall.getRows() || column > cinemaHall.getColumns()
-                || row < 1 || column < 1) {
-            throw new IllegalArgumentException("Seat (" + row + ", " + column + ") is out of bounds for cinema hall");
-        }
-
-        if (existsByEventIdAndSeat(event.getId(), row, column)) {
-            throw new IllegalStateException("Seat (" + row + ", " + column + ") is already taken");
-        }
-
-        int affectedRows = eventService.decreaseCapacity(event.getId());
-        if (affectedRows == 0) {
-            throw new IllegalStateException("No tickets available for event ID: " + event.getId());
-        }
+        validateSeatBounds(cinemaHall, row, column);
+        validateSeatAvailability(event.getId(), row, column);
+        decreaseEventCapacity(event.getId());
 
         Ticket ticket = Ticket.builder()
                 .event(event)
@@ -91,6 +81,26 @@ public class TicketServiceImpl extends AbstractService<TicketRepository, TicketM
                 .build();
 
         repository.save(ticket);
+    }
+
+    private void validateSeatAvailability(Long eventId, Integer row, Integer column) {
+        if (existsByEventIdAndSeat(eventId, row, column)) {
+            throw new IllegalStateException("Seat ( %s , %s ) is already taken".formatted(row, column));
+        }
+    }
+
+    private void validateSeatBounds(CinemaHall cinemaHall, Integer row, Integer column) {
+        if (row > cinemaHall.getRows() || column > cinemaHall.getColumns()
+                || row < 1 || column < 1) {
+            throw new IllegalArgumentException("Seat ( %s , %s ) is out of bounds for cinema hall".formatted(row, column));
+        }
+    }
+
+    private void decreaseEventCapacity(Long eventId) {
+        int affectedRows = eventService.decreaseCapacity(eventId);
+        if (affectedRows == 0) {
+            throw new IllegalStateException("No tickets available for event ID: " + eventId);
+        }
     }
 
     @Override

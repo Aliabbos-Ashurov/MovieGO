@@ -1,78 +1,74 @@
-<div th:fragment="content">
-    <section class="table-container">
-
-        <div class="profile_image-upload">
-            <div class="profile_image" th:if="${user.profilePic != null and user.profilePic.link != null}">
-                <img th:src="${user.profilePic.link}" alt="Profile Picture" class="profile_image-img">
+<div th:fragment="content" class="profile-container">
+    <section class="profile-card">
+        <div class="profile-header">
+            <div class="profile-image-section">
+                <div class="profile-image" th:classappend="${user.profilePic != null and user.profilePic.link != null} ? 'has-image' : ''">
+                    <img th:if="${user.profilePic != null and user.profilePic.link != null}" th:src="${user.profilePic.link}" alt="Profile Picture" class="profile-image-img">
+                </div>
+                <form th:action="@{/users/upload}" method="post" enctype="multipart/form-data" class="profile-upload-form">
+                    <input type="file" name="file" accept="image/*" required class="profile-upload-input">
+                    <button type="submit" class="profile-upload-button">Upload Photo</button>
+                </form>
             </div>
-            <div class="profile_image" th:if="${user.profilePic == null or user.profilePic.link == null}">
+        </div>
+
+        <div class="profile-content">
+            <div class="profile-details" id="profile-info">
+                <h2 class="profile-title">Profile Details</h2>
+                <div class="profile-info-item">
+                    <strong class="profile-info-label">Full Name:</strong>
+                    <span th:text="${user.fullname}" class="profile-info-value">Aliabbos Ashurov</span>
+                </div>
+                <div class="profile-info-item">
+                    <strong class="profile-info-label">Email:</strong>
+                    <span th:text="${user.email}" class="profile-info-value">abbos@gmail.com</span>
+                </div>
+                <div class="profile-info-item">
+                    <strong class="profile-info-label">Roles:</strong>
+                    <div class="wrap roles-wrap">
+                        <span th:unless="${user.roles.isEmpty()}">
+                            <span th:each="role, stat : ${user.roles}">
+                                <span class="role-badge" th:text="${role.name}"></span>
+                                <span th:if="${!stat.last}" class="comma">,</span>
+                            </span>
+                        </span>
+                        <span th:if="${user.roles.isEmpty()}">-</span>
+                    </div>
+                </div>
+                <div class="profile-info-item">
+                    <strong class="profile-info-label">Permissions:</strong>
+                    <div class="wrap profile-permissions-wrap">
+                        <span th:each="role : ${user.roles}">
+                            <span th:each="permission, stat : ${role.permissions}">
+                                <span class="permission-badge" th:text="${permission.name}"></span>
+                                <span th:if="${!stat.last}" class="comma">,</span>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                <div class="profile-info-item">
+                    <strong class="profile-info-label">Created At:</strong>
+                    <span th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm')}" class="profile-info-value"></span>
+                </div>
             </div>
 
-            <form th:action="@{/users/upload}" method="post" enctype="multipart/form-data" class="profile_upload-form">
-                <input type="file" name="file" accept="image/*" required class="profile_upload-input">
-                <button type="submit" class="profile_upload-button">Upload Photo</button>
+            <form id="update-form" th:action="@{/users}" method="post" class="profile-update-form">
+                <input type="hidden" name="_method" value="put"/>
+                <input type="hidden" name="id" th:value="${user.id}"/>
+                <h2 class="profile-title">Update Password</h2>
+                <div class="form-group">
+                    <label for="oldPassword">Old Password</label>
+                    <input type="password" id="oldPassword" name="oldPassword" required minlength="8"/>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" name="newPassword" required minlength="8"/>
+                </div>
+                <button type="submit" class="btn-save">Save Changes</button>
             </form>
         </div>
 
-        <div class="profile_info" id="profile-info">
-            <div class="profile_info-item">
-                <strong class="profile_info-label">Full Name:</strong>
-                <span th:text="${user.fullname}" class="profile_info-value">Aliabbos Ashurov</span>
-            </div>
-            <div class="profile_info-item">
-                <strong class="profile_info-label">Email:</strong>
-                <span th:text="${user.email}" class="profile_info-value">abbos@gmail.com</span>
-            </div>
-
-            <div class="profile_info-item">
-                <strong class="profile_info-label">Roles:</strong>
-                <div class="wrap roles-wrap">
-                   <span th:unless="${user.roles.isEmpty()}">
-                       <span th:each="role, stat : ${user.roles}">
-                           <span class="badge" th:text="${role.name}"></span>
-                           <span th:if="${!stat.last}">,</span>
-                       </span>
-                   </span>
-                    <span th:if="${user.roles.isEmpty()}">-</span>
-                </div>
-            </div>
-
-            <div class="profile_info-item">
-                <strong class="profile_info-label">Permissions:</strong>
-                <div class="wrap profile-permissions-wrap">
-                <span th:each="role : ${user.roles}">
-                    <span th:each="permission, stat : ${role.permissions}">
-                        <span class="badge" th:text="${permission.name}"></span>
-                        <span th:if="${!stat.last}">,</span>
-                    </span>
-                </span>
-                </div>
-            </div>
-
-            <div class="profile_info-item">
-                <strong class="profile_info-label">Created At:</strong>
-                <span th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm')}" class="profile_info-value"></span>
-            </div>
-        </div>
-
-        <form id="update-form" th:action="@{/users}" method="post" style="display: none; margin-top: 20px;">
-            <input type="hidden" name="_method" value="put"/>
-            <input type="hidden" name="id" th:value="${user.id}"/>
-
-            <div class="form-group">
-                <label for="oldPassword">Old Password</label>
-                <input type="text" id="oldPassword" name="oldPassword" required minlength="8"/>
-            </div>
-
-            <div class="form-group">
-                <label for="newPassword">New Password</label>
-                <input type="text" id="newPassword" name="newPassword" required minlength="8"/>
-            </div>
-
-            <button type="submit" class="btn-save">Save Changes</button>
-        </form>
-
-        <div class="button-group" style="margin-top: 20px;">
+        <div class="profile-actions">
             <button type="button" class="btn-update" onclick="toggleUpdateForm()">Update Password</button>
             <form th:action="@{/users/delete-me/{id}(id=${user.id})}" method="post" class="form-inline">
                 <input type="hidden" name="_method" value="delete"/>
@@ -84,10 +80,8 @@
     <script>
         function toggleUpdateForm() {
             const form = document.getElementById("update-form");
-            const info = document.getElementById("profile-info");
-            const isHidden = form.style.display === "none";
+            const isHidden = form.style.display === "none" || form.style.display === "";
             form.style.display = isHidden ? "block" : "none";
-            info.style.display = isHidden ? "none" : "block";
         }
     </script>
 </div>

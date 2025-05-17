@@ -3,6 +3,7 @@ package com.abbos.moviego.service.impl;
 import com.abbos.moviego.dto.EventCreateDto;
 import com.abbos.moviego.dto.EventResponseDto;
 import com.abbos.moviego.dto.EventUpdateDto;
+import com.abbos.moviego.dto.SimpleEventDto;
 import com.abbos.moviego.entity.CinemaHall;
 import com.abbos.moviego.entity.Event;
 import com.abbos.moviego.entity.Movie;
@@ -79,6 +80,11 @@ public class EventServiceImpl extends AbstractService<EventRepository, EventMapp
     @Override
     public int decreaseCapacity(Long eventId) {
         return repository.decreaseCapacity(eventId);
+    }
+
+    @Override
+    public List<SimpleEventDto> findSimpleEventDtoByMovieId(Long movieId) {
+        return repository.findSimpleEventDtoByMovieId(movieId);
     }
 
     @Override

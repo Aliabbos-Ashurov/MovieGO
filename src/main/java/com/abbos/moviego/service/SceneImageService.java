@@ -19,5 +19,5 @@ public interface SceneImageService extends SearchService<Long, SceneImage, Scene
 
     List<SceneImage> create(Movie movie, List<MultipartFile> multipartFile);
 
-    List<SceneImageResponseDto> findSceneImagesByMovieId(Long movieId);
+    List<String> findSceneImagesLink(Long movieId);
 }

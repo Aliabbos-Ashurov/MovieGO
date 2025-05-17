@@ -17,11 +17,12 @@
                 <td class="table-cell" th:text="${user.email} ?: '-'"></td>
                 <td class="table-cell">
                     <div class="wrap roles-wrap">
-                       <span th:unless="${user.roles.isEmpty()}"
-                             th:each="role : ${user.roles}"
-                             th:text="${role.name}"
-                             class="badge">
-                       </span>
+                        <span th:unless="${user.roles.isEmpty()}">
+                            <span th:each="role, stat : ${user.roles}">
+                                <span class="role-badge" th:text="${role.name}"></span>
+                                <span th:if="${!stat.last}" class="comma">,</span>
+                            </span>
+                        </span>
                         <span th:if="${user.roles.isEmpty()}">-</span>
                     </div>
                 </td>
@@ -44,7 +45,7 @@
                         <input type="hidden" name="id" th:value="${user.id}"/>
                         <div class="form-group">
                             <label>Roles</label>
-                            <div style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 150px; overflow-y: auto;">
+                            <div style=" scrollbar-width: none; -ms-overflow-style: none; display: flex; flex-direction: column; gap: 0.5rem; max-height: 150px; overflow-y: auto;">
                                 <label th:each="role : ${roles}" style="display: flex; align-items: center; gap: 0.5rem;">
                                     <input type="checkbox" name="roles" th:value="${role.id}"/>
                                     <span th:text="${role.name}" style="font-family: 'Roboto', sans-serif; font-size: 14px;"></span>

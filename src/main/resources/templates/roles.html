@@ -34,15 +34,15 @@
                 <td class="table-cell" th:text="${role.name}"></td>
                 <td class="table-cell">
                     <div class="wrap permissions-wrap">
-                       <span th:unless="${role.permissions.isEmpty()}"
-                             th:each="perm : ${role.permissions}"
-                             th:text="${perm.name}"
-                             class="badge">
-                       </span>
+                        <span th:unless="${role.permissions.isEmpty()}">
+                            <span th:each="perm, stat : ${role.permissions}">
+                                <span class="permission-badge" th:text="${perm.name}"></span>
+                                <span th:if="${!stat.last}" class="comma">,</span>
+                            </span>
+                        </span>
                         <span th:if="${role.permissions.isEmpty()}">-</span>
                     </div>
                 </td>
-
                 <td class="action-buttons">
                     <div class="button-group">
                         <button type="button" class="btn-update" th:onclick="'toggleUpdateForm(' + ${role.id} + ')'">
