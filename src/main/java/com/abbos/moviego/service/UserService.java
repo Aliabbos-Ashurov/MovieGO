@@ -19,8 +19,6 @@ public interface UserService extends CrudService<Long, User, UserResponseDto, Si
 
     User findByEmail(String email);
 
-    List<UserResponseDto> findUsersByNameLike(String name);
-
     UserResponseDto uploadPhoto(MultipartFile image);
 
     UserResponseDto getMe();

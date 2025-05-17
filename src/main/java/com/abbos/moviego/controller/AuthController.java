@@ -19,28 +19,29 @@ import org.springframework.web.servlet.ModelAndView;
 public class AuthController {
 
     private final UserService userService;
+    private static final String AUTH_VIEW = "common/auth";
 
     @GetMapping("/login")
     public ModelAndView login(@RequestParam(value = "error", required = false) String error) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("error", error);
-        modelAndView.setViewName("auth");
+        modelAndView.setViewName(AUTH_VIEW);
         return modelAndView;
     }
 
     @GetMapping("/signup")
     public String signUp() {
-        return "auth";
+        return AUTH_VIEW;
     }
 
     @PostMapping("/signup")
     public String signUpPost(@Valid @ModelAttribute SignUpDto dto) {
         userService.create(dto);
-        return "auth";
+        return AUTH_VIEW;
     }
 
     @GetMapping("/logout")
     public String logout() {
-        return "logout";
+        return "common/logout";
     }
 }

@@ -1,6 +1,5 @@
-/* General Styling */
 body {
-    background-color: #000000;
+    background-color: #141414;
     font-family: 'Roboto', sans-serif;
     color: #ffffff;
     margin: 0;
@@ -14,10 +13,10 @@ body {
     flex-direction: column;
     align-items: center;
     width: 90%;
-    max-width: 1400px;
+    max-width: 1440px;
     margin: 0 auto;
     padding-top: 8rem;
-    animation: fadeIn 1s ease-in-out;
+    animation: fadeIn 0.8s ease-in-out;
 }
 
 @keyframes fadeIn {
@@ -25,74 +24,72 @@ body {
     to { opacity: 1; }
 }
 
-/* Screen Styling */
 .screen-wrapper {
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     text-align: center;
     width: 100%;
 }
 
 .screen {
-    background: linear-gradient(to right, #a100ff, #ff00cc);
-    width: 80%;
-    height: 30px;
+    background: linear-gradient(90deg, #7b00ff, #ff00d4);
+    width: 85%;
+    height: 35px;
     margin: 0 auto;
-    border-radius: 50px 50px 10px 10px;
+    border-radius: 60px 60px 12px 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: #ffffff;
-    box-shadow: 0 4px 10px rgba(161, 0, 255, 0.5);
-    animation: glow 2s infinite alternate;
+    box-shadow: 0 6px 15px rgba(123, 0, 255, 0.5);
+    animation: glow 1.5s infinite alternate;
 }
 
 @keyframes glow {
-    from { box-shadow: 0 4px 10px rgba(161, 0, 255, 0.5); }
-    to { box-shadow: 0 6px 15px rgba(255, 0, 204, 0.8); }
+    from { box-shadow: 0 6px 15px rgba(123, 0, 255, 0.5); }
+    to { box-shadow: 0 8px 20px rgba(255, 0, 204, 0.8); }
 }
 
-/* Seats Section */
 .seats-section {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: rgba(20, 20, 30, 0.7);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 2rem;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    background: rgba(20, 20, 30, 0.85);
+    backdrop-filter: blur(15px);
+    border-radius: 25px;
+    padding: 2.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .cinema-seats {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 18px;
     width: 100%;
     align-items: center;
 }
 
 .row {
     display: flex;
-    gap: 15px;
+    gap: 18px;
     justify-content: center;
 }
 
 .seat {
-    width: 60px;
-    height: 60px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 12px;
+    width: 65px;
+    height: 65px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 14px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
-    color: #ffffff;
+    font-size: 15px;
+    color: #e0e0e0;
     font-weight: 500;
     position: relative;
     overflow: hidden;
@@ -105,41 +102,40 @@ body {
     left: 50%;
     width: 0;
     height: 0;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.25);
     border-radius: 50%;
     transform: translate(-50%, -50%);
     transition: width 0.5s ease, height 0.5s ease;
 }
 
 .seat:hover:not(.taken)::before {
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
 }
 
 .seat.taken {
-    background: rgba(161, 0, 255, 0.5);
+    background: rgba(123, 0, 255, 0.5);
     cursor: not-allowed;
     border: none;
 }
 
 .seat.selected {
-    background: linear-gradient(45deg, #a100ff, #ff00cc);
-    box-shadow: 0 0 15px rgba(255, 0, 204, 0.7);
-    transform: scale(1.1);
+    background: linear-gradient(45deg, #7b00ff, #ff00d4);
+    box-shadow: 0 0 20px rgba(255, 0, 204, 0.8);
+    transform: scale(1.15);
     border: none;
 }
 
 .seat:hover:not(.taken) {
-    transform: scale(1.1);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    transform: scale(1.15);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
 }
 
-/* Selection Info */
 .selection-info {
-    margin-top: 2rem;
+    margin-top: 2.5rem;
     text-align: center;
     width: 100%;
-    animation: slideIn 1s ease-in-out;
+    animation: slideIn 0.8s ease-in-out;
 }
 
 @keyframes slideIn {
@@ -148,21 +144,21 @@ body {
 }
 
 .selection-info p {
-    font-size: 1.2rem;
-    margin: 0.8rem 0;
-    color: #ffffff;
+    font-size: 1.25rem;
+    margin: 1rem 0;
+    color: #e0e0e0;
 }
 
 .selection-info .booking {
-    padding: 0.8rem 2rem;
-    background: linear-gradient(45deg, #a100ff, #ff00cc);
+    padding: 0.9rem 2.5rem;
+    background: linear-gradient(45deg, #7b00ff, #ff00d4);
     border: none;
-    border-radius: 2rem;
+    border-radius: 50px;
     color: #ffffff;
     cursor: pointer;
-    font-size: 1.1rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
+    font-size: 1.125rem;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
 }
@@ -174,7 +170,7 @@ body {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
     transition: left 0.5s ease;
 }
 
@@ -183,18 +179,17 @@ body {
 }
 
 .selection-info .booking:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(161, 0, 255, 0.5);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(123, 0, 255, 0.6);
 }
 
 .selection-info .booking:disabled {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.25);
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .container {
         padding-top: 6rem;
@@ -202,9 +197,49 @@ body {
     }
 
     .screen {
-        width: 85%;
-        height: 25px;
+        width: 90%;
+        height: 30px;
+        font-size: 1.125rem;
+        border-radius: 50px 50px 10px 10px;
+    }
+
+    .seats-section {
+        padding: 2rem;
+    }
+
+    .cinema-seats {
+        gap: 15px;
+    }
+
+    .row {
+        gap: 15px;
+    }
+
+    .seat {
+        width: 55px;
+        height: 55px;
+        font-size: 13px;
+    }
+
+    .selection-info p {
+        font-size: 1.125rem;
+    }
+
+    .selection-info .booking {
+        padding: 0.75rem 2rem;
         font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding-top: 5rem;
+    }
+
+    .screen {
+        width: 95%;
+        height: 25px;
+        font-size: 0.9rem;
         border-radius: 40px 40px 8px 8px;
     }
 
@@ -221,9 +256,9 @@ body {
     }
 
     .seat {
-        width: 50px;
-        height: 50px;
-        font-size: 12px;
+        width: 45px;
+        height: 45px;
+        font-size: 11px;
     }
 
     .selection-info p {
@@ -232,46 +267,6 @@ body {
 
     .selection-info .booking {
         padding: 0.6rem 1.5rem;
-        font-size: 0.95rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        padding-top: 5rem;
-    }
-
-    .screen {
-        width: 90%;
-        height: 20px;
-        font-size: 0.8rem;
-        border-radius: 30px 30px 6px 6px;
-    }
-
-    .seats-section {
-        padding: 1rem;
-    }
-
-    .cinema-seats {
-        gap: 10px;
-    }
-
-    .row {
-        gap: 10px;
-    }
-
-    .seat {
-        width: 40px;
-        height: 40px;
-        font-size: 10px;
-    }
-
-    .selection-info p {
         font-size: 0.9rem;
-    }
-
-    .selection-info .booking {
-        padding: 0.5rem 1.2rem;
-        font-size: 0.85rem;
     }
 }

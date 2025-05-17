@@ -1,6 +1,7 @@
 package com.abbos.moviego.service.impl;
 
 import com.abbos.moviego.dto.MovieCreateDto;
+import com.abbos.moviego.dto.MovieDetailDto;
 import com.abbos.moviego.dto.MovieResponseDto;
 import com.abbos.moviego.dto.MovieUpdateDto;
 import com.abbos.moviego.entity.Category;
@@ -10,17 +11,17 @@ import com.abbos.moviego.entity.SceneImage;
 import com.abbos.moviego.exception.ResourceNotFoundException;
 import com.abbos.moviego.mapper.MovieMapper;
 import com.abbos.moviego.repository.MovieRepository;
-import com.abbos.moviego.service.CategoryService;
-import com.abbos.moviego.service.ImageService;
-import com.abbos.moviego.service.MovieService;
-import com.abbos.moviego.service.SceneImageService;
+import com.abbos.moviego.service.*;
 import com.abbos.moviego.service.base.AbstractService;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Aliabbos Ashurov
@@ -33,16 +34,18 @@ public class MovieServiceImpl extends AbstractService<MovieRepository, MovieMapp
     private final CategoryService categoryService;
     private final ImageService imageService;
     private final SceneImageService sceneImageService;
-
+    private final EventService eventService;
     public MovieServiceImpl(MovieRepository repository,
                             MovieMapper movieMapper,
                             CategoryService categoryService,
                             ImageService imageService,
-                            SceneImageService sceneImageService) {
+                            SceneImageService sceneImageService,
+                            @Lazy EventService eventService) {
         super(repository, movieMapper);
         this.categoryService = categoryService;
         this.imageService = imageService;
         this.sceneImageService = sceneImageService;
+        this.eventService = eventService;
     }
 
     @Transactional
@@ -110,10 +113,40 @@ public class MovieServiceImpl extends AbstractService<MovieRepository, MovieMapp
 
     @Transactional(readOnly = true)
     @Override
+    public MovieResponseDto findLastMovie() {
+        return mapper.toDto(
+                repository.findLastMovieNative().orElse(null)
+        );
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public MovieDetailDto findMovieDetail(Long movieId) {
+        MovieDetailDto movie = repository.findMovieBaseDetails(movieId).orElseThrow(
+                () -> returnNotFound(movieId)
+        );
+        final var simpleEvents = eventService.findSimpleEventDtoByMovieId(movieId);
+        final var sceneImagesLink = sceneImageService.findSceneImagesLink(movieId);
+
+        movie.setEvents(simpleEvents);
+        movie.setSceneImageLinks(sceneImagesLink);
+        return movie;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public List<MovieResponseDto> findAllEager() {
         return mapper.toDtoList(
                 repository.findAllEager()
         );
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Map<String, List<MovieResponseDto>> findAllGroupedByCategory() {
+        return findAllEager()
+                .stream()
+                .collect(Collectors.groupingBy(m -> m.category().name()));
     }
 
     @Transactional(readOnly = true)

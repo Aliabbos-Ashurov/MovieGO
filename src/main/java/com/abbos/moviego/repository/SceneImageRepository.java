@@ -1,7 +1,6 @@
 package com.abbos.moviego.repository;
 
 import com.abbos.moviego.entity.SceneImage;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 
@@ -16,4 +15,11 @@ public interface SceneImageRepository extends ListCrudRepository<SceneImage, Lon
 
     @Query("SELECT si FROM SceneImage si JOIN FETCH si.image i WHERE si.movie.id = :movieId")
     List<SceneImage> findSceneImagesByMovieId(Long movieId);
+
+    @Query("""
+                SELECT si.image.link
+                FROM SceneImage si
+                WHERE si.movie.id = :movieId
+            """)
+    List<String> findSceneImagesLink(Long movieId);
 }

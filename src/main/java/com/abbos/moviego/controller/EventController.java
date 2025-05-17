@@ -70,9 +70,7 @@ public class EventController implements ViewModelConfigurer {
 
     @Override
     public void configureModel(Model model) {
-        System.out.println("events.......");
         model.addAttribute("events", eventService.findAllEager());
-        System.out.println("events.......");
         model.addAttribute("cinemaHalls", cinemaHallService.findAll());
         model.addAttribute("movies", movieService.findAllEager());
         model.addAttribute("eventStatuses", EventStatus.values());

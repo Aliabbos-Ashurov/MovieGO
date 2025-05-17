@@ -58,7 +58,7 @@ public class UserController implements ViewModelConfigurer {
                                  HttpServletResponse httpServletResponse) {
         userService.update(dto);
         logout(httpServletRequest, httpServletResponse);
-        return "auth";
+        return "common/auth";
     }
 
     @PutMapping("/add-role")

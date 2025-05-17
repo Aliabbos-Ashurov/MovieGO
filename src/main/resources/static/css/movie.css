@@ -1,32 +1,10 @@
 body {
     background-color: #141414;
-    color: #fff;
+    color: #ffffff;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: #141414;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    animation: fadeIn 1s ease-in-out;
-}
-
-header a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 16px;
-}
-
-.nav-bar {
-    display: flex;
-    align-items: center;
-    gap: 20px;
 }
 
 main {
@@ -36,7 +14,7 @@ main {
 .movie-banner {
     position: relative;
     width: 100%;
-    height: 700px;
+    height: 850px;
     overflow: hidden;
     animation: slideIn 1s ease-in-out;
 }
@@ -68,35 +46,62 @@ main {
     bottom: 20px;
     left: 20px;
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 20px;
     z-index: 2;
 }
 
-.button-container button {
-    background-color: #a100ff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 18px;
-    border-radius: 5px;
-    display: flex;
+.button {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out, transform 0.3s ease;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 12px 20px;
     width: 200px;
     height: 50px;
+    min-width: 200px;
+    max-width: 200px;
+    border-radius: 8px;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.3s ease;
+    border: none;
+    gap: 10px;
+    box-sizing: border-box;
 }
 
-.play-button:hover {
-    background-color: #848e93;
-    transform: scale(1.05);
+.play-button {
+    background: linear-gradient(90deg, #7b00ff, #ff00d4);
+    color: #ffffff;
+}
+
+.event-button {
+    background: linear-gradient(90deg, #5a5a6e, #8a8a9e);
+    color: #ffffff;
+    gap: 5000px;
+}
+
+.event-button.inactive,
+.soon-button {
+    background: linear-gradient(90deg, #4a4a5a, #6c6c7d);
+    color: #cccccc;
+    cursor: default;
+}
+
+.play-button:hover,
+.event-button:hover:not(.inactive) {
+    background: linear-gradient(90deg, #5a00cc, #cc00a3);
+    transform: scale(1.01);
 }
 
 .play-icon {
-    font-size: 24px;
+    font-size: 22px;
     color: #fff;
-    margin-right: 10px;
 }
 
 .movie-details {
@@ -147,10 +152,6 @@ main {
     line-height: 1.5;
 }
 
-.scene-images::-webkit-scrollbar {
-    display: none;
-}
-
 .scene-images {
     margin-top: 40px;
     display: flex;
@@ -160,6 +161,10 @@ main {
     animation: fadeInUp 1s ease-in-out;
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+.scene-images::-webkit-scrollbar {
+    display: none;
 }
 
 .scene-images img {
@@ -194,7 +199,7 @@ main {
     transform: translate(-50%, -50%);
     width: 80%;
     height: 80%;
-    background-color: #000;
+    background-color: #000000;
     border-radius: 10px;
     overflow: hidden;
 }
@@ -209,7 +214,7 @@ main {
     position: absolute;
     top: 10px;
     right: 20px;
-    color: #fff;
+    color: #ffffff;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
@@ -218,7 +223,7 @@ main {
 
 .close:hover,
 .close:focus {
-    color: #aaa;
+    color: #aaaaaa;
 }
 
 @keyframes fadeIn {
@@ -247,5 +252,86 @@ main {
     }
     to {
         transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .movie-banner {
+        height: 600px;
+    }
+
+    .button-container {
+        bottom: 15px;
+        left: 15px;
+        gap: 10px;
+    }
+
+    .button {
+        width: 160px;
+        height: 40px;
+        min-width: 160px;
+        max-width: 160px;
+        font-size: 16px;
+        padding: 8px 16px;
+    }
+
+    .play-icon {
+        font-size: 20px;
+    }
+
+    .movie-details {
+        padding: 20px;
+        max-width: 100%;
+    }
+
+    .movie-details h1 {
+        font-size: 36px;
+    }
+
+    .movie-info {
+        font-size: 16px;
+    }
+
+    .scene-images img {
+        width: 300px;
+        height: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .movie-banner {
+        height: 400px;
+    }
+
+    .button-container {
+        bottom: 15px;
+        left: 15px;
+        gap: 10px;
+    }
+
+    .button {
+        width: 140px;
+        height: 36px;
+        min-width: 140px;
+        max-width: 140px;
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+
+    .play-icon {
+        font-size: 18px;
+    }
+
+    .movie-details h1 {
+        font-size: 28px;
+    }
+
+    .movie-info {
+        font-size: 14px;
+    }
+
+    .scene-images img {
+        width: 200px;
+        height: 120px;
     }
 }

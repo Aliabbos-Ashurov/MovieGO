@@ -1,11 +1,13 @@
 package com.abbos.moviego.repository;
 
+import com.abbos.moviego.dto.MovieDetailDto;
 import com.abbos.moviego.entity.Movie;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Aliabbos Ashurov
@@ -22,4 +24,33 @@ public interface MovieRepository extends ListCrudRepository<Movie, Long> {
                 LEFT JOIN FETCH si.image img
             """)
     List<Movie> findAllEager();
+
+    @Query(value = """
+                SELECT * FROM movies
+                ORDER BY created_at DESC
+                LIMIT 1
+            """, nativeQuery = true)
+    Optional<Movie> findLastMovieNative();
+
+    @Query("""
+                SELECT new com.abbos.moviego.dto.MovieDetailDto(
+                    m.id,
+                    m.title,
+                    m.trailerLink,
+                    m.durationMinutes,
+                    m.language,
+                    m.rating,
+                    m.description,
+                    c.name,
+                    pi.link,
+                    null,
+                    null
+                )
+                FROM Movie m
+                JOIN m.category c
+                JOIN m.posterImage pi
+                WHERE m.id = :id
+            """)
+    Optional<MovieDetailDto> findMovieBaseDetails(@Param("id") Long id);
+
 }

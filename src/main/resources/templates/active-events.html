@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,9 +19,11 @@
                 <img th:src="${event.movie.posterImage.link}" th:alt="${event.movie.title}" class="event-poster">
                 <div class="event-info">
                     <h2 th:text="${event.movie.title}">Movie Title</h2>
-                    <p class="showtime" th:text="${event.showTime.toString()}">Showtime</p>
+                    <p class="showtime"
+                       th:utext="${#temporals.format(event.showTime, 'yyyy-MM-dd') + '&nbsp;&nbsp;&nbsp;' + #temporals.format(event.showTime, 'HH:mm:ss')}">
+                        Showtime</p>
                     <p class="cinema" th:text="${event.cinemaHall.name}">Cinema Hall</p>
-                    <p class="price" th:text="${event.price}">Price</p>
+                    <p class="price" th:text="${'$' + event.price}">Price</p>
                     <div class="buttons">
                         <a th:href="@{'/movies/' + ${event.movie.id}}" class="more-info">More Info</a>
                         <a th:href="@{'/tickets/' + ${event.id} + '/seats'}" class="booking">Book Now</a>

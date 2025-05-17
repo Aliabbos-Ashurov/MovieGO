@@ -1,29 +1,15 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MOVIES - Past Lives</title>
-    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/common/home.css">
+    <link rel="stylesheet" href="/css/fragments/header.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-<header>
-    <nav class="nav-bar">
-        <a href="#">CINEMA HALLS</a>
-        <a href="/events/active">AVAILABLE EVENTS</a>
-
-        <div class="auth" sec:authorize="isAnonymous()">
-            <a href="/auth/login">LOGIN</a>
-            <a href="/auth/signup">SIGN UP</a>
-        </div>
-
-        <div class="auth" sec:authorize="isAuthenticated()">
-            <a href="/users/me">PROFILE</a>
-            <a href="/auth/logout">LOGOUT</a>
-        </div>
-    </nav>
-</header>
+<div th:replace="~{fragments/header :: header-navbar}"></div>
 
 <main>
     <div class="movie-banner" th:if="${movieForBanner != null}">
@@ -40,15 +26,21 @@
     </div>
 
     <section class="movies-section" th:if="${movies != null and !movies.isEmpty()}">
-        <h2>More Movies</h2>
-        <div class="movies-list">
-            <div class="movie-item" th:each="movie : ${movies}" th:attr="data-id=${movie.id}" onclick="goToMovie(this)">
-                <img th:src="${movie.posterImage.link}" th:alt="${movie.title}">
-                <h3 th:text="${movie.title}">Movie Title</h3>
+        <div class="category-container" th:each="entry : ${movies}">
+            <h3 class="category-title" th:text="${entry.key}">Category Name</h3>
+            <div class="movies-list">
+                <div class="movie-item"
+                     th:each="movie : ${entry.value}"
+                     th:attr="data-id=${movie.id}"
+                     onclick="goToMovie(this)">
+                    <img th:src="${movie.posterImage.link}" th:alt="${movie.title}">
+                    <h3 th:text="${movie.title}">Movie Title</h3>
+                </div>
             </div>
         </div>
     </section>
 </main>
+
 <script>
     function goToMovie(el) {
         const id = el.getAttribute("data-id");

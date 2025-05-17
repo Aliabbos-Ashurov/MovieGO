@@ -66,5 +66,6 @@ public class Movie extends Auditable {
             cascade = {CascadeType.PERSIST, CascadeType.MERGE},
             orphanRemoval = true,
             fetch = FetchType.LAZY)
+    @Column(nullable = false)
     private List<SceneImage> sceneImages;
 }

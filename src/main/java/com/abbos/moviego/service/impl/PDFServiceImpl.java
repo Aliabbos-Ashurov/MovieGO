@@ -32,8 +32,8 @@ public class PDFServiceImpl implements PDFService {
 
     @Override
     public byte[] generateTicketPdf(TicketRenderDto ticket) {
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            PdfWriter writer = new PdfWriter(baos);
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            PdfWriter writer = new PdfWriter(outputStream);
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf, PageSize.A5.rotate());
             document.setMargins(20, 20, 20, 20);
@@ -46,7 +46,7 @@ public class PDFServiceImpl implements PDFService {
             addFooter(document, ticket);
 
             document.close();
-            return baos.toByteArray();
+            return outputStream.toByteArray();
         } catch (Exception e) {
             throw new RuntimeException("Failed to generate ticket PDF", e);
         }

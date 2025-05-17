@@ -1,5 +1,6 @@
 package com.abbos.moviego.repository;
 
+import com.abbos.moviego.dto.SimpleEventDto;
 import com.abbos.moviego.entity.Event;
 import com.abbos.moviego.enums.EventStatus;
 import jakarta.transaction.Transactional;
@@ -29,6 +30,14 @@ public interface EventRepository extends ListCrudRepository<Event, Long> {
     @Modifying
     @Query("UPDATE Event e SET e.status = 'COMPLETED' WHERE e.showTime < CURRENT_TIMESTAMP")
     int markCompletedEvents();
+
+    @Query("""
+                SELECT new com.abbos.moviego.dto.SimpleEventDto(e.id, e.showTime)
+                FROM Event e
+                WHERE e.movie.id = :movieId AND e.status = 'SCHEDULED'
+                ORDER BY e.showTime ASC
+            """)
+    List<SimpleEventDto> findSimpleEventDtoByMovieId(Long movieId);
 
     @Query("""
                 SELECT DISTINCT e FROM Event e

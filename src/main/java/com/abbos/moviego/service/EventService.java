@@ -3,6 +3,7 @@ package com.abbos.moviego.service;
 import com.abbos.moviego.dto.EventCreateDto;
 import com.abbos.moviego.dto.EventResponseDto;
 import com.abbos.moviego.dto.EventUpdateDto;
+import com.abbos.moviego.dto.SimpleEventDto;
 import com.abbos.moviego.entity.Event;
 import com.abbos.moviego.enums.EventStatus;
 import com.abbos.moviego.service.base.CrudService;
@@ -24,4 +25,6 @@ public interface EventService extends CrudService<Long, Event, EventResponseDto,
 
 
     List<EventResponseDto> findAllEager();
+
+    List<SimpleEventDto> findSimpleEventDtoByMovieId(Long movieId);
 }

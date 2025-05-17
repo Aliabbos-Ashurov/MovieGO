@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
 /**
  * @author Aliabbos Ashurov
@@ -29,15 +28,12 @@ public class SceneImageServiceImpl
         extends AbstractService<SceneImageRepository, SceneImageMapper> implements SceneImageService {
 
     private final ImageService imageService;
-    private final ExecutorService executorService;
 
     public SceneImageServiceImpl(SceneImageRepository repository,
                                  ImageService imageService,
-                                 SceneImageMapper sceneImageMapper,
-                                 ExecutorService executorService) {
+                                 SceneImageMapper sceneImageMapper) {
         super(repository, sceneImageMapper);
         this.imageService = imageService;
-        this.executorService = executorService;
     }
 
     @Transactional
@@ -70,6 +66,11 @@ public class SceneImageServiceImpl
     }
 
     @Override
+    public List<String> findSceneImagesLink(Long movieId) {
+        return repository.findSceneImagesLink(movieId);
+    }
+
+    @Override
     public boolean exists(Long id) {
         return repository.existsById(id);
     }
@@ -94,11 +95,6 @@ public class SceneImageServiceImpl
         return mapper.toDtoList(
                 repository.findAll()
         );
-    }
-
-    @Override
-    public List<SceneImageResponseDto> findSceneImagesByMovieId(Long movieId) {
-        return mapper.toDtoList(repository.findSceneImagesByMovieId(movieId));
     }
 
     private void throwNotFound(Long id) {
