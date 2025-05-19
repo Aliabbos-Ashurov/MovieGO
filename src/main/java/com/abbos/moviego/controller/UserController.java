@@ -7,6 +7,7 @@ import com.abbos.moviego.service.RoleService;
 import com.abbos.moviego.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -53,7 +54,7 @@ public class UserController implements ViewModelConfigurer {
 
     @PutMapping
     @PreAuthorize("hasAuthority('EDIT_PROFILE')")
-    public String updatePassword(@ModelAttribute UserUpdateDto dto,
+    public String updatePassword(@Valid @ModelAttribute UserUpdateDto dto,
                                  HttpServletRequest httpServletRequest,
                                  HttpServletResponse httpServletResponse) {
         userService.update(dto);
@@ -63,7 +64,7 @@ public class UserController implements ViewModelConfigurer {
 
     @PutMapping("/add-role")
     @PreAuthorize("hasAuthority('UPDATE_USER')")
-    public String addRole(@ModelAttribute UserAddRoleDto dto, Model model) {
+    public String addRole(@Valid @ModelAttribute UserAddRoleDto dto, Model model) {
         userService.addRole(dto);
         configureModel(model);
         return DASHBOARD_VIEW;

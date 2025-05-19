@@ -5,6 +5,7 @@ import com.abbos.moviego.dto.MovieCreateDto;
 import com.abbos.moviego.dto.MovieUpdateDto;
 import com.abbos.moviego.service.CategoryService;
 import com.abbos.moviego.service.MovieService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -42,7 +43,7 @@ public class MovieController implements ViewModelConfigurer {
 
     @PostMapping
     @PreAuthorize("hasAuthority('CREATE_MOVIE')")
-    public String create(@ModelAttribute MovieCreateDto dto, Model model) {
+    public String create(@Valid @ModelAttribute MovieCreateDto dto, Model model) {
         movieService.create(dto);
         configureModel(model);
         return DASHBOARD_VIEW;
@@ -50,7 +51,7 @@ public class MovieController implements ViewModelConfigurer {
 
     @PutMapping
     @PreAuthorize("hasAuthority('UPDATE_MOVIE')")
-    public String updateMovie(@ModelAttribute MovieUpdateDto dto, Model model) {
+    public String updateMovie(@Valid @ModelAttribute MovieUpdateDto dto, Model model) {
         movieService.update(dto);
         configureModel(model);
         return DASHBOARD_VIEW;

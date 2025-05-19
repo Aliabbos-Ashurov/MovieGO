@@ -4,6 +4,7 @@ import com.abbos.moviego.controller.configurer.ViewModelConfigurer;
 import com.abbos.moviego.dto.CategoryCreateDto;
 import com.abbos.moviego.dto.CategoryUpdateDto;
 import com.abbos.moviego.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -35,7 +36,7 @@ public class CategoryController implements ViewModelConfigurer {
 
     @PostMapping
     @PreAuthorize("hasAuthority('CREATE_CATEGORY')")
-    public String create(@ModelAttribute CategoryCreateDto dto, Model model) {
+    public String create(@Valid @ModelAttribute CategoryCreateDto dto, Model model) {
         categoryService.create(dto);
         configureModel(model);
         return DASHBOARD_VIEW;
@@ -43,7 +44,7 @@ public class CategoryController implements ViewModelConfigurer {
 
     @PutMapping
     @PreAuthorize("hasAuthority('UPDATE_CATEGORY')")
-    public String update(@ModelAttribute CategoryUpdateDto dto, Model model) {
+    public String update(@Valid @ModelAttribute CategoryUpdateDto dto, Model model) {
         categoryService.update(dto);
         configureModel(model);
         return DASHBOARD_VIEW;

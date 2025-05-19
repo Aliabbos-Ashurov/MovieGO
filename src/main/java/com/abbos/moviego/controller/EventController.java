@@ -3,6 +3,7 @@ package com.abbos.moviego.controller;
 import com.abbos.moviego.controller.configurer.ViewModelConfigurer;
 import com.abbos.moviego.dto.EventCreateDto;
 import com.abbos.moviego.dto.EventUpdateDto;
+import com.abbos.moviego.enums.CinemaHallStatus;
 import com.abbos.moviego.enums.EventStatus;
 import com.abbos.moviego.service.CinemaHallService;
 import com.abbos.moviego.service.EventService;
@@ -71,7 +72,7 @@ public class EventController implements ViewModelConfigurer {
     @Override
     public void configureModel(Model model) {
         model.addAttribute("events", eventService.findAllEager());
-        model.addAttribute("cinemaHalls", cinemaHallService.findAll());
+        model.addAttribute("cinemaHalls", cinemaHallService.findAllByStatusIs(CinemaHallStatus.ACTIVE));
         model.addAttribute("movies", movieService.findAllEager());
         model.addAttribute("eventStatuses", EventStatus.values());
         model.addAttribute(FRAGMENT_KEY, "events.html");

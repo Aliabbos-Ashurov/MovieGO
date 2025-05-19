@@ -4,6 +4,7 @@ import com.abbos.moviego.controller.configurer.ViewModelConfigurer;
 import com.abbos.moviego.dto.PermissionCreateDto;
 import com.abbos.moviego.dto.PermissionUpdateDto;
 import com.abbos.moviego.service.PermissionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -36,7 +37,7 @@ public class PermissionController implements ViewModelConfigurer {
 
     @PostMapping
     @PreAuthorize("hasAuthority('CREATE_PERMISSION')")
-    public String create(@ModelAttribute PermissionCreateDto dto, Model model) {
+    public String create(@Valid @ModelAttribute PermissionCreateDto dto, Model model) {
         permissionService.create(dto);
         configureModel(model);
         return DASHBOARD_VIEW;
@@ -44,7 +45,7 @@ public class PermissionController implements ViewModelConfigurer {
 
     @PutMapping
     @PreAuthorize("hasAuthority('UPDATE_PERMISSION')")
-    public String update(@ModelAttribute PermissionUpdateDto dto, Model model) {
+    public String update(@Valid @ModelAttribute PermissionUpdateDto dto, Model model) {
         permissionService.update(dto);
         configureModel(model);
         return DASHBOARD_VIEW;

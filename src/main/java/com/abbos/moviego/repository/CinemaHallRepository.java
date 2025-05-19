@@ -1,10 +1,11 @@
 package com.abbos.moviego.repository;
 
 import com.abbos.moviego.entity.CinemaHall;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.abbos.moviego.enums.CinemaHallStatus;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -16,4 +17,7 @@ public interface CinemaHallRepository extends ListCrudRepository<CinemaHall, Lon
 
     @Query("SELECT ch FROM CinemaHall ch WHERE ch.name = :name")
     Optional<CinemaHall> findByName(String name);
+
+    List<CinemaHall> findAllByStatusIs(CinemaHallStatus status);
+
 }

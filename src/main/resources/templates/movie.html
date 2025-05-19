@@ -59,7 +59,13 @@
 <div id="trailer-modal" class="trailer-modal">
     <div class="trailer-content">
         <span class="close" onclick="closeTrailer()">×</span>
-        <iframe id="trailer-video" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+        <iframe id="trailer-video"
+                width="100%"
+                height="100%"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+        </iframe>
     </div>
 </div>
 
@@ -67,8 +73,16 @@
 <script>
     function playTrailer(button) {
         const trailerLink = button.getAttribute("data-trailer");
-        document.getElementById('trailer-modal').style.display = 'block';
-        document.getElementById('trailer-video').src = 'https://www.youtube.com/embed/' + extractYouTubeId(trailerLink);
+        const videoId = extractYouTubeId(trailerLink);
+        if (videoId) {
+            const modal = document.getElementById('trailer-modal');
+            const iframe = document.getElementById('trailer-video');
+            iframe.src = `https://www.youtube.com/embed/${videoId}?playsinline=1&enablejsapi=1`;
+            modal.style.display = 'block';
+        } else {
+            console.error('Invalid YouTube URL:', trailerLink);
+            window.open(trailerLink, '_blank');
+        }
     }
 
     function extractYouTubeId(url) {
@@ -82,6 +96,13 @@
         modal.style.display = 'none';
         iframe.src = '';
     }
+
+    window.onclick = function (event) {
+        const modal = document.getElementById('trailer-modal');
+        if (event.target === modal) {
+            closeTrailer();
+        }
+    };
 </script>
 </body>
 </html>

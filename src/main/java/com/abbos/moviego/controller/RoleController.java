@@ -5,6 +5,7 @@ import com.abbos.moviego.dto.RoleCreateDto;
 import com.abbos.moviego.dto.RoleUpdateDto;
 import com.abbos.moviego.service.PermissionService;
 import com.abbos.moviego.service.RoleService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -36,7 +37,7 @@ public class RoleController implements ViewModelConfigurer {
 
     @PostMapping
     @PreAuthorize("hasAuthority('CREATE_ROLE')")
-    public String create(@ModelAttribute RoleCreateDto dto, Model model) {
+    public String create(@Valid @ModelAttribute RoleCreateDto dto, Model model) {
         roleService.create(dto);
         configureModel(model);
         return DASHBOARD_VIEW;
@@ -44,7 +45,7 @@ public class RoleController implements ViewModelConfigurer {
 
     @PutMapping
     @PreAuthorize("hasAuthority('UPDATE_ROLE')")
-    public String update(@ModelAttribute RoleUpdateDto dto, Model model) {
+    public String update(@Valid @ModelAttribute RoleUpdateDto dto, Model model) {
         roleService.update(dto);
         configureModel(model);
         return DASHBOARD_VIEW;

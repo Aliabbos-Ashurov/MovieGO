@@ -16,6 +16,7 @@ public record TicketRenderDto(
         String userEmail,
         String movieTitle,
         LocalDateTime showTime,
+        String posterImageLink,
         String cinemaHallName
 ) {
 }

@@ -49,5 +49,4 @@ public interface EventRepository extends ListCrudRepository<Event, Long> {
                 LEFT JOIN FETCH si.image img
             """)
     List<Event> findAllEager();
-
 }

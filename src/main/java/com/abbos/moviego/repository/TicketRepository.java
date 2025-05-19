@@ -2,7 +2,7 @@ package com.abbos.moviego.repository;
 
 import com.abbos.moviego.dto.render.TicketRenderDto;
 import com.abbos.moviego.entity.Ticket;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.hibernate.annotations.processing.HQL;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -25,6 +25,7 @@ public interface TicketRepository extends ListCrudRepository<Ticket, Long> {
                            u.email,
                            m.title,
                            e.showTime,
+                           m.posterImage.link,
                            ch.name)
                 FROM Ticket t
                 JOIN t.user u
@@ -35,8 +36,7 @@ public interface TicketRepository extends ListCrudRepository<Ticket, Long> {
             """)
     TicketRenderDto findTicketForRender(@Param("ticketId") Long ticketId);
 
-
-    @Query("SELECT t FROM Ticket t JOIN FETCH t.event e WHERE t.user.id = :userId")
+    @Query("FROM Ticket t JOIN FETCH t.event e WHERE t.user.id = :userId")
     List<Ticket> findTicketsByUserId(Long userId);
 
     @Query("SELECT COUNT(t) > 0 FROM Ticket t WHERE t.event.id = :eventId AND t.rows = :row AND t.columns = :column")
@@ -46,4 +46,5 @@ public interface TicketRepository extends ListCrudRepository<Ticket, Long> {
 
     @Query("SELECT t FROM Ticket t WHERE t.event.id = :eventId")
     List<Ticket> findByEventId(@Param("eventId") Long eventId);
+
 }

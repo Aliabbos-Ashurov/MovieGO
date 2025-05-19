@@ -22,6 +22,7 @@ public interface MovieRepository extends ListCrudRepository<Movie, Long> {
                 JOIN FETCH m.posterImage pi
                 LEFT JOIN FETCH m.sceneImages si
                 LEFT JOIN FETCH si.image img
+                ORDER BY m.id DESC
             """)
     List<Movie> findAllEager();
 

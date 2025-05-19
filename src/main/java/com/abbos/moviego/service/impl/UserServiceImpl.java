@@ -96,11 +96,11 @@ public class UserServiceImpl extends AbstractService<UserRepository, UserMapper>
     @Override
     public void update(UserUpdateDto dto) {
         User user = findEntity(dto.id());
-        if (passwordEncoder.matches(dto.oldPassword(), user.getPassword())) {
-            user.setPassword(passwordEncoder.encode(dto.newPassword()));
-            repository.save(user);
+        if (!passwordEncoder.matches(dto.oldPassword(), user.getPassword())) {
+            throw new ModificationNotAllowedException("Password does not match!");
         }
-        throw new ModificationNotAllowedException("Password does not match!");
+        user.setPassword(passwordEncoder.encode(dto.newPassword()));
+        repository.save(user);
     }
 
     @Override

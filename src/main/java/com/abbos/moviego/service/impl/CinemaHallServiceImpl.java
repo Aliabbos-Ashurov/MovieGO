@@ -5,6 +5,7 @@ import com.abbos.moviego.dto.CinemaHallResponseDto;
 import com.abbos.moviego.dto.CinemaHallUpdateDto;
 import com.abbos.moviego.entity.CinemaHall;
 import com.abbos.moviego.entity.Image;
+import com.abbos.moviego.enums.CinemaHallStatus;
 import com.abbos.moviego.exception.ResourceNotFoundException;
 import com.abbos.moviego.mapper.CinemaHallMapper;
 import com.abbos.moviego.repository.CinemaHallRepository;
@@ -59,6 +60,14 @@ public class CinemaHallServiceImpl extends AbstractService<CinemaHallRepository,
             throwNotFound(id);
         }
         repository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<CinemaHallResponseDto> findAllByStatusIs(CinemaHallStatus status) {
+        return mapper.toDtoList(
+                repository.findAllByStatusIs(status)
+        );
     }
 
     @Override

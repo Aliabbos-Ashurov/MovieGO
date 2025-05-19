@@ -10,7 +10,7 @@ html, body {
 
 .container {
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .sidebar {
@@ -81,6 +81,7 @@ html, body {
     flex: 1;
     background: #141414;
     padding: 20px;
+    min-height: 100vh;
 }
 
 .header {
@@ -107,6 +108,7 @@ html, body {
 }
 
 .table-container {
+    color: #ffffff;
     max-height: calc(100vh - 120px);
     overflow-y: auto;
     -ms-overflow-style: none;
@@ -166,6 +168,7 @@ html, body {
     padding: 2rem;
     display: flex;
     justify-content: center;
+    height: 100%;
 }
 
 .profile-card {
@@ -175,6 +178,7 @@ html, body {
     padding: 2rem;
     animation: fadeIn 0.8s ease-in;
     max-height: calc(100vh - 160px);
+    min-height: 600px;
     overflow-y: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -349,6 +353,26 @@ html, body {
     background: #2a2a3a;
     padding: 1.5rem;
     border-radius: 12px;
+}
+
+#create-form .form-group textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 0.75rem;
+    border: 1px solid #4a4a5a;
+    border-radius: 8px;
+    background: #2a2a3a;
+    color: #e0e0e0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+}
+
+#create-form .form-group textarea:hover,
+#create-form .form-group textarea:focus {
+    border-color: #ff00d4;
+    outline: none;
 }
 
 .form-group {
