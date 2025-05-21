@@ -1,6 +1,6 @@
 package com.abbos.moviego.service;
 
-import com.abbos.moviego.dto.render.TicketRenderDto;
+import com.abbos.moviego.dto.internal.TicketRenderDto;
 
 /**
  * @author Aliabbos Ashurov

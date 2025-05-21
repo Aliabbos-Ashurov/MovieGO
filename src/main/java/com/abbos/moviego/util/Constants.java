@@ -11,6 +11,7 @@ public interface Constants extends Util {
     String[] OPEN_PAGES = {
             "/auth/signup",
             "/auth/login",
+            "/mail",
             "/error/**",
             "/events/active",
             "/home",

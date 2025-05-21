@@ -1,6 +1,6 @@
 package com.abbos.moviego.service.impl;
 
-import com.abbos.moviego.dto.render.TicketRenderDto;
+import com.abbos.moviego.dto.internal.TicketRenderDto;
 import com.abbos.moviego.service.PDFService;
 import com.abbos.moviego.service.QrService;
 import com.itextpdf.kernel.colors.WebColors;
@@ -136,20 +136,6 @@ public class PDFServiceImpl implements PDFService {
         qrTable.addCell(new Cell().add(qrCodeImage).setBorder(null).setPadding(10));
 
         Cell posterCell = new Cell().setBorder(null).setPadding(10);
-        if (ticket.posterImageLink() != null && !ticket.posterImageLink().isEmpty()) {
-            try {
-                Image posterImage = new Image(com.itextpdf.io.image.ImageDataFactory.create(ticket.posterImageLink()))
-                        .setWidth(100)
-                        .setHeight(150)
-                        .setHorizontalAlignment(HorizontalAlignment.CENTER)
-                        .setBorder(new SolidBorder(WebColors.getRGBColor("#a100ff"), 1));
-                posterCell.add(posterImage);
-            } catch (Exception e) {
-                posterCell.add(new Paragraph("Poster unavailable").setFontSize(10).setFontColor(WebColors.getRGBColor("#d0d0d0")));
-            }
-        } else {
-            posterCell.add(new Paragraph("No poster").setFontSize(10).setFontColor(WebColors.getRGBColor("#d0d0d0")));
-        }
         qrTable.addCell(posterCell);
 
         document.add(qrTable);

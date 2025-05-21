@@ -6,12 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.util.Optional;
 
 
-@EnableAsync
 @EnableJpaAuditing
 @SpringBootApplication
 public class MovieGoApplication {

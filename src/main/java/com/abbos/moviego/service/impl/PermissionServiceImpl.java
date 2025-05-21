@@ -9,10 +9,19 @@ import com.abbos.moviego.mapper.PermissionMapper;
 import com.abbos.moviego.repository.PermissionRepository;
 import com.abbos.moviego.service.PermissionService;
 import com.abbos.moviego.service.base.AbstractService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+
+import static com.abbos.moviego.util.CacheKeys.FIND_ALL;
+import static com.abbos.moviego.util.CacheKeys.PermissionKeys.PERMISSION;
+import static com.abbos.moviego.util.CacheKeys.PermissionKeys.PERMISSIONS;
 
 /**
  * @author Aliabbos Ashurov
@@ -22,16 +31,26 @@ import java.util.Set;
 @Service
 public class PermissionServiceImpl extends AbstractService<PermissionRepository, PermissionMapper> implements PermissionService {
 
-    public PermissionServiceImpl(PermissionRepository repository, PermissionMapper permissionMapper) {
+    private final PermissionService self;
+
+    public PermissionServiceImpl(PermissionRepository repository,
+                                 PermissionMapper permissionMapper,
+                                 @Lazy PermissionService permissionService) {
         super(repository, permissionMapper);
+        this.self = permissionService;
     }
 
+    @CacheEvict(value = PERMISSIONS, key = FIND_ALL)
     @Override
     public void create(PermissionCreateDto dto) {
         Permission permission = mapper.fromCreate(dto);
         repository.save(permission);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = PERMISSION, key = "#dto.id()"),
+            @CacheEvict(value = PERMISSIONS, key = FIND_ALL)
+    })
     @Override
     public void update(PermissionUpdateDto dto) {
         Permission permission = mapper.fromUpdate(dto);
@@ -43,6 +62,10 @@ public class PermissionServiceImpl extends AbstractService<PermissionRepository,
         return repository.findAllByIds(permissionIds);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = PERMISSION, key = "#id"),
+            @CacheEvict(value = PERMISSIONS, key = FIND_ALL)
+    })
     @Override
     public void delete(Long id) {
         if (!exists(id)) {
@@ -58,9 +81,10 @@ public class PermissionServiceImpl extends AbstractService<PermissionRepository,
 
     @Override
     public PermissionResponseDto find(Long id) {
-        return mapper.toDto(findEntity(id));
+        return mapper.toDto(self.findEntity(id));
     }
 
+    @Cacheable(value = PERMISSION, key = "#id")
     @Override
     public Permission findEntity(Long id) {
         return repository.findById(id).orElseThrow(
@@ -68,10 +92,11 @@ public class PermissionServiceImpl extends AbstractService<PermissionRepository,
         );
     }
 
+    @Cacheable(value = PERMISSIONS, key = FIND_ALL)
     @Override
     public List<PermissionResponseDto> findAll() {
         return mapper.toDtoList(
-                repository.findAll()
+                repository.findAll(Sort.by(Sort.Direction.DESC, "id"))
         );
     }
 }

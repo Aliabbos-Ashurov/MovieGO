@@ -5,12 +5,14 @@ import com.abbos.moviego.dto.UserAddRoleDto;
 import com.abbos.moviego.dto.UserResponseDto;
 import com.abbos.moviego.dto.UserUpdateDto;
 import com.abbos.moviego.dto.auth.SignUpDto;
+import com.abbos.moviego.dto.internal.WelcomeEmailDto;
 import com.abbos.moviego.entity.Image;
 import com.abbos.moviego.entity.Role;
 import com.abbos.moviego.entity.User;
 import com.abbos.moviego.exception.ModificationNotAllowedException;
 import com.abbos.moviego.exception.UserNotFoundException;
 import com.abbos.moviego.mapper.UserMapper;
+import com.abbos.moviego.messaging.producer.MessageProducer;
 import com.abbos.moviego.repository.UserRepository;
 import com.abbos.moviego.service.ImageService;
 import com.abbos.moviego.service.RoleService;
@@ -18,6 +20,7 @@ import com.abbos.moviego.service.UserService;
 import com.abbos.moviego.service.base.AbstractService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,18 +41,22 @@ public class UserServiceImpl extends AbstractService<UserRepository, UserMapper>
     private final PasswordEncoder passwordEncoder;
     private final ImageService imageService;
     private final SessionUser sessionUser;
+    private final MessageProducer messageProducer;
+
 
     public UserServiceImpl(UserRepository repository,
                            UserMapper userMapper,
                            RoleService roleService,
                            @Lazy PasswordEncoder passwordEncoder,
                            ImageService imageService,
-                           SessionUser sessionUser) {
+                           SessionUser sessionUser,
+                           MessageProducer messageProducer) {
         super(repository, userMapper);
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
         this.imageService = imageService;
         this.sessionUser = sessionUser;
+        this.messageProducer = messageProducer;
     }
 
     @Transactional
@@ -59,7 +66,9 @@ public class UserServiceImpl extends AbstractService<UserRepository, UserMapper>
 
         User user = mapper.fromCreate(dto, passwordEncoder);
         user.setRoles(Set.of(role));
-        repository.save(user);
+        User saved = repository.save(user);
+
+        messageProducer.send(new WelcomeEmailDto(saved.getEmail(), saved.getFullname()));
     }
 
     @Transactional
@@ -130,7 +139,9 @@ public class UserServiceImpl extends AbstractService<UserRepository, UserMapper>
 
     @Override
     public List<UserResponseDto> findAll() {
-        return mapper.toDtoList(repository.findAll());
+        return mapper.toDtoList(
+                repository.findAll(Sort.by(Sort.Direction.DESC, "id"))
+        );
     }
 
     @Override

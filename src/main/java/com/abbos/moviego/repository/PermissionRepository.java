@@ -1,10 +1,11 @@
 package com.abbos.moviego.repository;
 
 import com.abbos.moviego.entity.Permission;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -19,4 +20,6 @@ public interface PermissionRepository extends ListCrudRepository<Permission, Lon
 
     @Query("FROM Permission p WHERE p.id IN (:permissionIds)")
     Set<Permission> findAllByIds(Set<Long> permissionIds);
+
+    List<Permission> findAll(Sort sort);
 }

@@ -19,5 +19,17 @@ public interface ViewModelConfigurer {
      * @param model the model to configure
      */
     void configureModel(Model model);
+
+    /**
+     * Default method to safely configure model with null check.
+     *
+     * @param model the model to configure
+     */
+    default void safeConfigureModel(Model model) {
+        if (model == null) {
+            throw new IllegalArgumentException("Model cannot be null");
+        }
+        configureModel(model);
+    }
 }
 

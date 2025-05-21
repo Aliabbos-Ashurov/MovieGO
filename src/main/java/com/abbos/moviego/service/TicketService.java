@@ -3,7 +3,7 @@ package com.abbos.moviego.service;
 import com.abbos.moviego.dto.SeatInfoDto;
 import com.abbos.moviego.dto.TicketCreateDto;
 import com.abbos.moviego.dto.TicketResponseDto;
-import com.abbos.moviego.dto.render.TicketRenderDto;
+import com.abbos.moviego.dto.internal.TicketRenderDto;
 import com.abbos.moviego.entity.Ticket;
 import com.abbos.moviego.service.base.CreateService;
 import com.abbos.moviego.service.base.DeleteService;

@@ -2,7 +2,7 @@ package com.abbos.moviego.controller;
 
 import com.abbos.moviego.dto.SeatInfoDto;
 import com.abbos.moviego.dto.TicketCreateDto;
-import com.abbos.moviego.dto.render.TicketRenderDto;
+import com.abbos.moviego.dto.internal.TicketRenderDto;
 import com.abbos.moviego.service.PDFService;
 import com.abbos.moviego.service.TicketService;
 import jakarta.validation.Valid;

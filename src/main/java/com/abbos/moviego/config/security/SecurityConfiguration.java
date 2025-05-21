@@ -21,8 +21,8 @@ import org.springframework.web.filter.HiddenHttpMethodFilter;
  * @version 1.0
  * @since 2025-05-05
  */
-@Configuration
 @EnableWebSecurity
+@Configuration(proxyBeanMethods = false)
 @EnableMethodSecurity(securedEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfiguration {
@@ -32,6 +32,8 @@ public class SecurityConfiguration {
 
     private final UserPrincipalService userPrincipalService;
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+
+    private static final int REMEMBER_ME_VALIDITY_SECONDS = 1209600;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -62,7 +64,7 @@ public class SecurityConfiguration {
         http.rememberMe(httpSecurityRememberMeConfigurer -> {
             httpSecurityRememberMeConfigurer
                     .key(rememberMeKey)
-                    .tokenValiditySeconds(1209600)
+                    .tokenValiditySeconds(REMEMBER_ME_VALIDITY_SECONDS)
                     .rememberMeParameter("rememberMe")
                     .rememberMeCookieName("remember-me")
                     .userDetailsService(userPrincipalService)

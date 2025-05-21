@@ -15,10 +15,18 @@ import com.abbos.moviego.service.CinemaHallService;
 import com.abbos.moviego.service.EventService;
 import com.abbos.moviego.service.MovieService;
 import com.abbos.moviego.service.base.AbstractService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.abbos.moviego.util.CacheKeys.EventKeys.EVENT;
+import static com.abbos.moviego.util.CacheKeys.EventKeys.EVENTS;
+import static com.abbos.moviego.util.CacheKeys.FIND_ALL;
 
 /**
  * @author Aliabbos Ashurov
@@ -30,16 +38,20 @@ public class EventServiceImpl extends AbstractService<EventRepository, EventMapp
 
     private final CinemaHallService cinemaHallService;
     private final MovieService movieService;
+    private final EventService self;
 
     public EventServiceImpl(EventRepository repository,
                             EventMapper eventMapper,
                             CinemaHallService cinemaHallService,
-                            MovieService movieService) {
+                            MovieService movieService,
+                            @Lazy EventService eventService) {
         super(repository, eventMapper);
         this.cinemaHallService = cinemaHallService;
         this.movieService = movieService;
+        this.self = eventService;
     }
 
+    @CacheEvict(value = EVENTS, key = FIND_ALL)
     @Transactional
     @Override
     public void create(EventCreateDto dto) {
@@ -55,14 +67,22 @@ public class EventServiceImpl extends AbstractService<EventRepository, EventMapp
         repository.save(event);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = EVENT, key = "#dto.id()"),
+            @CacheEvict(value = EVENTS, key = FIND_ALL)
+    })
     @Transactional
     @Override
     public void update(EventUpdateDto dto) {
-        Event event = findEntity(dto.id());
+        Event event = self.findEntity(dto.id());
         event.setStatus(dto.status());
         repository.save(event);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = EVENT, key = "#id"),
+            @CacheEvict(value = EVENTS, key = FIND_ALL)
+    })
     @Override
     public void delete(Long id) {
         if (!exists(id)) {
@@ -94,9 +114,10 @@ public class EventServiceImpl extends AbstractService<EventRepository, EventMapp
 
     @Override
     public EventResponseDto find(Long id) {
-        return mapper.toDto(findEntity(id));
+        return mapper.toDto(self.findEntity(id));
     }
 
+    @Cacheable(value = EVENT, key = "#id")
     @Override
     public Event findEntity(final Long id) {
         return repository.findById(id).orElseThrow(
@@ -106,9 +127,9 @@ public class EventServiceImpl extends AbstractService<EventRepository, EventMapp
 
     @Transactional(readOnly = true)
     @Override
-    public List<EventResponseDto> findAllEager() {
+    public List<EventResponseDto> findAllByStatus(EventStatus status) {
         return mapper.toDtoList(
-                repository.findAllEager()
+                repository.findAllByStatusOrderByShowTimeAsc(status)
         );
     }
 
@@ -120,11 +141,12 @@ public class EventServiceImpl extends AbstractService<EventRepository, EventMapp
         );
     }
 
+    @Cacheable(value = EVENTS, key = FIND_ALL)
     @Transactional(readOnly = true)
     @Override
-    public List<EventResponseDto> findAllByStatus(EventStatus status) {
+    public List<EventResponseDto> findAllEager() {
         return mapper.toDtoList(
-                repository.findAllByStatus(status)
+                repository.findAllEager()
         );
     }
 

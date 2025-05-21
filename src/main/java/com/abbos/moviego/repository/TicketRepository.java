@@ -1,8 +1,7 @@
 package com.abbos.moviego.repository;
 
-import com.abbos.moviego.dto.render.TicketRenderDto;
+import com.abbos.moviego.dto.internal.TicketRenderDto;
 import com.abbos.moviego.entity.Ticket;
-import org.hibernate.annotations.processing.HQL;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -17,7 +16,7 @@ import java.util.List;
 public interface TicketRepository extends ListCrudRepository<Ticket, Long> {
 
     @Query("""
-                SELECT new com.abbos.moviego.dto.render.TicketRenderDto(
+                SELECT new com.abbos.moviego.dto.internal.TicketRenderDto(
                            t.id,
                            t.rows,
                            t.columns,
@@ -25,7 +24,6 @@ public interface TicketRepository extends ListCrudRepository<Ticket, Long> {
                            u.email,
                            m.title,
                            e.showTime,
-                           m.posterImage.link,
                            ch.name)
                 FROM Ticket t
                 JOIN t.user u

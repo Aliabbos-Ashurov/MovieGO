@@ -1,4 +1,6 @@
-package com.abbos.moviego.dto.render;
+package com.abbos.moviego.dto.internal;
+
+import com.abbos.moviego.dto.base.DTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,7 +18,6 @@ public record TicketRenderDto(
         String userEmail,
         String movieTitle,
         LocalDateTime showTime,
-        String posterImageLink,
         String cinemaHallName
-) {
+) implements DTO {
 }

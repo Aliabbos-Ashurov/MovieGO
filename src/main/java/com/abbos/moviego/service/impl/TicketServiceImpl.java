@@ -4,7 +4,7 @@ import com.abbos.moviego.config.security.SessionUser;
 import com.abbos.moviego.dto.SeatInfoDto;
 import com.abbos.moviego.dto.TicketCreateDto;
 import com.abbos.moviego.dto.TicketResponseDto;
-import com.abbos.moviego.dto.render.TicketRenderDto;
+import com.abbos.moviego.dto.internal.TicketRenderDto;
 import com.abbos.moviego.entity.CinemaHall;
 import com.abbos.moviego.entity.Event;
 import com.abbos.moviego.entity.Ticket;
@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 
 /**
  * Implementation of TicketService handling ticket-related operations.
@@ -45,7 +46,6 @@ public class TicketServiceImpl extends AbstractService<TicketRepository, TicketM
         this.userService = userService;
         this.sessionUser = sessionUser;
     }
-
 
     @Transactional
     @Override

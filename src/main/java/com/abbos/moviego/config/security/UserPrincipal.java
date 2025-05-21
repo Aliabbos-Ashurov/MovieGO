@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,29 +26,34 @@ import java.util.Set;
 public class UserPrincipal implements UserDetails {
 
     @Serial
-    private static final long serialVersionUID = -54983245224242231L;
+    private static final long serialVersionUID = 1L;
 
     private final Long id;
     private final User user;
     private final String email;
+    private final Collection<GrantedAuthority> authorities;
 
     public UserPrincipal(User user) {
         this.user = user;
         this.id = user.getId();
         this.email = user.getEmail();
+        this.authorities = buildAuthorities(user.getRoles());
+    }
+
+    private Collection<GrantedAuthority> buildAuthorities(Set<Role> roles) {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName().toUpperCase()));
+            role.getPermissions().forEach(
+                    permission -> authorities.add(new SimpleGrantedAuthority(permission.getName().toUpperCase()))
+            );
+        }
+        return Collections.unmodifiableSet(authorities);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (Role role : user.getRoles()) {
-            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName().toUpperCase()));
-            role.getPermissions().forEach(permission ->
-                    grantedAuthorities.add(new SimpleGrantedAuthority(permission.getName().toUpperCase()))
-            );
-        }
-
-        return grantedAuthorities;
+        return authorities;
     }
 
     @Override

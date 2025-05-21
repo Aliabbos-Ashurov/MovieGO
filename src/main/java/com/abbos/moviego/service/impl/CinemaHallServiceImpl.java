@@ -12,10 +12,18 @@ import com.abbos.moviego.repository.CinemaHallRepository;
 import com.abbos.moviego.service.CinemaHallService;
 import com.abbos.moviego.service.ImageService;
 import com.abbos.moviego.service.base.AbstractService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.abbos.moviego.util.CacheKeys.CinemaHallKeys.CINEMA_HALL;
+import static com.abbos.moviego.util.CacheKeys.CinemaHallKeys.CINEMA_HALLS;
+import static com.abbos.moviego.util.CacheKeys.FIND_ALL;
 
 /**
  * @author Aliabbos Ashurov
@@ -26,14 +34,18 @@ import java.util.List;
 public class CinemaHallServiceImpl extends AbstractService<CinemaHallRepository, CinemaHallMapper> implements CinemaHallService {
 
     private final ImageService imageService;
+    private final CinemaHallService self;
 
     public CinemaHallServiceImpl(CinemaHallRepository repository,
                                  CinemaHallMapper cinemaHallMapper,
-                                 ImageService imageService) {
+                                 ImageService imageService,
+                                 @Lazy CinemaHallService cinemaHallService) {
         super(repository, cinemaHallMapper);
         this.imageService = imageService;
+        this.self = cinemaHallService;
     }
 
+    @CacheEvict(value = CINEMA_HALLS, key = FIND_ALL)
     @Transactional
     @Override
     public void create(CinemaHallCreateDto dto) {
@@ -47,13 +59,21 @@ public class CinemaHallServiceImpl extends AbstractService<CinemaHallRepository,
         repository.save(cinemaHall);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = CINEMA_HALL, key = "#dto.id()"),
+            @CacheEvict(value = CINEMA_HALLS, key = FIND_ALL)
+    })
     @Override
     public void update(CinemaHallUpdateDto dto) {
-        CinemaHall cinemaHall = findEntity(dto.id());
+        CinemaHall cinemaHall = self.findEntity(dto.id());
         cinemaHall.setStatus(dto.status());
         repository.save(cinemaHall);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = CINEMA_HALL, key = "#id"),
+            @CacheEvict(value = CINEMA_HALLS, key = FIND_ALL)
+    })
     @Override
     public void delete(Long id) {
         if (!exists(id)) {
@@ -77,9 +97,11 @@ public class CinemaHallServiceImpl extends AbstractService<CinemaHallRepository,
 
     @Override
     public CinemaHallResponseDto find(Long id) {
-        return mapper.toDto(findEntity(id));
+        return mapper.toDto(self.findEntity(id));
     }
 
+    @Transactional(readOnly = true)
+    @Cacheable(value = CINEMA_HALL, key = "#id")
     @Override
     public CinemaHall findEntity(Long id) {
         return repository.findById(id).orElseThrow(
@@ -87,6 +109,7 @@ public class CinemaHallServiceImpl extends AbstractService<CinemaHallRepository,
         );
     }
 
+    @Cacheable(value = CINEMA_HALLS, key = FIND_ALL)
     @Override
     public List<CinemaHallResponseDto> findAll() {
         return mapper.toDtoList(

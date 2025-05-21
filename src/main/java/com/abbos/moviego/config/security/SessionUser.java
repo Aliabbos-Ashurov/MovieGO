@@ -31,12 +31,11 @@ public class SessionUser {
         return null;
     }
 
-    /**
-     * Returns the ID of the currently authenticated user.
-     *
-     * @return user ID or throws {@code NullPointerException} if user is not authenticated
-     */
     public Long getId() {
-        return getUser().getId();
+        UserPrincipal user = getUser();
+        if (user == null) {
+            throw new IllegalStateException("::::::::: NO AUTHENTICATED USER FOUND :::::::::");
+        }
+        return user.getId();
     }
 }

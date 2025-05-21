@@ -11,6 +11,7 @@ import com.abbos.moviego.repository.RoleRepository;
 import com.abbos.moviego.service.PermissionService;
 import com.abbos.moviego.service.RoleService;
 import com.abbos.moviego.service.base.AbstractService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,6 +69,7 @@ public class RoleServiceImpl extends AbstractService<RoleRepository, RoleMapper>
         return repository.findAllByIdIn(ids);
     }
 
+
     @Override
     public void delete(Long id) {
         if (!exists(id)) {
@@ -86,6 +88,7 @@ public class RoleServiceImpl extends AbstractService<RoleRepository, RoleMapper>
         return mapper.toDto(findEntity(id));
     }
 
+
     @Override
     public Role findEntity(Long id) {
         return repository.findById(id).orElseThrow(
@@ -93,10 +96,11 @@ public class RoleServiceImpl extends AbstractService<RoleRepository, RoleMapper>
         );
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<RoleResponseDto> findAll() {
         return mapper.toDtoList(
-                repository.findAll()
+                repository.findAll(Sort.by(Sort.Direction.DESC, "id"))
         );
     }
 

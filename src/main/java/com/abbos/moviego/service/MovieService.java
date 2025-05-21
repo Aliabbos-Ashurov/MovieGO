@@ -6,6 +6,7 @@ import com.abbos.moviego.dto.MovieResponseDto;
 import com.abbos.moviego.dto.MovieUpdateDto;
 import com.abbos.moviego.entity.Movie;
 import com.abbos.moviego.service.base.CrudService;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,9 @@ public interface MovieService extends CrudService<Long, Movie, MovieResponseDto,
 
     Map<String, List<MovieResponseDto>> findAllGroupedByCategory();
 
-    MovieResponseDto findLastMovie();
+    MovieDetailDto findLastMovie();
 
     MovieDetailDto findMovieDetail(Long movieId);
+
+    MovieDetailDto fetchMovieDetail(Long id, Pageable pageable, boolean throwEx);
 }

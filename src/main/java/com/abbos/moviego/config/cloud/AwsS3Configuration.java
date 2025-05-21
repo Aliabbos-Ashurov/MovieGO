@@ -1,11 +1,10 @@
 package com.abbos.moviego.config.cloud;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
-import software.amazon.awssdk.auth.credentials.AwsCredentials;
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.*;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 
@@ -17,7 +16,7 @@ import software.amazon.awssdk.services.s3.S3Client;
  * @version 1.0
  * @since 2025-05-06
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class AwsS3Configuration {
 
     @Value("${spring.cloud.aws.credentials.access-key}")
@@ -30,17 +29,18 @@ public class AwsS3Configuration {
     private String region;
 
     @Bean
-    public AwsCredentials credentials() {
-        return AwsBasicCredentials.builder()
-                .accessKeyId(accessKey)
-                .secretAccessKey(secretKey)
-                .build();
+    public AwsCredentialsProvider credentialsProvider() {
+        if (StringUtils.isEmpty(accessKey) || StringUtils.isEmpty(secretKey)) {
+            return DefaultCredentialsProvider.create();
+        }
+        return StaticCredentialsProvider.create(
+                AwsBasicCredentials.create(accessKey, secretKey));
     }
 
     @Bean
-    public S3Client s3Client(AwsCredentials credentials) {
+    public S3Client s3Client(AwsCredentialsProvider credentialsProvider) {
         return S3Client.builder()
-                .credentialsProvider(StaticCredentialsProvider.create(credentials))
+                .credentialsProvider(credentialsProvider)
                 .region(Region.of(region))
                 .build();
     }

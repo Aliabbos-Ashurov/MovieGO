@@ -3,7 +3,6 @@ package com.abbos.moviego.entity;
 import com.abbos.moviego.entity.base.Auditable;
 import com.abbos.moviego.enums.EventStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
@@ -27,11 +26,11 @@ import java.time.LocalDateTime;
 @SuperBuilder
 public class Event extends Auditable {
 
-    @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(optional = false)
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 
-    @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(optional = false)
     @JoinColumn(name = "cinema_hall_id", nullable = false)
     private CinemaHall cinemaHall;
 

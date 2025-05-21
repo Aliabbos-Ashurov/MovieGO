@@ -19,8 +19,8 @@ import java.util.List;
  */
 public interface EventRepository extends ListCrudRepository<Event, Long> {
 
-    @EntityGraph(attributePaths = {"movie", "movie.sceneImages"})
-    List<Event> findAllByStatus(EventStatus status);
+    @EntityGraph(attributePaths = { "movie", "movie.posterImage" })
+    List<Event> findAllByStatusOrderByShowTimeAsc(EventStatus status);
 
     @Modifying
     @Transactional
@@ -47,6 +47,7 @@ public interface EventRepository extends ListCrudRepository<Event, Long> {
                 JOIN FETCH e.cinemaHall ch
                 LEFT JOIN FETCH m.sceneImages si
                 LEFT JOIN FETCH si.image img
+                ORDER BY e.id DESC
             """)
     List<Event> findAllEager();
 }

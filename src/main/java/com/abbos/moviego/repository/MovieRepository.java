@@ -2,12 +2,12 @@ package com.abbos.moviego.repository;
 
 import com.abbos.moviego.dto.MovieDetailDto;
 import com.abbos.moviego.entity.Movie;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Aliabbos Ashurov
@@ -26,13 +26,6 @@ public interface MovieRepository extends ListCrudRepository<Movie, Long> {
             """)
     List<Movie> findAllEager();
 
-    @Query(value = """
-                SELECT * FROM movies
-                ORDER BY created_at DESC
-                LIMIT 1
-            """, nativeQuery = true)
-    Optional<Movie> findLastMovieNative();
-
     @Query("""
                 SELECT new com.abbos.moviego.dto.MovieDetailDto(
                     m.id,
@@ -50,8 +43,7 @@ public interface MovieRepository extends ListCrudRepository<Movie, Long> {
                 FROM Movie m
                 JOIN m.category c
                 JOIN m.posterImage pi
-                WHERE m.id = :id
+                WHERE (:id IS NULL OR m.id = :id)
             """)
-    Optional<MovieDetailDto> findMovieBaseDetails(@Param("id") Long id);
-
+    List<MovieDetailDto> findMovieBaseDetails(@Param("id") Long id, Pageable pageable);
 }
