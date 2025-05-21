@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-index-permissions-table
+      author: 'Aliabbos Ashurov'
+      comment: 'Indexes for permissions table'
+      runAlways: false
+      changes:
+        - createIndex:
+            tableName: permissions
+            indexName: 'idx_permission_name'
+            columns:
+              - column:
+                  name: name

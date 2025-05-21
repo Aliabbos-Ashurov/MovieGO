@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-index-tickets-table
+      author: 'Aliabbos Ashurov'
+      comment: 'Indexes for tickets table'
+      runAlways: false
+      changes:
+        - createIndex:
+            tableName: tickets
+            indexName: 'idx_ticket_user_id'
+            columns:
+              - column:
+                  name: user_id
+        - createIndex:
+            tableName: tickets
+            indexName: 'idx_ticket_event_id'
+            columns:
+              - column:
+                  name: event_id

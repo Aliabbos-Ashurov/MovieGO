@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-index-events-table
+      author: 'Aliabbos Ashurov'
+      comment: 'Indexes for events table'
+      runAlways: false
+      changes:
+        - createIndex:
+            tableName: events
+            indexName: 'idx_event_status'
+            columns:
+              - column:
+                  name: status
+        - createIndex:
+            tableName: events
+            indexName: 'idx_event_cinema_hall_id'
+            columns:
+              - column:
+                  name: cinema_hall_id
+        - createIndex:
+            tableName: events
+            indexName: 'idx_event_movie_id'
+            columns:
+              - column:
+                  name: movie_id

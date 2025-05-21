@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-index-cinema-hall-table
+      author: 'Aliabbos Ashurov'
+      comment: 'Indexes for cinema-hall table'
+      runAlways: false
+      changes:
+        - createIndex:
+            tableName: cinema_hall
+            indexName: 'idx_cinema_hall_status'
+            columns:
+              - column:
+                  name: status
+        - createIndex:
+            tableName: cinema_hall
+            indexName: 'idx_cinema_hall_image_id'
+            columns:
+              - column:
+                  name: image_id

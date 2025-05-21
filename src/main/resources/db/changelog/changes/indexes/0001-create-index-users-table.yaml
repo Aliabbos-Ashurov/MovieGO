@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-index-users-table
+      author: 'Aliabbos Ashurov'
+      comment: 'Indexes for users table'
+      runAlways: false
+      changes:
+        - createIndex:
+            tableName: users
+            indexName: 'idx_users_email'
+            columns:
+              - column:
+                  name: email

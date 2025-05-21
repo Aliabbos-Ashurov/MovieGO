@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-index-movies-table
+      author: 'Aliabbos Ashurov'
+      comment: 'Indexes for movies table'
+      runAlways: false
+      changes:
+        - createIndex:
+            tableName: movies
+            indexName: 'idx_movie_title'
+            columns:
+              - column:
+                  name: title
+        - createIndex:
+            tableName: movies
+            indexName: 'idx_movie_category_id'
+            columns:
+              - column:
+                  name: category_id
+        - createIndex:
+            tableName: movies
+            indexName: 'idx_movie_poster_image_id'
+            columns:
+              - column:
+                  name: poster_image_id

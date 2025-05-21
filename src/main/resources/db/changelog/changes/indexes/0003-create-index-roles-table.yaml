@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-index-roles-table
+      author: 'Aliabbos Ashurov'
+      comment: 'Indexes for roles table'
+      runAlways: false
+      changes:
+        - createIndex:
+            tableName: roles
+            indexName: 'idx_role_name'
+            columns:
+              - column:
+                  name: name

@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-index-category-table
+      author: 'Aliabbos Ashurov'
+      comment: 'Indexes for category table'
+      runAlways: false
+      changes:
+        - createIndex:
+            tableName: category
+            indexName: 'idx_category_name'
+            columns:
+              - column:
+                  name: name
