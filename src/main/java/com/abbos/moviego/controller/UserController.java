@@ -88,7 +88,6 @@ public class UserController implements ViewModelConfigurer {
 
     @SneakyThrows
     @DeleteMapping("/delete-me/{id}")
-    @PreAuthorize("hasAuthority('EDIT_PROFILE')")
     public String deleteMe(@PathVariable Long id,
                            HttpServletRequest request,
                            HttpServletResponse response) {

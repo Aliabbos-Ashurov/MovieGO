@@ -49,22 +49,10 @@ public class MovieServiceImpl extends AbstractService<MovieRepository, MovieMapp
     private final EventService eventService;
     private final MovieService self;
 
-    public MovieServiceImpl(MovieRepository repository,
-                            MovieMapper movieMapper,
-                            CategoryService categoryService,
-                            ImageService imageService,
-                            SceneImageService sceneImageService,
-                            @Lazy EventService eventService,
-                            @Lazy MovieService movieService) {
-        super(repository, movieMapper);
-        this.categoryService = categoryService;
-        this.imageService = imageService;
-        this.sceneImageService = sceneImageService;
-        this.eventService = eventService;
-        this.self = movieService;
-    }
-
-    @CacheEvict(value = MOVIES, key = FIND_ALL)
+    @Caching(evict = {
+            @CacheEvict(value = MOVIES, key = FIND_ALL),
+            @CacheEvict(value = MOVIE_DETAIL, key = "'last'")
+    })
     @Transactional
     @Override
     public void create(MovieCreateDto dto) {
@@ -95,9 +83,25 @@ public class MovieServiceImpl extends AbstractService<MovieRepository, MovieMapp
         }
     }
 
+    public MovieServiceImpl(MovieRepository repository,
+                            MovieMapper movieMapper,
+                            CategoryService categoryService,
+                            ImageService imageService,
+                            SceneImageService sceneImageService,
+                            @Lazy EventService eventService,
+                            @Lazy MovieService movieService) {
+        super(repository, movieMapper);
+        this.categoryService = categoryService;
+        this.imageService = imageService;
+        this.sceneImageService = sceneImageService;
+        this.eventService = eventService;
+        this.self = movieService;
+    }
+
     @Caching(evict = {
             @CacheEvict(value = MOVIE, key = "#dto.id()"),
             @CacheEvict(value = MOVIE_DETAIL, key = "#dto.id()"),
+            @CacheEvict(value = MOVIE_DETAIL, key = "'last'"),
             @CacheEvict(value = MOVIES, key = FIND_ALL)
     })
     @Override
@@ -109,6 +113,7 @@ public class MovieServiceImpl extends AbstractService<MovieRepository, MovieMapp
     @Caching(evict = {
             @CacheEvict(value = MOVIE, key = "#id"),
             @CacheEvict(value = MOVIE_DETAIL, key = "#id"),
+            @CacheEvict(value = MOVIE_DETAIL, key = "'last'"),
             @CacheEvict(value = MOVIES, key = FIND_ALL)
     })
     @Override

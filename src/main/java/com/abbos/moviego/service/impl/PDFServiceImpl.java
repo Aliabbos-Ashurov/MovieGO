@@ -3,6 +3,7 @@ package com.abbos.moviego.service.impl;
 import com.abbos.moviego.dto.internal.TicketRenderDto;
 import com.abbos.moviego.service.PDFService;
 import com.abbos.moviego.service.QrService;
+import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.colors.WebColors;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -74,7 +75,7 @@ public class PDFServiceImpl implements PDFService {
     private void addUserEmail(Document document, TicketRenderDto ticket) {
         Paragraph email = new Paragraph("Ticket for: " + ticket.userEmail())
                 .setFontSize(12)
-                .setFontColor(WebColors.getRGBColor("#d0d0d0"))
+                .setFontColor(ColorConstants.BLACK)
                 .setTextAlignment(TextAlignment.LEFT)
                 .setMarginBottom(15);
         document.add(email);
