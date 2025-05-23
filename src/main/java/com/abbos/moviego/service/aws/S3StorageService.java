@@ -32,7 +32,7 @@ import java.util.UUID;
 public class S3StorageService {
 
     @Value("${spring.cloud.aws.s3.bucket.name}")
-    private String BUCKET;
+    public String BUCKET;
 
     @Value("${spring.cloud.aws.s3.base-link}")
     public String BASE_LINK;

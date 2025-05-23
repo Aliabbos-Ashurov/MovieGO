@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.util.Optional;
 
-
 @EnableJpaAuditing
 @SpringBootApplication
 public class MovieGoApplication {
