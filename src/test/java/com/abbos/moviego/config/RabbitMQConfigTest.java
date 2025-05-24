@@ -51,22 +51,22 @@ class RabbitMQConfigTest {
     @Test
     void testEmailQueueBean() {
         assertNotNull(emailQueue, "Queue bean should not be null");
-        assertEquals("test-queue", emailQueue.getName(), "Queue name should match");
+        assertEquals("notification.mail", emailQueue.getName(), "Queue name should match");
         assertTrue(emailQueue.isDurable(), "Queue should be durable");
     }
 
     @Test
     void testEmailExchangeBean() {
         assertNotNull(emailExchange, "Exchange bean should not be null");
-        assertEquals("test-exchange", emailExchange.getName(), "Exchange name should match");
+        assertEquals("notification-events", emailExchange.getName(), "Exchange name should match");
     }
 
     @Test
     void testEmailBindingBean() {
         assertNotNull(emailBinding, "Binding bean should not be null");
-        assertEquals("test-queue", emailBinding.getDestination(), "Binding destination should match queue name");
-        assertEquals("test-exchange", emailBinding.getExchange(), "Binding exchange should match exchange name");
-        assertEquals("test.routing.key", emailBinding.getRoutingKey(), "Binding routing key should match");
+        assertEquals("notification.mail", emailBinding.getDestination(), "Binding destination should match queue name");
+        assertEquals("notification-events", emailBinding.getExchange(), "Binding exchange should match exchange name");
+        assertEquals("mail.sent", emailBinding.getRoutingKey(), "Binding routing key should match");
     }
 
     @Test
