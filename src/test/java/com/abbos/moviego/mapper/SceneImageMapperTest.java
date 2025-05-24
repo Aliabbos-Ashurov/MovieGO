@@ -130,7 +130,6 @@ class SceneImageMapperTest {
                     .movie(movie)
                     .image(image)
                     .build();
-            // Manually set createdAt to simulate @PrePersist behavior of BaseEntity
             sceneImage.setCreatedAt(LocalDateTime.now());
             return sceneImage;
         }

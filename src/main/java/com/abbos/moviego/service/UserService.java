@@ -8,8 +8,6 @@ import com.abbos.moviego.entity.User;
 import com.abbos.moviego.service.base.CrudService;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 /**
  * @author Aliabbos Ashurov
  * @version 1.0
@@ -24,5 +22,4 @@ public interface UserService extends CrudService<Long, User, UserResponseDto, Si
     UserResponseDto getMe();
 
     void addRole(UserAddRoleDto dto);
-
 }

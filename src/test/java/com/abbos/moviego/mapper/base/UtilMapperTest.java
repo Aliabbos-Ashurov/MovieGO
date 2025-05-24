@@ -42,7 +42,7 @@ public class UtilMapperTest {
         assertNull(resultNull);
     }
 
-    enum TestEnum {
+    private enum TestEnum {
         ONE, TWO
     }
 }

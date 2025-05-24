@@ -49,6 +49,21 @@ public class MovieServiceImpl extends AbstractService<MovieRepository, MovieMapp
     private final EventService eventService;
     private final MovieService self;
 
+    public MovieServiceImpl(MovieRepository repository,
+                            MovieMapper movieMapper,
+                            CategoryService categoryService,
+                            ImageService imageService,
+                            SceneImageService sceneImageService,
+                            @Lazy EventService eventService,
+                            @Lazy MovieService movieService) {
+        super(repository, movieMapper);
+        this.categoryService = categoryService;
+        this.imageService = imageService;
+        this.sceneImageService = sceneImageService;
+        this.eventService = eventService;
+        this.self = movieService;
+    }
+
     @Caching(evict = {
             @CacheEvict(value = MOVIES, key = FIND_ALL),
             @CacheEvict(value = MOVIE_DETAIL, key = "'last'")
@@ -81,21 +96,6 @@ public class MovieServiceImpl extends AbstractService<MovieRepository, MovieMapp
             List<SceneImage> sceneImages = sceneImageService.create(savedMovie, dto.sceneImages());
             savedMovie.setSceneImages(sceneImages);
         }
-    }
-
-    public MovieServiceImpl(MovieRepository repository,
-                            MovieMapper movieMapper,
-                            CategoryService categoryService,
-                            ImageService imageService,
-                            SceneImageService sceneImageService,
-                            @Lazy EventService eventService,
-                            @Lazy MovieService movieService) {
-        super(repository, movieMapper);
-        this.categoryService = categoryService;
-        this.imageService = imageService;
-        this.sceneImageService = sceneImageService;
-        this.eventService = eventService;
-        this.self = movieService;
     }
 
     @Caching(evict = {

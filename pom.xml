@@ -8,6 +8,7 @@
         <version>3.4.5</version>
         <relativePath/>
     </parent>
+
     <groupId>com.abbos</groupId>
     <artifactId>MovieGO</artifactId>
     <version>1.0.0</version>
@@ -138,6 +139,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <version>6.5.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -190,6 +197,7 @@
                 <version>0.8.13</version>
                 <configuration>
                     <excludes>
+                        <exclude>com/abbos/moviego/MovieGoApplication.class</exclude>
                         <exclude>com/abbos/moviego/annotation/**</exclude>
                         <exclude>com/abbos/moviego/exception/**</exclude>
                         <exclude>com/abbos/moviego/util/**</exclude>

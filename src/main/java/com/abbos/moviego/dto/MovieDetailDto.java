@@ -3,7 +3,6 @@ package com.abbos.moviego.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.List;
  * @version 1.0
  * @since 2025-05-17
  */
-@ToString
 @Getter
 @AllArgsConstructor
 public class MovieDetailDto implements Serializable {
